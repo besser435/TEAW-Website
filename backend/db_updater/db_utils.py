@@ -9,88 +9,86 @@ DB_FILE = "teaw.db"
 
 # what the fuck is database normalization
 def create_tables(db_file=DB_FILE):
-    db = sqlite3.connect(db_file)
-    cursor = db.cursor()
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
 
-    # Create players table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS players (
-            uuid TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            online_duration INTEGER,
-            afk_duration INTEGER,
-            balance REAL,
-            title TEXT,
-            town TEXT,           
-            town_name TEXT, 
-            nation TEXT,    
-            nation_name TEXT,              
-            last_online INTEGER     -- added by db_updater.py, not TAPI
-        )
-    """)
+        # Create players table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS players (
+                uuid TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                online_duration INTEGER,
+                afk_duration INTEGER,
+                balance REAL,
+                title TEXT,
+                town TEXT,           
+                town_name TEXT, 
+                nation TEXT,    
+                nation_name TEXT,              
+                last_online INTEGER     -- added by db_updater.py, not TAPI
+            )
+        """)
 
-    # Create chat table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS chat (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,  
-            sender TEXT NOT NULL,                  
-            message TEXT NOT NULL,                
-            timestamp INTEGER NOT NULL,
-            type TEXT NOT NULL
-        )
-    """)
+        # Create chat table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS chat (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,  
+                sender TEXT NOT NULL,                  
+                message TEXT NOT NULL,                
+                timestamp INTEGER NOT NULL,
+                type TEXT NOT NULL
+            )
+        """)
 
-    # Create towns table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS towns (
-            uuid TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            mayor TEXT NOT NULL,
-            founder TEXT NOT NULL,
-            balance REAL NOT NULL,
-            nation TEXT,
-            nation_name TEXT,
-            founded INTEGER NOT NULL,
-            resident_tax_percent REAL NOT NULL,
-            is_active BOOLEAN NOT NULL,
-            claimed_chunks INTEGER NOT NULL,
-            tag TEXT,
-            board TEXT
-        )
-    """)
+        # Create towns table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS towns (
+                uuid TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                mayor TEXT NOT NULL,
+                founder TEXT NOT NULL,
+                balance REAL NOT NULL,
+                nation TEXT,
+                nation_name TEXT,
+                founded INTEGER NOT NULL,
+                resident_tax_percent REAL NOT NULL,
+                is_active BOOLEAN NOT NULL,
+                claimed_chunks INTEGER NOT NULL,
+                tag TEXT,
+                board TEXT
+            )
+        """)
 
-    # Create nations table
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS nations (
-            uuid TEXT PRIMARY KEY,
-            name TEXT NOT NULL,
-            leader TEXT NOT NULL,
-            capitol_town TEXT NOT NULL,
-            capitol_town_name TEXT,
-            balance REAL NOT NULL,
-            town_tax_dollars REAL NOT NULL,
-            founded INTEGER NOT NULL,
-            tag TEXT,
-            board TEXT
-        )
-    """)
+        # Create nations table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS nations (
+                uuid TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                leader TEXT NOT NULL,
+                capitol_town TEXT NOT NULL,
+                capitol_town_name TEXT,
+                balance REAL NOT NULL,
+                town_tax_dollars REAL NOT NULL,
+                founded INTEGER NOT NULL,
+                tag TEXT,
+                board TEXT
+            )
+        """)
 
-
-
+        conn.commit()
 
     print("Database initialized")
-    db.commit()
-    db.close()
+
 
 def drop(db_file=DB_FILE, table=None):
-    conn = sqlite3.connect(db_file)
-    cursor = conn.cursor()
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
 
-    cursor.execute(f"DROP TABLE IF EXISTS {table};")
+        cursor.execute(f"DROP TABLE IF EXISTS {table};")
+        conn.commit()
+
     print(f"Dropped table {table}")
 
-    conn.commit()
-    conn.close()
 
 
 # DB performance might get slow once we get in the hundreds of thousands range, as we often
