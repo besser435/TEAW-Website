@@ -19,6 +19,25 @@ SKIN_TTL_HOURS = 8
 ERROR_LOG = "error.log"
 
 
+def upsert_variable(variable: str, value: str) -> None:    # the shitfuck
+    """
+    Upserts a value in the miscellaneous `variables` table.
+    Variable names and values are stored as the `TEXT` type.
+    """
+
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO variables (variable, value)
+            VALUES (?, ?)
+            ON CONFLICT(variable) DO UPDATE SET 
+                value = excluded.value
+        """, (str(variable), str(value)))
+
+        conn.commit()
+
+
 def update_players_table() -> None:
     print("Updating players table...")
 
@@ -64,6 +83,7 @@ def update_players_table() -> None:
                 """, (uuid, name, online_duration, afk_duration, balance, title, town, town_name, nation, nation_name, last_online))
 
             conn.commit()
+            upsert_variable("last_players_update", int(time.time() * 1000))
         else:
             print(f"Failed to fetch player data: {response.status_code}")
 
@@ -103,6 +123,7 @@ def update_chat_table() -> None:
                     """, (sender, message, timestamp, message_type))
 
             conn.commit()
+            upsert_variable("last_chat_update", int(time.time() * 1000))
         else:
             print(f"Failed to fetch chat data: {response.status_code}")
 
@@ -122,7 +143,7 @@ def update_towns_table() -> None:
             data = response.json()
             towns = data.get("towns", {})
 
-            for town_uuid, town_data in towns.items():    # does not include residents array from TAPI
+            for town_uuid, town_data in towns.items():
                 resident_tax_percent = town_data.get("resident_tax_percent", 0.0)
                 is_active = town_data.get("is_active", False)
                 balance = town_data.get("balance", 0.0)
@@ -159,6 +180,7 @@ def update_towns_table() -> None:
                     is_active, claimed_chunks, tag, board))
 
             conn.commit()
+            upsert_variable("last_towns_update", int(time.time() * 1000))
         else:
             print(f"Failed to fetch town data: {response.status_code}")
 
@@ -211,6 +233,7 @@ def update_nations_table() -> None:
                 ))
 
             conn.commit()
+            upsert_variable("last_nations_update", int(time.time() * 1000))
         else:
             print(f"Failed to fetch nation data: {response.status_code}")
     
@@ -219,7 +242,7 @@ def update_nations_table() -> None:
     print(f"Nations table updated in {round((end_time - start_time) * 1000, 3)}ms\n")   # Does not include network request time
 
 
-def update_skins_dir():
+def update_skins_dir() -> None:
     print("Updating player skins...")
 
     start_time = time.time()
@@ -256,6 +279,24 @@ def update_skins_dir():
     print(f"Player skins updated in {round((end_time - start_time) * 1000, 3)}ms\n")   # Includes network request time
 
 
+def update_misc_variables() -> None:
+    response = requests.get(TAPI_URL + "/server_info")
+
+    if response.status_code == 200:
+        data = response.json()
+        weather = data.get("weather")
+        world_time_24h = data.get("world_time_24h")
+
+        teaw_system_time = data.get("system_time")
+
+        # because 3 discrete DB operations is better than one, right?
+        upsert_variable("weather", weather)
+        upsert_variable("world_time_24h", world_time_24h)
+        upsert_variable("teaw_system_time", teaw_system_time)
+
+
+
+
 def log_error(error: str) -> None:
     error_string = f"Error at time {datetime.now()}\n{error}\n\n\n"
     with open (ERROR_LOG, "a") as f:
@@ -279,10 +320,12 @@ if __name__ == "__main__":
             update_chat_table()
             update_towns_table()
             update_nations_table()
-            update_skins_dir()
-            
 
-            time.sleep(1)
+            update_misc_variables()
+
+            update_skins_dir()
+
+            time.sleep(5)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.

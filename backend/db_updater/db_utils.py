@@ -3,9 +3,7 @@ import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-
 DB_FILE = "teaw.db"
-
 
 # what the fuck is database normalization
 def create_tables(db_file=DB_FILE):
@@ -75,6 +73,14 @@ def create_tables(db_file=DB_FILE):
             )
         """)
 
+        # Create misc. variables table
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS variables (
+                variable TEXT PRIMARY KEY,
+                value TEXT NOT NULL
+            )
+        """)
+
         conn.commit()
 
     print("Database initialized")
@@ -101,9 +107,10 @@ def archive_chat_table(db_file=DB_FILE):
 
 
 if __name__ == "__main__":
-    drop(DB_FILE, "players")
-    drop(DB_FILE, "chat")
-    drop(DB_FILE, "towns")
-    drop(DB_FILE, "nations")
+    #drop(DB_FILE, "players")
+    #drop(DB_FILE, "chat")
+    #drop(DB_FILE, "towns")
+    #drop(DB_FILE, "nations")
+    drop(DB_FILE, "variables")
     create_tables()
 
