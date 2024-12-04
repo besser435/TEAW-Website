@@ -1,2 +1,6 @@
 
 backend/db_updater/error.log
+*.pyc
+/backend/db_updater/db/player_skins
+/backend/db_updater/logs
+/backend/db_updater/db

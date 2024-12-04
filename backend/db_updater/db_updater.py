@@ -2,21 +2,27 @@ import sqlite3
 import requests
 import time
 from datetime import datetime
-import json
+import logging
+from logging.handlers import RotatingFileHandler
 import os
 import traceback
 import sys
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+from diet_logger import setup_logger
+
+
+LOG_LEVEL = logging.INFO
+LOG_FILE = "log/db_updater.log"
+
 TAPI_URL = "http://192.168.0.157:1850/api"
-DB_FILE = "teaw.db"
+DB_FILE = "db/teaw.db"
 
 SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/walking/{uuid}/full"
-SKINS_DIR = "player_skins"
+SKINS_DIR = "db/player_skins"
 SKIN_TTL_HOURS = 8
 
-ERROR_LOG = "error.log"
 
 
 def upsert_variable(variable: str, value: str) -> None:    # the shitfuck
@@ -39,7 +45,7 @@ def upsert_variable(variable: str, value: str) -> None:    # the shitfuck
 
 
 def update_players_table() -> None:
-    print("Updating players table...")
+    log.debug("Updating players table...")
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
@@ -85,14 +91,14 @@ def update_players_table() -> None:
             conn.commit()
             upsert_variable("last_players_update", int(time.time() * 1000))
         else:
-            print(f"Failed to fetch player data: {response.status_code}")
+            log.warning(f"Failed to fetch player data: {response.status_code}")
 
     end_time = time.time()
-    print(f"Players table updated in {round((end_time - start_time) * 1000, 3)}ms\n")   # Does not include network request time
+    log.debug(f"Players table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
 def update_chat_table() -> None:
-    print("Updating chat table...")
+    log.debug("Updating chat table...")
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
@@ -125,14 +131,14 @@ def update_chat_table() -> None:
             conn.commit()
             upsert_variable("last_chat_update", int(time.time() * 1000))
         else:
-            print(f"Failed to fetch chat data: {response.status_code}")
+            log.warning(f"Failed to fetch chat data: {response.status_code}")
 
     end_time = time.time()
-    print(f"Chat table updated in {round((end_time - start_time) * 1000, 3)}ms\n")   # Does not include network request time
+    log.debug(f"Chat table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
 def update_towns_table() -> None:
-    print("Updating towns table...")
+    log.debug("Updating towns table...")
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
@@ -182,14 +188,14 @@ def update_towns_table() -> None:
             conn.commit()
             upsert_variable("last_towns_update", int(time.time() * 1000))
         else:
-            print(f"Failed to fetch town data: {response.status_code}")
+            log.warning(f"Failed to fetch town data: {response.status_code}")
 
     end_time = time.time()
-    print(f"Towns table updated in {round((end_time - start_time) * 1000, 3)}ms\n")   # Does not include network request time
+    log.debug(f"Towns table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
 def update_nations_table() -> None:
-    print("Updating nations table...")
+    log.debug("Updating nations table...")
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
@@ -235,15 +241,15 @@ def update_nations_table() -> None:
             conn.commit()
             upsert_variable("last_nations_update", int(time.time() * 1000))
         else:
-            print(f"Failed to fetch nation data: {response.status_code}")
+            log.warning(f"Failed to fetch nation data: {response.status_code}")
     
 
     end_time = time.time()
-    print(f"Nations table updated in {round((end_time - start_time) * 1000, 3)}ms\n")   # Does not include network request time
+    log.debug(f"Nations table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
 def update_skins_dir() -> None:
-    print("Updating player skins...")
+    log.debug("Updating player skins...")
 
     start_time = time.time()
 
@@ -270,17 +276,21 @@ def update_skins_dir() -> None:
         if response.status_code == 200:
             with open(skin_path, "wb") as skin_file:
                 skin_file.write(response.content)
-            #print(f"Updated skin for UUID: {uuid}")
+            log.debug(f"Updated skin for UUID: {uuid}")
         else:
-            print(f"Failed to fetch skin for UUID {uuid}: {response.status_code}")
+            log.warning(f"Failed to fetch skin for UUID {uuid}: {response.status_code}")
 
 
     end_time = time.time()
-    print(f"Player skins updated in {round((end_time - start_time) * 1000, 3)}ms\n")   # Includes network request time
+    log.debug(f"Player skins updated in {round((end_time - start_time) * 1000, 3)}ms")   # Includes network request time
 
 
 def update_misc_variables() -> None:
+    log.debug("Updating server info...")
+
     response = requests.get(TAPI_URL + "/server_info")
+
+    start_time = time.time()
 
     if response.status_code == 200:
         data = response.json()
@@ -293,21 +303,17 @@ def update_misc_variables() -> None:
         upsert_variable("weather", weather)
         upsert_variable("world_time_24h", world_time_24h)
         upsert_variable("teaw_system_time", teaw_system_time)
+    else:
+        log.warning(f"Failed to fetch server info: {response.status_code}")
 
-
-
-
-def log_error(error: str) -> None:
-    error_string = f"Error at time {datetime.now()}\n{error}\n\n\n"
-    with open (ERROR_LOG, "a") as f:
-        f.write(error_string)
-
-    print(error_string)
+    end_time = time.time()
+    log.debug(f"Server info updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
 
 if __name__ == "__main__":
     try:
+        log = setup_logger(LOG_FILE, LOG_LEVEL)
         while True: 
             """TODO: 
             Should be async, so we can have different intervals for different tasks.
@@ -320,30 +326,31 @@ if __name__ == "__main__":
             update_chat_table()
             update_towns_table()
             update_nations_table()
-
             update_misc_variables()
 
             update_skins_dir()
 
+            print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+
             time.sleep(5)
     except requests.exceptions.ConnectTimeout as e:
-        # When TEAW restarts, it can rarely cause requests to not be able to reconnect
+        # When TEAW restarts, it can rarely cause requests to not be able to reconnect.
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting
 
-        print(f"Connection timed out.\n{e}")
+        log.info(f"Connection timed out. {e}")
 
         time.sleep(30)
 
-        print("Restarting script...")
+        log.info("Restarting script...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except Exception:
-        log_error(traceback.format_exc())
+        log.error(traceback.format_exc())
 
         time.sleep(30)
 
-        print("Restarting script...")
+        log.info("Restarting script...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except KeyboardInterrupt:

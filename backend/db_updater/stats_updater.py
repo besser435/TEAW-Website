@@ -5,10 +5,15 @@ import requests
 import time
 import sys
 import traceback
+import logging
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-DB_FILE = "stats.db"
+from diet_logger import setup_logger
+
+LOG_LEVEL = logging.DEBUG
+LOG_FILE = "log/stats_updater.log"
+DB_FILE = "db/stats.db"
 TAPI_URL = "http://192.168.0.157:1850/api"
 
 
@@ -26,6 +31,8 @@ def create_stats_table(db_file=DB_FILE):
             )
         """)
 
+    log.info("Created player_statistics table")
+
 
 def drop(db_file=DB_FILE, table=None):
     with sqlite3.connect(DB_FILE) as conn:
@@ -34,7 +41,7 @@ def drop(db_file=DB_FILE, table=None):
         cursor.execute(f"DROP TABLE IF EXISTS {table};")
         conn.commit()
 
-    print(f"Dropped table {table}")
+    log.info(f"Dropped table {table}")
 
 
 def get_stat(player_uuid, category, stat_key):
@@ -88,8 +95,9 @@ def insert_statistics(player_uuid, stats_json):
         conn.commit()
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # autism
     try:
+        log = setup_logger(LOG_FILE, LOG_LEVEL)
         #drop(table="player_statistics")
         #create_stats_table()
         while True: 
@@ -107,32 +115,32 @@ if __name__ == "__main__":
                     if stats_response.status_code == 200:
                         stats_json = stats_response.json()
                         insert_statistics(uuid, stats_json)
-                        print(f"Updated player stats for {player_data['name']} ({uuid})")
+                        log.debug(f"Updated player stats for {player_data['name']} ({uuid})")
                     else:
-                        print(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
+                        log.warning(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
             else:
                 print(f"Failed to fetch online players. HTTP {response.status_code}")
 
             end_time = time.time()  
-            print(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms\n")
+            log.debug(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
             time.sleep(5)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting
 
-        print(f"Connection timed out.\n{e}")
+        log.info(f"Connection timed out. {e}")
 
         time.sleep(30)
 
-        print("Restarting script...")
+        log.info("Restarting script...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except Exception:
-        print(traceback.format_exc())
+        log.error(traceback.format_exc())
         time.sleep(30)
 
-        print("Restarting script...")
+        log.info("Restarting script...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except KeyboardInterrupt:
