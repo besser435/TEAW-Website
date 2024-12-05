@@ -21,6 +21,9 @@ Flask's debug mode. For any changes to show up on the website, the process must 
 data in them. The data will not be updated unless the `db_updater.py` and `stats_updater.py` processes are started, 
 but thats not needed for development. 
 
+TODO: add the example data.
+
+
 
 ## Starting a production server
 To deploy the server, run the `run_prod.sh` script with Bash. This will take the Flask `app` variable inside the
