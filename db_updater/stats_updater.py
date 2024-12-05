@@ -9,11 +9,14 @@ import logging
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# Python not looking in parent directories for common files you might want to use is stupid
+sys.path.append("../")
 from diet_logger import setup_logger
 
+
 LOG_LEVEL = logging.DEBUG
-LOG_FILE = "log/stats_updater.log"
-DB_FILE = "db/stats.db"
+LOG_FILE = "../logs/stats_updater.log"
+DB_FILE = "../db/stats.db"
 TAPI_URL = "http://192.168.0.157:1850/api"
 
 

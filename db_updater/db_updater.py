@@ -7,20 +7,23 @@ from logging.handlers import RotatingFileHandler
 import os
 import traceback
 import sys
+import json
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# Python not looking in parent directories for common files you might want to use is stupid
+sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.INFO
-LOG_FILE = "log/db_updater.log"
+LOG_LEVEL = logging.DEBUG
+LOG_FILE = "../logs/db_updater.log"
 
 TAPI_URL = "http://192.168.0.157:1850/api"
-DB_FILE = "db/teaw.db"
+DB_FILE = "../db/teaw.db"
 
-SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/walking/{uuid}/full"
-SKINS_DIR = "db/player_skins"
+SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full"
+SKINS_DIR = "../db/player_skins"
 SKIN_TTL_HOURS = 8
 
 
@@ -274,11 +277,19 @@ def update_skins_dir() -> None:
         response = requests.get(SKIN_API_URL.format(uuid=uuid), timeout=10)
 
         if response.status_code == 200:
+            try:
+                response_data = response.json()
+                if "error" in response_data:    # stupid fucking API returns 200 even if there is an error
+                    log.warning(f"Failed to fetch skin for UUID {uuid}: {response_data['error']}")
+                    continue
+            except json.JSONDecodeError:
+                pass
+        
             with open(skin_path, "wb") as skin_file:
                 skin_file.write(response.content)
             log.debug(f"Updated skin for UUID: {uuid}")
         else:
-            log.warning(f"Failed to fetch skin for UUID {uuid}: {response.status_code}")
+            log.warning(f"Failed to fetch skin for UUID {uuid}: HTTP {response.status_code}")
 
 
     end_time = time.time()

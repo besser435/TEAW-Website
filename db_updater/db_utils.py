@@ -3,7 +3,7 @@ import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-DB_FILE = "db/teaw.db"
+DB_FILE = "../db/teaw.db"
 
 # what the fuck is database normalization
 def create_tables(db_file=DB_FILE):
