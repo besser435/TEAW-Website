@@ -1,11 +1,34 @@
 # TEAW-Website
- 
-## Git Info
+
+
+## Git guidelines
 There are two branches, `prod` and `dev`. The default is `dev`, and where any changes should be made. 
 
-Currently since we are in the dev phase, any changes made to dev will cause the GH Action to be ran, 
-updating the site with whatever is on the repo. 
+In the future, changes will be deployed by bringing changes over from dev (or some other branch) to prod using a pull request.
+Only once approved, will the PR be merged, and the new changes deployed using a GH webhook. 
 
-In the future, changes will be deployed by bring changes over from dev (or some other branch) to prod using a pull request.
-Only once approved, will the PR be merged, and the new changes deployed. This will help
-with security to ensure someone doesnt RCE me, and to ensure the website is kept clean and functional.
+Before submitting a PR, run the VS Code task to generate the requirements.txt file for pip.
+
+
+## Starting a development server
+To start a local version of the website for testing/development, run the
+`teaw_webserver.py` file, or in VS Code, go to Terminal > Run Task > Start Development Server.
+This will start Flask in debug mode, with the logger set to the DEBUG level. This will also enable
+Flask's debug mode. For any changes to show up on the website, the process must be restarted.
+
+> [!NOTE]
+> In order for the server and API to work, the SQLite DBs will need to contain information. By default, there is some 
+data in them. The data will not be updated unless the `db_updater.py` and `stats_updater.py` processes are started, 
+but thats not needed for development. 
+
+
+## Starting a production server
+To deploy the server, run the `run_prod.sh` script with Bash. This will take the Flask `app` variable inside the
+`teaw_webserver` script, and start it with Gunicorn. Note that this disables any debugging features, and can only be ran on Linux.
+
+The `db_updater.py` and `stats_updater.py` processes need to be started, so the databases are updated. It is best to use 
+[tmux](https://github.com/tmux/tmux?tab=readme-ov-file#welcome-to-tmux) to open and keep running the DB updaters and the webserver.
+In the future there will be a Bash script to automatically destroy an existing tmux session, and create new ones which contain the 
+required processes.
+
+(yes I know tmux is not a proper process management tool, but it works well)
