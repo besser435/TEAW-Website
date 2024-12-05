@@ -2,9 +2,10 @@ import sys
 import logging
 import os
 
+from flask import Flask
 
-from flask import (Flask, redirect, render_template, request, abort,
-                   send_from_directory, url_for, jsonify, Response)
+from template_routes import template_routes
+from api_routes import api_routes
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -13,24 +14,17 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
+
 LOG_LEVEL = logging.DEBUG
-FLASK_DEBUG = True
+FLASK_DEBUG = True                  # IMPORTANT: Set to False when deploying with run.sh
 LOG_FILE = "../logs/server.log"
 
-app = Flask(__name__, template_folder="html", static_folder="") # tell Flask static is the current directory
+
+app = Flask(__name__, template_folder="html", static_folder="") # Tell Flask `static` is the current directory
 
 
-# NOTE: Pages
-@app.route("/")
-def home():
-    return render_template("base.html")
-
-
-
-
-
-
-
+app.register_blueprint(template_routes)
+app.register_blueprint(api_routes)
 
 
 if __name__ == "__main__":
