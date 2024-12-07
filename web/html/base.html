@@ -1,13 +1,85 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>ToEndAllWars</title>
-    <script src="/js/base.js"></script>
-    <link rel="stylesheet" type="text/css" href="/css/colors.css">
-    <link rel="stylesheet" type="text/css" href="/css/common.css">
+    <head>
+        <title>{% block title %}TEAW{% endblock %}</title>
 
-    <link rel="stylesheet" type="text/css" href="/css/base.css">
-</head>
-<body>
-    <h1>Hello Chat</h1>
+        <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
+
+        <link rel="stylesheet" type="text/css" href="/css/colors.css">
+        <link rel="stylesheet" type="text/css" href="/css/common.css">
+        <link rel="stylesheet" type="text/css" href="/css/base.css">
+
+
+        <!-- Embed stuff -->
+        <meta property="og:title" content="ToEndAllWars">
+        <meta property="og:description" content="Will you participate in the war to end all wars?">
+        <!-- <meta property="og:image" content="/static/usa_troll.jpg"> -->
+        <!-- <meta property="og:url" content="https://www.usa-industries.net/"> -->
+        <meta property="og:site_name" content="TEAW">
+        <meta property="og:type" content="website">
+        <meta http-equiv="refresh" content="86400">
+
+        <meta name="theme-color" content="#555"/>   <!-- TODO: Update this -->
+
+        <!-- 
+        TODO: Add umami analytics
+        https://umami.is/docs/getting-started
+        -->
+
+        <!-- PWA setup -->
+        <link rel="manifest" href="/manifest.json">
+        <script>
+            // This was from some example on GitHub, can't find it though :(
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                .register("/js/sw.js")
+                .then(function (registration) {
+                })
+                .catch(function (err) {
+                    console.log("ServiceWorker registration failed: ", err);
+                });
+            }
+            window.addEventListener("beforeinstallprompt", function (e) {
+                e.userChoice.then(function (choiceResult) {
+                console.log(choiceResult.outcome);
+                if (choiceResult.outcome == "dismissed") {
+                    console.log("User cancelled home screen install");
+                } else {
+                    console.log("User added to home screen");
+                }
+                });
+            });
+            </script>
+    </head>
+
+    <body>
+        <nav>
+            <a class="nav-logo" href="/" ><img src="" alt="TEAW logo"></a> 
+
+            <a id="players-link" href="/players">PLAYERS</a>
+            <a id="chat-link" href="/chat">CHAT</a>
+            <a id="towns-link" href="/towns">TOWNS</a>
+            <a id="map-link" href="/map">MAP</a>
+            <a id="wars-link" href="/wars">WARS</a>
+            <a id="showcase-link" href="/showcase">SHOWCASE</a>
+        </nav>
+
+        <div class="main-content">
+            <!-- Begin child document -->
+            {% block content %}
+            {% endblock %}
+            <!-- End child document -->
+        </div>
+
+        <footer class="footer">
+            <a href="https://discord.com/invite/aNMhxynFS2" target="_blank"><i class="fab fa-discord"></i></a> |
+            <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank"><i class=""></i></a> |
+            <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank"><i class="fab fa-wpforms"></i></a> |
+            <a href="https://github.com/besser435/TEAW-Website" target="_blank"><i class="fab fa-github"></i></a>
+
+            <p id="site-version" style="margin-top: 5px;">Website version: {{ last_commit_date }}</p>    <!-- TODO: Update this -->
+        </footer>
+    </body>
+
+    <script src="/js/base.js"></script>
 </html>
