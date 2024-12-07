@@ -4,7 +4,7 @@ template_routes = Blueprint("templates_blueprint", __name__)
 
 @template_routes.route("/")
 def home():
-    return render_template("base.html")
+    return render_template("home.html")
 
 # @template_routes.route("/404")
 # def about():

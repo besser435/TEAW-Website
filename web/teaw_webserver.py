@@ -28,7 +28,7 @@ app.register_blueprint(api_routes)
 
 # Enable logger
 log = setup_logger(LOG_FILE, log_level)
-log.info("---- Starting TEAW webserver ----")
+log.info("---- Starting TEAW Webserver ----")
 
 
 
@@ -38,5 +38,3 @@ if __name__ == "__main__":
 
     log_level = logging.DEBUG
     app.run(debug=True, port=1851)
-
-#waitress-serve --host 127.0.0.1 --port 1851 teaw_website:app 
