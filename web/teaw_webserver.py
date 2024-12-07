@@ -31,6 +31,7 @@ log = setup_logger(LOG_FILE, log_level)
 log.info("---- Starting TEAW webserver ----")
 
 
+
 if __name__ == "__main__":  
     # Run in debug mode if this file is being ran.
     # Otherwise run `app` from a WSGI server.

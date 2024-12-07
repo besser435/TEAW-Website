@@ -12,9 +12,9 @@ Before submitting a PR, run the VS Code task to generate the requirements.txt fi
 
 ## Starting a development server
 To start a local version of the website for testing/development, run the
-`teaw_webserver.py` file, or in VS Code, go to Terminal > Run Task > Start Development Server.
-This will start Flask in debug mode, with the logger set to the DEBUG level. This will also enable
-Flask's debug mode. For any changes to show up on the website, the process must be restarted.
+`teaw_webserver.py` file. This will start Flask in debug mode, with the logger set
+to the DEBUG level. This will also enable Flask's debug mode. For any changes to show
+up on the website, the process must be restarted.
 
 > [!NOTE]
 > In order for the server and API to work, the SQLite DBs will need to contain information. By default, there is some 

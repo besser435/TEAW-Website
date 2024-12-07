@@ -11,15 +11,15 @@
                 "cwd": "${workspaceFolder}"
             },
             "problemMatcher": []
-        },
-        {
-            "label": "Start Development Server",
-            "type": "shell",
-            "command": "python web/teaw_website.py",    // Run the site in dev mode, not for production
-            "options": {
-                "cwd": "${workspaceFolder}"
-            },
-            "problemMatcher": []
-        },
+        }//,    Does not work when Flask reloads
+        // {
+        //     "label": "Start Development Server",
+        //     "type": "shell",
+        //     "command": "python web/teaw_website.py",    // Run the site in dev mode, not for production
+        //     "options": {
+        //         "cwd": "${workspaceFolder}"
+        //     },
+        //     "problemMatcher": []
+        // },
     ]
 }
