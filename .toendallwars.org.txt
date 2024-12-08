@@ -1,0 +1,41 @@
+;;
+;; NOTE: This is just for our records. Check live DNS records for current settings.
+;;
+;;
+;;
+;; Domain:     toendallwars.org.
+;; Exported:   2024-12-08 07:17:56
+;;
+;; This file is intended for use for informational and archival
+;; purposes ONLY and MUST be edited before use on a production
+;; DNS server.  In particular, you must:
+;;   -- update the SOA record with the correct authoritative name server
+;;   -- update the SOA record with the contact e-mail address information
+;;   -- update the NS record(s) with the authoritative name servers for this domain.
+;;
+;; For further information, please consult the BIND documentation
+;; located on the following website:
+;;
+;; http://www.isc.org/
+;;
+;; And RFC 1035:
+;;
+;; http://www.ietf.org/rfc/rfc1035.txt
+;;
+;; Please note that we do NOT offer technical support for any use
+;; of this zone data, the BIND name server, or any other third-party
+;; DNS software.
+;;
+;; Use at your own risk.
+;; SOA Record
+toendallwars.org	3600	IN	SOA	ines.ns.cloudflare.com. dns.cloudflare.com. 2048530887 10000 2400 604800 3600
+
+;; NS Records
+toendallwars.org.	86400	IN	NS	ines.ns.cloudflare.com.
+toendallwars.org.	86400	IN	NS	malcolm.ns.cloudflare.com.
+
+;; CNAME Records
+map.toendallwars.org.	1	IN	CNAME	playteawbeta.apexmc.co. ; CNAME for the Bluemap. Still requires the port. Not using an A record as the IP can change.
+
+;; SRV Records
+_minecraft._tcp.play.toendallwars.org.	1	IN	SRV	5 0 25690 playteawbeta.apexmc.co. ; SRV for Minecraft Earth on port 25690. They might change the port, so be careful.
