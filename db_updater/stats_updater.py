@@ -19,19 +19,6 @@ LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
 TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
 
-
-def get_stat(player_uuid, category, stat_key):
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-            SELECT stat_value
-            FROM player_statistics
-            WHERE player_uuid = ? AND category = ? AND stat_key = ?
-        """, (player_uuid, category, stat_key))
-
-        result = cursor.fetchone()
-        return result[0] if result else None
     
 
 def get_all_stats(player_uuid):
