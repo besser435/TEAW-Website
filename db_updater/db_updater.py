@@ -16,7 +16,7 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 LOG_FILE = "../logs/db_updater.log"
 
 TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
@@ -167,6 +167,7 @@ def update_towns_table() -> None:
                 name = town_data.get("name")
                 founded = town_data.get("founded")
                 claimed_chunks = town_data.get("claimed_chunks", 0)
+                color_hex = town_data.get("color_hex", "000000")
                 tag = town_data.get("tag")
                 board = town_data.get("board")
 
@@ -174,9 +175,9 @@ def update_towns_table() -> None:
                 cursor.execute("""
                     INSERT INTO towns (
                         uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
-                        is_active, claimed_chunks, tag, board
+                        is_active, claimed_chunks, color_hex, tag, board
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(uuid) DO UPDATE SET
                         name=excluded.name,
                         mayor=excluded.mayor,
@@ -187,10 +188,11 @@ def update_towns_table() -> None:
                         resident_tax_percent=excluded.resident_tax_percent,
                         is_active=excluded.is_active,
                         claimed_chunks=excluded.claimed_chunks,
+                        color_hex=excluded.color_hex,
                         tag=excluded.tag,
                         board=excluded.board
                 """, (town_uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
-                    is_active, claimed_chunks, tag, board))
+                    is_active, claimed_chunks, color_hex, tag, board))
 
             conn.commit()
             upsert_variable("last_towns_update", int(time.time() * 1000))
@@ -221,15 +223,16 @@ def update_nations_table() -> None:
                 town_tax_dollars = nation_data.get("town_tax_dollars", 0.0)
                 name = nation_data.get("name")
                 founded = nation_data.get("founded")
+                color_hex = nation_data.get("color_hex", "000000")
                 tag = nation_data.get("tag")
                 board = nation_data.get("board")
 
                 cursor.execute("""
                     INSERT INTO nations (
                         uuid, name, leader, capitol_town, capitol_town_name, balance, 
-                        town_tax_dollars, founded, tag, board
+                        town_tax_dollars, founded, color_hex, tag, board
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(uuid) DO UPDATE SET
                         name=excluded.name,
                         leader=excluded.leader,
@@ -238,11 +241,12 @@ def update_nations_table() -> None:
                         balance=excluded.balance,
                         town_tax_dollars=excluded.town_tax_dollars,
                         founded=excluded.founded,
+                        color_hex=excluded.color_hex,
                         tag=excluded.tag,
                         board=excluded.board
                 """, (
                     nation_id, name, leader, capitol_town, capitol_town_name, balance, 
-                    town_tax_dollars, founded, tag, board
+                    town_tax_dollars, founded, color_hex, tag, board
                 ))
 
             conn.commit()
@@ -316,8 +320,8 @@ def update_server_info_table() -> None:
         upsert_variable("weather", weather)
         upsert_variable("world_time_24h", world_time_24h)
         upsert_variable("teaw_system_time", teaw_system_time)
-        #upsert_variable("tapi_version", tapi_version)
-        #upsert_variable("tapi_build", tapi_build)
+        upsert_variable("tapi_version", tapi_version)
+        upsert_variable("tapi_build", tapi_build)
     else:
         log.warning(f"Failed to fetch server info: {response.status_code}")
 

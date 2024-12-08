@@ -20,33 +20,6 @@ DB_FILE = "../db/stats.db"
 TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
 
 
-def create_stats_table(db_file=DB_FILE):
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS player_statistics (
-                player_uuid TEXT NOT NULL,         -- UUID of the player
-                category TEXT NOT NULL,            -- Category of the statistic (e.g., 'general', 'mob', 'item')
-                stat_key TEXT NOT NULL,            -- The name of the statistic (e.g., 'DAMAGE_DEALT', 'KILL_ENTITY:FROG')
-                stat_value INTEGER NOT NULL,       -- The value of the statistic
-                PRIMARY KEY (player_uuid, category, stat_key)
-            )
-        """)
-
-    log.info("Created player_statistics table")
-
-
-def drop(db_file=DB_FILE, table=None):
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-
-        cursor.execute(f"DROP TABLE IF EXISTS {table};")
-        conn.commit()
-
-    log.info(f"Dropped table {table}")
-
-
 def get_stat(player_uuid, category, stat_key):
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
@@ -103,8 +76,7 @@ if __name__ == "__main__":  # autism
     try:
         log = setup_logger(LOG_FILE, LOG_LEVEL)
         log.info("---- Starting Stats Updater ----")
-        #drop(table="player_statistics")
-        #create_stats_table()
+
         while True: 
             start_time = time.time()
 

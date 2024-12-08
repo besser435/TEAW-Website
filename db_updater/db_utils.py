@@ -3,11 +3,13 @@ import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-DB_FILE = "../db/teaw.db"
+TEAW_DB_FILE = "../db/teaw.db"
+STATS_DB_FILE = "../db/stats.db"
+
 
 # what the fuck is database normalization
-def create_tables(db_file=DB_FILE):
-    with sqlite3.connect(DB_FILE) as conn:
+def create_teaw_tables(db_file=TEAW_DB_FILE):
+    with sqlite3.connect(TEAW_DB_FILE) as conn:
         cursor = conn.cursor()
 
         # Create players table
@@ -52,6 +54,7 @@ def create_tables(db_file=DB_FILE):
                 resident_tax_percent REAL NOT NULL,
                 is_active BOOLEAN NOT NULL,
                 claimed_chunks INTEGER NOT NULL,
+                color_hex TEXT NOT NULL,
                 tag TEXT,
                 board TEXT
             )
@@ -68,6 +71,7 @@ def create_tables(db_file=DB_FILE):
                 balance REAL NOT NULL,
                 town_tax_dollars REAL NOT NULL,
                 founded INTEGER NOT NULL,
+                color_hex TEXT NOT NULL,
                 tag TEXT,
                 board TEXT
             )
@@ -83,34 +87,72 @@ def create_tables(db_file=DB_FILE):
 
         conn.commit()
 
-    print("Database initialized")
+    print("TEAW database initialized")
 
 
-def drop(db_file=DB_FILE, table=None):
-    with sqlite3.connect(DB_FILE) as conn:
+def create_stats_tables(db_file=STATS_DB_FILE):
+    with sqlite3.connect(STATS_DB_FILE) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS player_statistics (
+                player_uuid TEXT NOT NULL,         -- UUID of the player
+                category TEXT NOT NULL,            -- Category of the statistic (e.g., 'general', 'mob', 'item')
+                stat_key TEXT NOT NULL,            -- The name of the statistic (e.g., 'DAMAGE_DEALT', 'KILL_ENTITY:FROG')
+                stat_value INTEGER NOT NULL,       -- The value of the statistic
+                PRIMARY KEY (player_uuid, category, stat_key)
+            )
+        """)
+
+        conn.commit()
+
+    print("Stats database initialized")
+
+
+def drop_stats_table(db_file=STATS_DB_FILE, table=None):
+    with sqlite3.connect(STATS_DB_FILE) as conn:
         cursor = conn.cursor()
 
         cursor.execute(f"DROP TABLE IF EXISTS {table};")
         conn.commit()
 
-    print(f"Dropped table {table}")
+    print(f"Dropped stats table: {table}")
 
+
+def drop_teaw_table(db_file=TEAW_DB_FILE, table=None):
+    with sqlite3.connect(TEAW_DB_FILE) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute(f"DROP TABLE IF EXISTS {table};")
+        conn.commit()
+
+    print(f"Dropped TEAW table: {table}")
+
+
+def get_stat(player_uuid, category, stat_key):
+    with sqlite3.connect(STATS_DB_FILE) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT stat_value
+            FROM player_statistics
+            WHERE player_uuid = ? AND category = ? AND stat_key = ?
+        """, (player_uuid, category, stat_key))
+
+        result = cursor.fetchone()
+        return result[0] if result else None
 
 
 # DB performance might get slow once we get in the hundreds of thousands range, as we often
 # do lookups on the chat table to prevent adding duplicates.
 # This will move the chat messages to an archive table, and delete the messages in the chat table.
-def archive_chat_table(db_file=DB_FILE):
+def archive_chat_table(db_file=TEAW_DB_FILE):
     # Keep the 1000 most recent messages in the chat table, so that they can still be displayed in the frontend
     pass
 
 
 
 if __name__ == "__main__":
-    #drop(table="players")
-    #drop(table="chat")
-    #drop(table="towns")
-    #drop(table="nations")
-    #drop(table="variables")
-    create_tables()
+    create_teaw_tables()
+    create_stats_tables()
 
