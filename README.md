@@ -1,6 +1,11 @@
 # TEAW-Website
 
 
+## TODO:
+- Figure out how to not erase db dir on push to prod (data will be lost!)
+- Improve tmux script
+
+
 ## Git guidelines
 There are two branches, `prod` and `dev`. The default is `dev`, and where any changes should be made. 
 

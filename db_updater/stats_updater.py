@@ -14,10 +14,10 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
-TAPI_URL = "http://192.168.0.157:1850/api"
+TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
 
 
 def create_stats_table(db_file=DB_FILE):
@@ -98,9 +98,11 @@ def insert_statistics(player_uuid, stats_json):
         conn.commit()
 
 
+
 if __name__ == "__main__":  # autism
     try:
         log = setup_logger(LOG_FILE, LOG_LEVEL)
+        log.info("---- Starting Stats Updater ----")
         #drop(table="player_statistics")
         #create_stats_table()
         while True: 
@@ -126,7 +128,7 @@ if __name__ == "__main__":  # autism
 
             end_time = time.time()  
             log.debug(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
-            time.sleep(5)
+            time.sleep(30)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.

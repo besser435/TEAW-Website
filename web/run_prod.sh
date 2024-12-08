@@ -1,2 +1,2 @@
 #!/bin/bash
-gunicorn --workers 4 --bind 0.0.0.0:1851 --name gunicorn_teaw_webserver app:teaw_webserver
+gunicorn --workers 4 --bind 0.0.0.0:1852 --name gunicorn_teaw teaw_webserver:app

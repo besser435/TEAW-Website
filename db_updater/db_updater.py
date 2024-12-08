@@ -19,7 +19,8 @@ from diet_logger import setup_logger
 LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/db_updater.log"
 
-TAPI_URL = "http://192.168.0.157:1850/api"
+TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
+#TAPI_URL = "http://192.168.0.157:1850/api"
 DB_FILE = "../db/teaw.db"
 
 SKIN_TTL_HOURS = 8
@@ -308,11 +309,15 @@ def update_server_info_table() -> None:
         world_time_24h = data.get("world_time_24h")
 
         teaw_system_time = data.get("system_time")
+        tapi_version = data.get("tapi_version")
+        tapi_build = data.get("tapi_build")
 
         # because 3 discrete DB operations is better than one, right?
         upsert_variable("weather", weather)
         upsert_variable("world_time_24h", world_time_24h)
         upsert_variable("teaw_system_time", teaw_system_time)
+        #upsert_variable("tapi_version", tapi_version)
+        #upsert_variable("tapi_build", tapi_build)
     else:
         log.warning(f"Failed to fetch server info: {response.status_code}")
 
@@ -324,6 +329,7 @@ def update_server_info_table() -> None:
 if __name__ == "__main__":
     try:
         log = setup_logger(LOG_FILE, LOG_LEVEL)
+        log.info("---- Starting DB Updater ----")
 
         while True: 
             """TODO: 
@@ -333,11 +339,11 @@ if __name__ == "__main__":
             Should raise an error if an update takes longer than a few hundred milliseconds
             """
 
-            #update_players_table()
-            #update_chat_table()
-            #update_towns_table()
-            #update_nations_table()
-            #update_misc_variables()
+            update_players_table()
+            update_chat_table()
+            update_towns_table()
+            update_nations_table()
+            update_server_info_table()
 
             update_skin_dir("body")
             update_skin_dir("face")

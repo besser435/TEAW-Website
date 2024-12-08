@@ -20,13 +20,14 @@ LOG_FILE = "../logs/webserver.log"
 
 
 # Setup
+log = setup_logger(LOG_FILE, log_level)
+log.info("---- Starting TEAW Webserver ----")
+
 app = Flask(__name__, template_folder="html", static_folder="") # Tell Flask `static` is the current directory
 
 app.register_blueprint(template_routes)
 app.register_blueprint(api_routes)
 
-log = setup_logger(LOG_FILE, log_level)
-log.info("---- Starting TEAW Webserver ----")
 
 
 if __name__ == "__main__":  
