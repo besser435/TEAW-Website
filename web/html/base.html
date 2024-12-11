@@ -3,8 +3,10 @@
     <head>
         <title>{% block title %}TEAW{% endblock %}</title>
 
-        <!-- <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}"> -->
-        <link rel="stylesheet" type="text/css" href="/css/base_templates.css">
+        <!-- Favicon is too small. Could get rid of the sword and just have "TEAW", or vice versa? -->
+        <!-- Also disappears in light mode -->
+        <link rel="shortcut icon" href="/imgs/teaw_logo.svg" media="(prefers-color-scheme: dark)">
+        <link rel="stylesheet" type="text/css" href="/css/base_template.css">
         <link rel="stylesheet" type="text/css" href="/css/base_common.css">
 
         <!-- Embed stuff -->
@@ -18,7 +20,6 @@
 
         <meta name="theme-color" content="#555"/>   <!-- TODO: Update this -->
 
-        <!-- Placeholder font for now. Uses Arial everything else. -->
         <!-- From Google Fonts Embed section -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,7 +70,7 @@
             <div class="online-players">
                  <h3><span id="online-count"></span> online</h3>
                 <!-- https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes -->
-                <div class="status-bubble" data-state="off"></div>
+                <div class="status-light" id="nav-status-light" data-state="off"></div>
             </div>
         </nav>
 
@@ -81,9 +82,9 @@
         </div>
 
         <footer class="footer">
-            <a href="https://discord.com/invite/aNMhxynFS2" target="_blank"><i class="fab fa-discord"></i></a> |
-            <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank"><i class=""></i></a> |
-            <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank"><i class="fab fa-wpforms"></i></a> |
+            <a href="https://discord.com/invite/aNMhxynFS2" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank"><i class=""></i></a>
+            <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank"><i class="fab fa-wpforms"></i></a>
             <a href="https://github.com/besser435/TEAW-Website" target="_blank"><i class="fab fa-github"></i></a>
 
             <p id="site-version" style="margin-top: 5px;">Website version: {{ last_commit_date }}</p>    <!-- TODO: Update this -->

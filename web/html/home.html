@@ -2,10 +2,20 @@
 {% block title %}Home - TEAW{% endblock %}
 {% block content %}
 
-<h1>im going to hex tech you, victor</h1>
+<h1>Pallet Page</h1>
 <h2>This is header 2</h2>
 <h3>This is header 3</h3>
 <p>This is a paragraph (colors/size may need to be changed in the CSS depending on where it is used)</p>
-<div class="stat-bubble"><b>10</b> online players</div>
+
+<div class="info-bubble"><b>10</b> online players</div>
+
+<div class="status-light" id="status-bubble" data-state="green"></div>
+<br>
+<div class="status-light" id="status-bubble" data-state="yellow"></div>
+<br>
+<div class="status-light" id="status-bubble" data-state="red"></div>
+<br>
+<div class="status-light" id="status-bubble" data-state="off"></div>
+
 
 {% endblock %}

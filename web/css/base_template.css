@@ -10,7 +10,7 @@ h1, h2, h3 {
     font-weight: 700;
     font-style: normal;
     
-    margin: 0;
+    margin: 0.3em 0;
     padding: 0;
 }
 
@@ -28,25 +28,27 @@ h3 {
 
 p {
     color: #cfcfcf;
-    font-size: 1.4em;
+
+    font-family: "Inter", sans-serif;
+    font-style: normal;
+
+    font-size: 1.1em;
+
+    margin: 0.3em 0;
 }
-
-
-
-/* All color styles */
 
 
 /* Body and background Image */
 body {
     background-image: url("/imgs/background_embedded.png");
-    background-color: #0D150C;
+    background-color: #0D150C;  /* Prevent flashbang before the actual background image loads */
     background-size: cover;
     background-position: center;
     height: 100vh;
     position: relative;
     overflow: hidden;
 
-    font-family: Arial, sans-serif;  /* le epic default font */
+    font-family: Arial, sans-serif; /* Default/fallback */
 
     padding: 14px;
     margin: 0px;
@@ -103,6 +105,7 @@ nav a.nav-logo {
     margin-right: 20px;
 }
 
+
 /* Footer */
 /* Push the footer to the bottom if the page content doesn't fill up the screen */
 /* This is a terrible way of doing it, and we should maybe just sticky the footer to the
@@ -125,21 +128,6 @@ footer p {
     We need to figure out better color management so that things are consistent. */
 }
 
-/* Stat Bubble */
-.stat-bubble {
-    color: #FFFFFF;
-
-    font-family: "Inter", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-
-    max-width: 200px;
-    padding: 3px 5px;
-    border-radius: 7px;
-
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
 
 /* Scroll bars */
 /* Firefox */

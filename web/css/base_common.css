@@ -2,8 +2,63 @@
 
 
 
-/* main-content Option Button */
+/* Option button */
 
 
 
-/* main-content status-bubble */
+/* Status light */
+/* Shadow strengths are all different to achieve optical similarity. (human eyes are funny) */
+.status-light {
+    width: 1.4em;
+    height: 1.4em;
+    border-radius: 50%;
+    position: relative;
+
+    transition: all 0.6s ease;
+}
+
+.status-light[data-state="green"] {    /* Green */
+    background-color:         rgb(65, 222, 99);
+    box-shadow: 0 0 16px 3px rgba(65, 222, 99, 0.5);
+
+    border: 0.2em solid rgb(34, 135, 56);
+}
+
+
+.status-light[data-state="yellow"] {   /* Yellow */
+    background-color:         rgb(222, 187, 65);
+    box-shadow: 0 0 16px 3px rgba(222, 187, 65, 0.5);
+
+    border: 0.2em solid rgb(135, 112, 34);
+}
+
+.status-light[data-state="red"] {      /* Red */
+    background-color:         rgb(222, 65, 65);
+    box-shadow: 0 0 16px 4px rgba(222, 65, 65, 0.5);
+
+    border: 0.2em solid rgb(135, 34, 34);
+}
+
+.status-light[data-state="off"] {      /* Off */
+    background-color: rgb(69, 69, 69);
+    box-shadow: none;
+
+    border: 0.2em solid rgb(46, 46, 46);
+}
+
+
+/* Info bubble */
+.info-bubble {
+    color: #FFFFFF;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+    max-width: 200px;
+    padding: 3px 5px;
+    border-radius: 7px;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
