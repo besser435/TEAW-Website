@@ -1,10 +1,6 @@
 // Highlight the current page in navbar
 const currentPath = window.location.pathname;
 switch (currentPath) {
-    case "/":
-        const homeLink = document.getElementById("home-link");
-        homeLink.classList.add("active");
-        break;
     case "/players":
         const playersLink = document.getElementById("players-link");
         playersLink.classList.add("active");
@@ -32,3 +28,10 @@ switch (currentPath) {
 }
 
 
+function chooseAlternateImage() {
+    const randomNumber = Math.floor(Math.random() * 100);
+    if (randomNumber === 1) {
+        document.getElementById("nav-img").src = "/imgs/coconut.webp";
+    }
+}
+chooseAlternateImage();

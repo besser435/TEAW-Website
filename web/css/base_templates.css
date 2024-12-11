@@ -1,31 +1,150 @@
 /* Styles used on every page inheriting from the base template */
 
 
-/* All Text styles */
+/* All text styles */
+/* Do not use h4 or greater */
+h1, h2, h3 {
+    color: #FFFFFF;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2.7em;
+}
+
+h2 {
+    font-size: 2.3em;
+}
+
+h3 {
+    font-size: 1.9em;
+}
+
+p {
+    color: #cfcfcf;
+    font-size: 1.4em;
+}
 
 
 
-/* All Color styles */
+/* All color styles */
 
-/* Background image */
-/* debug help */
+
+/* Body and background Image */
 body {
-    background-image: url("/imgs/background_min.png");
+    background-image: url("/imgs/background_embedded.png");
     background-size: cover;
     background-position: center;
     height: 100vh;
-    width: 100%;
     position: relative;
     overflow: hidden;
+
+    font-family: Arial, sans-serif;  /* le epic default font */
+
+    padding: 14px;
+    margin: 0px;
 }
 
 body::before {
-    content: '';
-    backdrop-filter: blur(2em);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
     z-index: -5;
-    margin: -8px;
+}
+
+
+/* Navbar */
+nav {
+    padding: 0.4em;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+nav a {
+    /* Need to ignore the first element, as its the TEAW logo, not a button.
+    (Its still a button, but not a styled one) */
+    color: rgba(255, 255, 255, 0.75);
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: background-color 0.3s, outline 0.3s;
+
+    padding: 0.4em 0.6em;
+    border-radius: 10em;
+    margin-right: 1em;
+
+    outline: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+nav a.active { 
+    color: rgb(255, 255, 255, 1);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    outline: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+nav a.nav-logo {
+    padding: 0;
+    border-radius: 0;
+    outline: none;
+    background: none;
+}
+
+/* Footer */
+/* Push the footer to the bottom if the page content doesn't fill up the screen */
+/* This is a terrible way of doing it, and we should maybe just sticky the footer to the
+bottom of the screen */
+.main-content { 
+    min-height: calc(86vh - 150px);
+}
+
+footer {
+    outline: 2px solid rgba(255, 255, 255, 0.1);
+    color: #676767;
+    /* Same color as <p>, but darker. 
+    We need to figure out better color management so that things are consistent. */
+}
+
+footer p {
+    font-size: 1em;
+    color: #676767;
+    /* Same color as <p>, but darker. 
+    We need to figure out better color management so that things are consistent. */
+}
+
+
+/* Scroll bars */
+/* Firefox */
+@-moz-document url-prefix() {  /* Might not work for forks of Firefox */
+    * {
+        scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.8);
+        scrollbar-width: thin;
+    }
+}
+
+/* Webkit */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1); 
+    border-radius: 10em;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
 }
