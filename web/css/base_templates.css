@@ -39,6 +39,7 @@ p {
 /* Body and background Image */
 body {
     background-image: url("/imgs/background_embedded.png");
+    background-color: #0D150C;
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -58,25 +59,28 @@ body::before {
 
 /* Navbar */
 nav {
-    padding: 0.4em;
+    margin: -16px;
+    padding: calc(0.4em + 16px);
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    background-image: linear-gradient(#00000055, #00000000);
 }
 
-nav a {
-    /* Need to ignore the first element, as its the TEAW logo, not a button.
-    (Its still a button, but not a styled one) */
+nav a:not(.nav-logo) {
     color: rgba(255, 255, 255, 0.75);
     font-family: "Inter", sans-serif;
     font-weight: 700;
     text-decoration: none;
 
     transition: background-color 0.3s, outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 
-    padding: 0.4em 0.6em;
+    padding: 0.4em 0.8em;
     border-radius: 10em;
     margin-right: 1em;
+    min-width: 70px;
+    text-align: center;
 
     outline: 2px solid rgba(255, 255, 255, 0.1);
 }
@@ -85,7 +89,6 @@ nav a.active {
     color: rgb(255, 255, 255, 1);
     background-color: rgba(255, 255, 255, 0.1);
 }
-
 
 nav a:hover {
     background-color: rgba(255, 255, 255, 0.2);
@@ -97,6 +100,7 @@ nav a.nav-logo {
     border-radius: 0;
     outline: none;
     background: none;
+    margin-right: 20px;
 }
 
 /* Footer */
@@ -121,6 +125,21 @@ footer p {
     We need to figure out better color management so that things are consistent. */
 }
 
+/* Stat Bubble */
+.stat-bubble {
+    color: #FFFFFF;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+    max-width: 200px;
+    padding: 3px 5px;
+    border-radius: 7px;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
 
 /* Scroll bars */
 /* Firefox */
