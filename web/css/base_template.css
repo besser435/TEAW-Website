@@ -52,6 +52,9 @@ body {
 
     padding: 14px;
     margin: 0px;
+
+    display: flex;
+    flex-direction: column;
 }
 
 body::before {
@@ -69,7 +72,7 @@ nav {
     background-image: linear-gradient(#00000055, #00000000);
 }
 
-nav a:not(.nav-logo) {
+nav a:not(.nav-logo), .header-button {
     color: rgba(255, 255, 255, 0.75);
     font-family: "Inter", sans-serif;
     font-weight: 700;
@@ -87,12 +90,12 @@ nav a:not(.nav-logo) {
     outline: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-nav a.active { 
-    color: rgb(255, 255, 255, 1);
+nav a.active, .header-button.active { 
+    color: #fff;
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-nav a:hover {
+nav a:hover, .header-button:hover {
     background-color: rgba(255, 255, 255, 0.2);
     outline: 2px solid rgba(255, 255, 255, 0.2);
 }
@@ -105,17 +108,63 @@ nav a.nav-logo {
     margin-right: 20px;
 }
 
+/* Online Players Indicator */
+
+.online-players {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: auto;
+}
+
+.online-players h3 {
+    font-size: 1.2em;
+    margin-right: 10px;
+    color: rgba(255, 255, 255, 0.75)
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 10px;
+}
+
+.header h1 {
+    font-weight: 800;
+}
+
+.seperator {
+    width: 4px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2rem;
+    margin-inline: 20px;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1 0 auto;
+}
+
 
 /* Footer */
 /* Push the footer to the bottom if the page content doesn't fill up the screen */
-/* This is a terrible way of doing it, and we should maybe just sticky the footer to the
-bottom of the screen */
-.main-content { 
-    min-height: calc(86vh - 150px);
-}
 
 footer {
-    outline: 2px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+    margin: 10px -14px 14px;
+    height: 48px;
+    padding-inline: 10px;
+    
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    background-image: linear-gradient(0deg, #00000055, #00000000);
+
     color: #676767;
     /* Same color as <p>, but darker. 
     We need to figure out better color management so that things are consistent. */
