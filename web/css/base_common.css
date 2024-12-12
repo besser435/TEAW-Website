@@ -48,6 +48,7 @@
 
 
 /* Info bubble */
+/* TODO: switch to em units where appropriate */
 .info-bubble {
     color: #FFFFFF;
 
@@ -60,5 +61,5 @@
     border-radius: 7px;
 
     background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }

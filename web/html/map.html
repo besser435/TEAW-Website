@@ -2,6 +2,14 @@
 {% block title %}Map - TEAW{% endblock %}
 {% block content %}
 
-<h1>blue map</h1>
+<div class="main-content-submenu">
+    <h1>Map</h1>
+    <p>|</p>
+    <a href="http://map.toendallwars.org:1849" target="_blank">Open in New Tab</a>
+</div>
+
+<!-- Takes a while to load, add placeholder that is the same size as the iframe, then delete it when the map starts to load -->
+<!-- Height is card coded, fix -->
+<iframe src="http://map.toendallwars.org:1849" width="100%" height="1000px" style="border: none; border-radius: 0.8em;"></iframe>
 
 {% endblock %}
