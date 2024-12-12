@@ -1,9 +1,9 @@
-# TEAW-Website
+# [TEAW-Website](https://toendallwars.org/)
 
 
 ## TODO:
-- Figure out how to not erase db dir on push to prod (data will be lost!)
-- Improve tmux script
+- [ ] Figure out how to not erase db dir on push to prod (data will be lost!)
+- [ ] Improve tmux script
 
 
 ## Git guidelines

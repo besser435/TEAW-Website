@@ -3,7 +3,6 @@ import requests
 import time
 from datetime import datetime
 import logging
-from logging.handlers import RotatingFileHandler
 import os
 import traceback
 import sys
@@ -24,7 +23,7 @@ TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
 DB_FILE = "../db/teaw.db"
 
 SKIN_TTL_HOURS = 8
-BODY_SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full"
+BODY_SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full?capeEnabled=false"
 BODY_SKINS_DIR = "../db/player_body_skins"
 
 FACE_SKIN_API_URL = "https://crafatar.com/avatars/{uuid}?size=8?overlay"   # Should really just use the Mojang API
@@ -94,6 +93,14 @@ def update_players_table() -> None:
                         nation_name = excluded.nation_name,
                         last_online = excluded.last_online
                 """, (uuid, name, online_duration, afk_duration, balance, title, town, town_name, nation, nation_name, last_online))
+
+            # Offline players should have their online_duration reset to 0
+            cursor.execute("""
+                UPDATE players
+                SET online_duration = 0
+                WHERE uuid NOT IN (SELECT uuid FROM (SELECT uuid FROM json_each(?)))
+            """, (json.dumps(list(online_players.keys())),)) 
+
 
             conn.commit()
             upsert_variable("last_players_update", int(time.time() * 1000))
@@ -343,6 +350,8 @@ if __name__ == "__main__":
             Should raise an error if an update takes longer than a few hundred milliseconds
             """
 
+            start_time = time.time()
+
             update_players_table()
             update_chat_table()
             update_towns_table()
@@ -352,7 +361,9 @@ if __name__ == "__main__":
             update_skin_dir("body")
             update_skin_dir("face")
 
-            print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            end_time = time.time()
+
+            print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Total time taken was {round((end_time - start_time) * 1000, 2)}ms")
 
             time.sleep(5)
     except requests.exceptions.ConnectTimeout as e:

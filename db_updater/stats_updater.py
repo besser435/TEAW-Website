@@ -18,7 +18,6 @@ LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
 TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
-
     
 
 def get_all_stats(player_uuid):
@@ -83,10 +82,10 @@ if __name__ == "__main__":  # autism
                     else:
                         log.warning(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
             else:
-                print(f"Failed to fetch online players. HTTP {response.status_code}")
+                log.warning(f"Failed to fetch online players. HTTP {response.status_code}")
 
             end_time = time.time()  
-            log.debug(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
+            print(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
             time.sleep(30)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
