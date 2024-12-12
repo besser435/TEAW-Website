@@ -5,9 +5,8 @@
 /* Option button */
 
 
-
-/* Status light */
-/* Shadow strengths are all different to achieve optical similarity. (human eyes are funny) */
+/* Status Lights */
+/* TODO: Use variables so the same RGB value isn't present in 30 different places */
 .status-light {
     width: 1.4em;
     height: 1.4em;
@@ -17,25 +16,32 @@
     transition: all 0.6s ease;
 }
 
-.status-light[data-state="green"] {    /* Green */
+.status-light[data-state="green"] {
     background-color:         rgb(65, 222, 99);
     box-shadow: 0 0 16px 3px rgba(65, 222, 99, 0.5);
 
     border: 0.2em solid rgb(34, 135, 56);
 }
 
-
-.status-light[data-state="yellow"] {   /* Yellow */
+.status-light[data-state="yellow"] {
     background-color:         rgb(222, 187, 65);
     box-shadow: 0 0 16px 3px rgba(222, 187, 65, 0.5);
 
     border: 0.2em solid rgb(135, 112, 34);
 }
 
-.status-light[data-state="red"] {      /* Red */
+.status-light[data-state="red"]:not([data-pulse="true"]) {
     background-color:         rgb(222, 65, 65);
     box-shadow: 0 0 16px 4px rgba(222, 65, 65, 0.5);
+    border: 0.2em solid rgb(135, 34, 34);
+}
 
+.status-light[data-state="red"][data-pulse="true"] {
+    background-color:         rgb(222, 65, 65);
+    box-shadow: 
+        0 0 16px 4px rgba(222, 65, 65, 0.5),
+        0 0 0 0 rgba(222, 65, 65, 0.5);
+    animation: pulse-red 3s infinite;
     border: 0.2em solid rgb(135, 34, 34);
 }
 
@@ -44,6 +50,24 @@
     box-shadow: none;
 
     border: 0.2em solid rgb(46, 46, 46);
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 
+            0 0 16px 4px rgba(222, 65, 65, 0.5),
+            0 0 0 0 rgba(222, 65, 65, 0.5);
+    }
+    70% {
+        box-shadow: 
+            0 0 16px 4px rgba(222, 65, 65, 0.5),
+            0 0 0 20px rgba(222, 65, 65, 0);
+    }
+    100% {
+        box-shadow: 
+            0 0 16px 4px rgba(222, 65, 65, 0.5),
+            0 0 0 0 rgba(222, 65, 65, 0);
+    }
 }
 
 
