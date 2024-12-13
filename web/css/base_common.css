@@ -8,8 +8,8 @@
 /* Status Lights */
 /* TODO: Use variables so the same RGB value isn't present in 30 different places */
 .status-light {
-    width: 1.4em;
-    height: 1.4em;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     position: relative;
 
@@ -45,7 +45,7 @@
     border: 0.2em solid rgb(135, 34, 34);
 }
 
-.status-light[data-state="off"] {      /* Off */
+.status-light[data-state="off"] {
     background-color: rgb(69, 69, 69);
     box-shadow: none;
 
@@ -61,7 +61,7 @@
     70% {
         box-shadow: 
             0 0 16px 4px rgba(222, 65, 65, 0.5),
-            0 0 0 20px rgba(222, 65, 65, 0);
+            0 0 0 16px rgba(222, 65, 65, 0);
     }
     100% {
         box-shadow: 

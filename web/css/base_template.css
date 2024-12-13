@@ -47,6 +47,7 @@ body {
     height: 100vh;
     position: relative;
     overflow: hidden;
+    overflow-y: scroll; /* BUG: shitfuck  */
 
     font-family: Arial, sans-serif; /* Default/fallback */
 
@@ -119,7 +120,7 @@ nav a.nav-logo {
 
 .online-players h3 {
     font-size: 1.2em;
-    margin-right: 10px;
+    margin-left: 12px;
     color: rgba(255, 255, 255, 0.75)
 }
 
@@ -135,7 +136,7 @@ nav a.nav-logo {
     font-weight: 800;
 }
 
-.seperator {
+.separator {
     width: 4px;
     height: 40px;
     background-color: rgba(255, 255, 255, 0.2);
@@ -151,7 +152,6 @@ nav a.nav-logo {
 
 /* Footer */
 /* Push the footer to the bottom if the page content doesn't fill up the screen */
-
 footer {
     flex-shrink: 0;
     margin: 10px -14px 14px;
@@ -166,15 +166,11 @@ footer {
     background-image: linear-gradient(0deg, #00000055, #00000000);
 
     color: #676767;
-    /* Same color as <p>, but darker. 
-    We need to figure out better color management so that things are consistent. */
 }
 
 footer p {
     font-size: 1em;
     color: #676767;
-    /* Same color as <p>, but darker. 
-    We need to figure out better color management so that things are consistent. */
 }
 
 

@@ -65,7 +65,7 @@ function updateStatus() {
                 statusLight.dataset.state = "red";
 
                 const minutesSinceUpdate = Math.floor((Date.now() - lastSuccessfulUpdate) / 60000);
-                onlineCount.textContent = `Data hasn't been updated for ${minutesSinceUpdate}m`;
+                onlineCount.textContent = `Last update ${minutesSinceUpdate}m ago`;
             }
         })
         .catch(error => {
@@ -78,7 +78,7 @@ function updateStatus() {
                 
                 const onlineCount = document.getElementById("online-count");
                 const minutesSinceUpdate = Math.floor((Date.now() - lastSuccessfulUpdate) / 60000);
-                onlineCount.textContent = `Failed to fetch status for ${minutesSinceUpdate}m`;
+                onlineCount.textContent = `Offline for ${minutesSinceUpdate}m`;
 
                 //console.error(`Failed to fetch status: ${error}`);
             }
