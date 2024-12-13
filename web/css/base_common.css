@@ -1,0 +1,89 @@
+/* Common styles used on many pages */
+
+
+
+/* Option button */
+
+
+/* Status Lights */
+/* TODO: Use variables so the same RGB value isn't present in 30 different places */
+.status-light {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: relative;
+
+    transition: all 0.6s ease;
+}
+
+.status-light[data-state="green"] {
+    background-color:         rgb(65, 222, 99);
+    box-shadow: 0 0 16px 3px rgba(65, 222, 99, 0.5);
+
+    border: 0.2em solid rgb(34, 135, 56);
+}
+
+.status-light[data-state="yellow"] {
+    background-color:         rgb(222, 187, 65);
+    box-shadow: 0 0 16px 3px rgba(222, 187, 65, 0.5);
+
+    border: 0.2em solid rgb(135, 112, 34);
+}
+
+.status-light[data-state="red"]:not([data-pulse="true"]) {
+    background-color:         rgb(222, 65, 65);
+    box-shadow: 0 0 16px 4px rgba(222, 65, 65, 0.5);
+    border: 0.2em solid rgb(135, 34, 34);
+}
+
+.status-light[data-state="red"][data-pulse="true"] {
+    background-color:         rgb(222, 65, 65);
+    box-shadow: 
+        0 0 16px 4px rgba(222, 65, 65, 0.5),
+        0 0 0 0 rgba(222, 65, 65, 0.5);
+    animation: pulse-red 3s infinite;
+    border: 0.2em solid rgb(135, 34, 34);
+}
+
+.status-light[data-state="off"] {
+    background-color: rgb(69, 69, 69);
+    box-shadow: none;
+
+    border: 0.2em solid rgb(46, 46, 46);
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 
+            0 0 16px 4px rgba(222, 65, 65, 0.5),
+            0 0 0 0 rgba(222, 65, 65, 0.5);
+    }
+    70% {
+        box-shadow: 
+            0 0 16px 4px rgba(222, 65, 65, 0.5),
+            0 0 0 16px rgba(222, 65, 65, 0);
+    }
+    100% {
+        box-shadow: 
+            0 0 16px 4px rgba(222, 65, 65, 0.5),
+            0 0 0 0 rgba(222, 65, 65, 0);
+    }
+}
+
+
+/* Info bubble */
+/* TODO: switch to em units where appropriate */
+.info-bubble {
+    color: #FFFFFF;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+    max-width: 200px;
+    padding: 3px 5px;
+    border-radius: 7px;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}

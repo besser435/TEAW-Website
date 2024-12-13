@@ -1,0 +1,13 @@
+/* 
+Please for the love of god do not use the same architecture 
+as the USAI page. Recreating each card on each update caused so many problems.
+
+Create the cards on page load. Add new players if present. 
+Then update each card with the new data.
+
+
+
+There should be a function that only creates cards. It will be called
+on page load and when a new player is seen.
+
+*/

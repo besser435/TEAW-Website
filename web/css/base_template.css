@@ -1,0 +1,204 @@
+/* Styles used on every page inheriting from the base template */
+
+
+/* All text styles */
+/* Do not use h4 or greater */
+h1, h2, h3 {
+    color: #FFFFFF;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+    
+    margin: 0.3em 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2.6em;
+}
+
+h2 {
+    font-size: 2.2em;
+}
+
+h3 {
+    font-size: 1.6em;
+}
+
+p {
+    color: #cfcfcf;
+
+    font-family: "Inter", sans-serif;
+    font-style: normal;
+
+    font-size: 1.1em;
+
+    margin: 0.3em 0;
+}
+
+
+/* Body and background Image */
+body {
+    background-image: url("/imgs/background_embedded.png");
+    background-color: #0D150C;  /* Prevent flashbang before the actual background image loads */
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    overflow-y: scroll; /* BUG: shitfuck  */
+
+    font-family: Arial, sans-serif; /* Default/fallback */
+
+    padding: 14px;
+    margin: 0px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+body::before {
+    z-index: -5;
+}
+
+
+/* Navbar */
+nav {
+    margin: -16px;
+    padding: calc(0.4em + 16px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-image: linear-gradient(#00000055, #00000000);
+}
+
+nav a:not(.nav-logo), .header-button {
+    color: rgba(255, 255, 255, 0.75);
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition: background-color 0.3s, outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+
+    padding: 0.4em 0.8em;
+    border-radius: 10em;
+    margin-right: 1em;
+    min-width: 70px;
+    text-align: center;
+
+    outline: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+nav a.active, .header-button.active { 
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+nav a:hover, .header-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    outline: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+nav a.nav-logo {
+    padding: 0;
+    border-radius: 0;
+    outline: none;
+    background: none;
+    margin-right: 20px;
+}
+
+
+/* Online Players Indicator */
+.online-players {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: auto;
+}
+
+.online-players h3 {
+    font-size: 1.2em;
+    margin-left: 12px;
+    color: rgba(255, 255, 255, 0.75)
+}
+
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-left: 8px;
+}
+
+.header h1 {
+    font-weight: 800;
+}
+
+.separator {
+    width: 4px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2rem;
+    margin-inline: 20px;
+}
+
+
+/* Main Content */
+.main-content {
+    flex: 1 0 auto;
+}
+
+
+/* Footer */
+/* Push the footer to the bottom if the page content doesn't fill up the screen */
+footer {
+    flex-shrink: 0;
+    margin: 10px -14px 14px;
+    height: 48px;
+    padding-inline: 10px;
+    
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    background-image: linear-gradient(0deg, #00000055, #00000000);
+
+    color: #676767;
+}
+
+footer p {
+    font-size: 1em;
+    color: #676767;
+}
+
+
+/* Scroll bars */
+/* Firefox */
+@-moz-document url-prefix() {  /* Might not work for forks of Firefox */
+    * {
+        scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 1);
+        scrollbar-width: thin;
+    }
+}
+
+/* Webkit */
+*::-webkit-scrollbar {
+    width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+*::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2); 
+    border-radius: 10em;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Home - TEAW{% endblock %}
+{% block content %}
+
+<div class="header">
+    <h1>Palette Page</h1>
+</div>
+
+<h1>This is header 1</h1>
+<h2>This is header 2</h2>
+<h3>This is header 3</h3>
+<p>This is a paragraph (colors/size may need to be changed in the CSS depending on where it is used)</p>
+
+<div class="info-bubble"><b>10</b> online players</div>
+
+<br>
+<p><a href="/api/status" target="_blank">/api/status</a></p>
+<br>
+<p><a href="/api/player_skin/75418e9c-34ef-4926-af64-96d98d10954c" target="_blank">/api/player_skin/75418e9c-34ef-4926-af64-96d98d10954c</a></p>
+<br>
+<p><a href="/api/players" target="_blank">/api/players</a></p>
+<br>
+
+<p>
+    play.toendallwars.org == minecraft earth<br>
+    http://map.toendallwars.org:1849 == earth bluemap<br>
+    https://play.toendallwars.org<br>
+</p>
+
+<div class="status-light" id="status-bubble" data-state="green"></div>
+<br>
+<div class="status-light" id="status-bubble" data-state="yellow"></div>
+<br>
+<div class="status-light" id="status-bubble" data-state="red"></div>
+<br>
+<div class="status-light" id="status-bubble" data-state="off"></div>
+
+
+{% endblock %}

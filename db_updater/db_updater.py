@@ -3,7 +3,6 @@ import requests
 import time
 from datetime import datetime
 import logging
-from logging.handlers import RotatingFileHandler
 import os
 import traceback
 import sys
@@ -19,12 +18,16 @@ from diet_logger import setup_logger
 LOG_LEVEL = logging.DEBUG
 LOG_FILE = "../logs/db_updater.log"
 
-TAPI_URL = "http://192.168.0.157:1850/api"
+TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
+#TAPI_URL = "http://192.168.0.157:1850/api"
 DB_FILE = "../db/teaw.db"
 
-SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full"
-SKINS_DIR = "../db/player_skins"
 SKIN_TTL_HOURS = 8
+BODY_SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full?capeEnabled=false"
+BODY_SKINS_DIR = "../db/player_body_skins"
+
+FACE_SKIN_API_URL = "https://crafatar.com/avatars/{uuid}?size=8?overlay"   # Should really just use the Mojang API
+FACE_SKINS_DIR = "../db/player_face_skins"
 
 
 
@@ -90,6 +93,14 @@ def update_players_table() -> None:
                         nation_name = excluded.nation_name,
                         last_online = excluded.last_online
                 """, (uuid, name, online_duration, afk_duration, balance, title, town, town_name, nation, nation_name, last_online))
+
+            # Offline players should have their online_duration reset to 0
+            cursor.execute("""
+                UPDATE players
+                SET online_duration = 0
+                WHERE uuid NOT IN (SELECT uuid FROM (SELECT uuid FROM json_each(?)))
+            """, (json.dumps(list(online_players.keys())),)) 
+
 
             conn.commit()
             upsert_variable("last_players_update", int(time.time() * 1000))
@@ -163,6 +174,7 @@ def update_towns_table() -> None:
                 name = town_data.get("name")
                 founded = town_data.get("founded")
                 claimed_chunks = town_data.get("claimed_chunks", 0)
+                color_hex = town_data.get("color_hex", "000000")
                 tag = town_data.get("tag")
                 board = town_data.get("board")
 
@@ -170,9 +182,9 @@ def update_towns_table() -> None:
                 cursor.execute("""
                     INSERT INTO towns (
                         uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
-                        is_active, claimed_chunks, tag, board
+                        is_active, claimed_chunks, color_hex, tag, board
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(uuid) DO UPDATE SET
                         name=excluded.name,
                         mayor=excluded.mayor,
@@ -183,10 +195,11 @@ def update_towns_table() -> None:
                         resident_tax_percent=excluded.resident_tax_percent,
                         is_active=excluded.is_active,
                         claimed_chunks=excluded.claimed_chunks,
+                        color_hex=excluded.color_hex,
                         tag=excluded.tag,
                         board=excluded.board
                 """, (town_uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
-                    is_active, claimed_chunks, tag, board))
+                    is_active, claimed_chunks, color_hex, tag, board))
 
             conn.commit()
             upsert_variable("last_towns_update", int(time.time() * 1000))
@@ -217,15 +230,16 @@ def update_nations_table() -> None:
                 town_tax_dollars = nation_data.get("town_tax_dollars", 0.0)
                 name = nation_data.get("name")
                 founded = nation_data.get("founded")
+                color_hex = nation_data.get("color_hex", "000000")
                 tag = nation_data.get("tag")
                 board = nation_data.get("board")
 
                 cursor.execute("""
                     INSERT INTO nations (
                         uuid, name, leader, capitol_town, capitol_town_name, balance, 
-                        town_tax_dollars, founded, tag, board
+                        town_tax_dollars, founded, color_hex, tag, board
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(uuid) DO UPDATE SET
                         name=excluded.name,
                         leader=excluded.leader,
@@ -234,11 +248,12 @@ def update_nations_table() -> None:
                         balance=excluded.balance,
                         town_tax_dollars=excluded.town_tax_dollars,
                         founded=excluded.founded,
+                        color_hex=excluded.color_hex,
                         tag=excluded.tag,
                         board=excluded.board
                 """, (
                     nation_id, name, leader, capitol_town, capitol_town_name, balance, 
-                    town_tax_dollars, founded, tag, board
+                    town_tax_dollars, founded, color_hex, tag, board
                 ))
 
             conn.commit()
@@ -251,12 +266,14 @@ def update_nations_table() -> None:
     log.debug(f"Nations table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
-def update_skins_dir() -> None:
-    log.debug("Updating player skins...")
+def update_skin_dir(type) -> None:
+    # Could honestly just store the face image in the players table. They are only about 160 bytes each.
+    log.debug(f"Updating {type} skins...")
 
     start_time = time.time()
 
-    os.makedirs(SKINS_DIR, exist_ok=True)
+    os.makedirs(BODY_SKINS_DIR, exist_ok=True)
+    os.makedirs(FACE_SKINS_DIR, exist_ok=True)
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
@@ -267,36 +284,30 @@ def update_skins_dir() -> None:
     current_time = time.time()
 
     for (uuid,) in players:
-        skin_path = os.path.join(SKINS_DIR, f"{uuid}.png")
+        if type == "body": skin_path = os.path.join(BODY_SKINS_DIR, f"{uuid}.png")
+        elif type == "face": skin_path = os.path.join(FACE_SKINS_DIR, f"{uuid}.png")
 
         if os.path.exists(skin_path):
             last_modified_time = os.path.getmtime(skin_path)
             if current_time - last_modified_time < SKIN_TTL_HOURS * 3600:
                 continue    # Skip if skin is still fresh
 
-        response = requests.get(SKIN_API_URL.format(uuid=uuid), timeout=10)
+        if type == "body": response = requests.get(BODY_SKIN_API_URL.format(uuid=uuid), timeout=5)
+        elif type == "face": response = requests.get(FACE_SKIN_API_URL.format(uuid=uuid), timeout=5)
 
         if response.status_code == 200:
-            try:
-                response_data = response.json()
-                if "error" in response_data:    # stupid fucking API returns 200 even if there is an error
-                    log.warning(f"Failed to fetch skin for UUID {uuid}: {response_data['error']}")
-                    continue
-            except json.JSONDecodeError:
-                pass
-        
             with open(skin_path, "wb") as skin_file:
                 skin_file.write(response.content)
-            log.debug(f"Updated skin for UUID: {uuid}")
+            log.debug(f"Updated {type} skin for UUID: {uuid}")
         else:
-            log.warning(f"Failed to fetch skin for UUID {uuid}: HTTP {response.status_code}")
+            log.warning(f"Failed to fetch {type} skin for UUID {uuid}: HTTP {response.status_code}")
 
 
     end_time = time.time()
-    log.debug(f"Player skins updated in {round((end_time - start_time) * 1000, 3)}ms")   # Includes network request time
+    log.debug(f"Player face skins updated in {round((end_time - start_time) * 1000, 3)}ms")   # Includes network request time
 
 
-def update_misc_variables() -> None:
+def update_server_info_table() -> None:
     log.debug("Updating server info...")
 
     response = requests.get(TAPI_URL + "/server_info")
@@ -309,11 +320,15 @@ def update_misc_variables() -> None:
         world_time_24h = data.get("world_time_24h")
 
         teaw_system_time = data.get("system_time")
+        tapi_version = data.get("tapi_version")
+        tapi_build = data.get("tapi_build")
 
         # because 3 discrete DB operations is better than one, right?
         upsert_variable("weather", weather)
         upsert_variable("world_time_24h", world_time_24h)
         upsert_variable("teaw_system_time", teaw_system_time)
+        upsert_variable("tapi_version", tapi_version)
+        upsert_variable("tapi_build", tapi_build)
     else:
         log.warning(f"Failed to fetch server info: {response.status_code}")
 
@@ -325,6 +340,8 @@ def update_misc_variables() -> None:
 if __name__ == "__main__":
     try:
         log = setup_logger(LOG_FILE, LOG_LEVEL)
+        log.info("---- Starting DB Updater ----")
+
         while True: 
             """TODO: 
             Should be async, so we can have different intervals for different tasks.
@@ -333,21 +350,26 @@ if __name__ == "__main__":
             Should raise an error if an update takes longer than a few hundred milliseconds
             """
 
+            start_time = time.time()
+
             update_players_table()
             update_chat_table()
             update_towns_table()
             update_nations_table()
-            update_misc_variables()
+            update_server_info_table()
 
-            update_skins_dir()
+            update_skin_dir("body")
+            update_skin_dir("face")
 
-            print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+            end_time = time.time()
+
+            print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Total time taken was {round((end_time - start_time) * 1000, 2)}ms")
 
             time.sleep(5)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect.
         # This should restart the script and fix the issue, hopefully.
-        # We dont log the error, as its probably just TEAW restarting
+        # We dont log the error, as its probably just TEAW restarting.
 
         log.info(f"Connection timed out. {e}")
 

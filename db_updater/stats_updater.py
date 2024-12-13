@@ -14,51 +14,10 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
-TAPI_URL = "http://192.168.0.157:1850/api"
-
-
-def create_stats_table(db_file=DB_FILE):
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS player_statistics (
-                player_uuid TEXT NOT NULL,         -- UUID of the player
-                category TEXT NOT NULL,            -- Category of the statistic (e.g., 'general', 'mob', 'item')
-                stat_key TEXT NOT NULL,            -- The name of the statistic (e.g., 'DAMAGE_DEALT', 'KILL_ENTITY:FROG')
-                stat_value INTEGER NOT NULL,       -- The value of the statistic
-                PRIMARY KEY (player_uuid, category, stat_key)
-            )
-        """)
-
-    log.info("Created player_statistics table")
-
-
-def drop(db_file=DB_FILE, table=None):
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-
-        cursor.execute(f"DROP TABLE IF EXISTS {table};")
-        conn.commit()
-
-    log.info(f"Dropped table {table}")
-
-
-def get_stat(player_uuid, category, stat_key):
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-
-        cursor.execute("""
-            SELECT stat_value
-            FROM player_statistics
-            WHERE player_uuid = ? AND category = ? AND stat_key = ?
-        """, (player_uuid, category, stat_key))
-
-        result = cursor.fetchone()
-        return result[0] if result else None
+TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
     
 
 def get_all_stats(player_uuid):
@@ -98,11 +57,12 @@ def insert_statistics(player_uuid, stats_json):
         conn.commit()
 
 
+
 if __name__ == "__main__":  # autism
     try:
         log = setup_logger(LOG_FILE, LOG_LEVEL)
-        #drop(table="player_statistics")
-        #create_stats_table()
+        log.info("---- Starting Stats Updater ----")
+
         while True: 
             start_time = time.time()
 
@@ -122,11 +82,11 @@ if __name__ == "__main__":  # autism
                     else:
                         log.warning(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
             else:
-                print(f"Failed to fetch online players. HTTP {response.status_code}")
+                log.warning(f"Failed to fetch online players. HTTP {response.status_code}")
 
             end_time = time.time()  
-            log.debug(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
-            time.sleep(5)
+            print(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
+            time.sleep(30)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.

@@ -1,9 +1,94 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>test</title>
-    <script src="{{ url_for('static', filename='js/base.js') }}"></script>
-</head>
-<body>
-    <h1>Hello Chat</h1>
+    <head>
+        <title>{% block title %}TEAW{% endblock %}</title>
+
+        <!-- Favicon is too small. Could get rid of the sword and just have "TEAW", or vice versa? -->
+        <!-- Also disappears in light mode -->
+        <link rel="shortcut icon" href="/imgs/teaw_logo.svg" media="(prefers-color-scheme: dark)">
+        <link rel="stylesheet" type="text/css" href="/css/base_template.css">
+        <link rel="stylesheet" type="text/css" href="/css/base_common.css">
+
+        <!-- Embed stuff -->
+        <meta property="og:title" content="ToEndAllWars">
+        <meta property="og:description" content="Will you participate in the war to end all wars?">
+        <meta property="og:image" content="/imgs/teaw_logo.svg">
+        <meta property="og:url" content="https://toendallwars.org/">
+        <meta property="og:site_name" content="TEAW">
+        <meta property="og:type" content="website">
+        <meta http-equiv="refresh" content="86400">
+
+        <meta name="theme-color" content="#555"/>   <!-- TODO: Update this -->
+
+        <!-- From Google Fonts Embed section -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        
+        <!-- 
+        TODO: Add umami analytics
+        https://umami.is/docs/getting-started
+        -->
+
+        <!-- PWA setup -->
+        <link rel="manifest" href="/manifest.json">
+        <script>
+            // This was from some example on GitHub, can't find it though :(
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                .register("/js/sw.js")
+                .then(function (registration) {
+                })
+                .catch(function (err) {
+                    console.log("ServiceWorker registration failed: ", err);
+                });
+            }
+            window.addEventListener("beforeinstallprompt", function (e) {
+                e.userChoice.then(function (choiceResult) {
+                console.log(choiceResult.outcome);
+                if (choiceResult.outcome == "dismissed") {
+                    console.log("User cancelled home screen install");
+                } else {
+                    console.log("User added to home screen");
+                }
+                });
+            });
+            </script>
+    </head>
+
+    <body>
+        <nav>
+            <a class="nav-logo" href="/" ><img src="/imgs/teaw_logo.svg" alt="TEAW logo" style="width: 3em;" id="nav-img"></a> 
+
+            <a id="players-link" href="/players">PLAYERS</a>
+            <a id="chat-link" href="/chat">CHAT</a>
+            <a id="towns-link" href="/towns">TOWNS</a>
+            <a id="map-link" href="/map">MAP</a>
+            <a id="wars-link" href="/wars">WARS</a>
+            <a id="showcase-link" href="/showcase">SHOWCASE</a>
+
+            <div class="online-players">
+                <div class="status-light" id="nav-status-light" data-state="off" data-pulse="true"></div>
+                <h3 id="online-count"></h3>
+            </div>
+        </nav>
+
+        <div class="main-content">
+            <!-- Begin child document -->
+            {% block content %}
+            {% endblock %}
+            <!-- End child document -->
+        </div>
+
+        <footer class="footer">
+            <a href="https://discord.com/invite/aNMhxynFS2" target="_blank"><i class="fab fa-discord"></i></a>
+            <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank"><i class=""></i></a>
+            <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank"><i class="fab fa-wpforms"></i></a>
+            <a href="https://github.com/besser435/TEAW-Website" target="_blank"><i class="fab fa-github"></i></a>
+
+            <p style="margin-top: 5px;">Version: {{ last_commit_date }}</p>
+        </footer>
+    </body>
+
+    <script src="/js/base.js"></script>
 </html>
