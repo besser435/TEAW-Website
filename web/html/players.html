@@ -2,8 +2,18 @@
 {% block title %}Players - TEAW{% endblock %}
 {% block content %}
 
+
+
 <div class="header">
-    <h1>playerlist</h1>
+    <h1>Players</h1>
+    <div class="separator"></div>
+    <h3>Sort by:</h3>
+    <button type="button" onclick="sortByOnline()" class="header-button">Last Online</button>
+    <button type="button" onclick="sortByUsername()" class="header-button">Username</button>
 </div>
+
+<div class="players-grid"></div>
+
+<script src="/js/players.js"></script>
 
 {% endblock %}

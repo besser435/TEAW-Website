@@ -109,8 +109,8 @@ nav a.nav-logo {
     margin-right: 20px;
 }
 
-/* Online Players Indicator */
 
+/* Online Players Indicator */
 .online-players {
     display: flex;
     justify-content: flex-start;
@@ -124,12 +124,13 @@ nav a.nav-logo {
     color: rgba(255, 255, 255, 0.75)
 }
 
+
 /* Header */
 .header {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-left: 10px;
+    padding-left: 8px;
 }
 
 .header h1 {
@@ -143,6 +144,7 @@ nav a.nav-logo {
     border-radius: 2rem;
     margin-inline: 20px;
 }
+
 
 /* Main Content */
 .main-content {
@@ -178,7 +180,7 @@ footer p {
 /* Firefox */
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
-        scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.8);
+        scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 1);
         scrollbar-width: thin;
     }
 }
@@ -193,7 +195,7 @@ footer p {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.1); 
+    background: rgba(255, 255, 255, 0.2); 
     border-radius: 10em;
 }
 
