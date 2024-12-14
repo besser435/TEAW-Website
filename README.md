@@ -2,9 +2,10 @@
 
 
 ## TODO:
-- [ ] Figure out how to not erase db dir on push to prod (data will be lost!)
+- [ ] Figure out how to not erase db dir on push to prod. Dir outside of the git repo?
 - [ ] Improve tmux script
-
+- [ ] Figure out a better proxy for the Bluemap
+- [ ] Add some data to the db folder for local development
 
 ## Git guidelines
 There are two branches, `prod` and `dev`. The default is `dev`, and where any changes should be made. 
@@ -25,8 +26,6 @@ up on the website, the process must be restarted.
 > In order for the server and API to work, the SQLite DBs will need to contain information. By default, there is some 
 data in them. The data will not be updated unless the `db_updater.py` and `stats_updater.py` processes are started, 
 but thats not needed for development. 
-
-TODO: add the example data.
 
 
 

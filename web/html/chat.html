@@ -3,7 +3,19 @@
 {% block content %}
 
 <div class="header">
-    <h1>selling chat logger access for 300 kromer</h1>
+    <h1>Chat</h1>
+    <input class="search" type="text" id="chat-search" autocomplete="off" spellcheck="false" placeholder="Search">
 </div>
+
+<div class="chat-feed"></div>
+
+<div class="info-bubble-container">
+    <div class="info-bubble"><b><span id="message-count">0</span></b> Messages logged</div>
+    <div class="info-bubble"> Day: <b><span id="days-elapsed">0</b></span></div>
+    <div class="info-bubble"> Weather: <b><span id="world-weather">Clear</span></b></div>
+</div>
+
+<style src="/css/chat.css"></style>
+<script src="/js/chat.js"></script>
 
 {% endblock %}
