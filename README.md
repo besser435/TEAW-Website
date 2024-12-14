@@ -31,6 +31,17 @@ TODO: add the example data.
 
 
 ## Starting a production server
+Before we start, we need to set up the proxy to the Bluemap. TEAW's map is using HTTP, so when we
+use it in an iframe we run into issues where the browser prevent the connection, as the website is using HTTPS.
+To fix this, we use an nginx proxy. This allows us to use a Cloudflare tunnel to point to the proxy on the server, which then
+points to the map. This allows the tunnel to use HTTPS, so we don't run into any browser security rules. 
+
+This has the added benefit of not requiring a port number on the public facing URL for the map. 
+
+To start the proxy, run the `bluemap_proxy.sh` file in the root directory. 
+
+
+
 To deploy the server, run the `run_prod.sh` script with Bash. This will take the Flask `app` variable inside the
 `teaw_webserver` script, and start it with Gunicorn. Note that this disables any debugging features, and can only be ran on Linux.
 
