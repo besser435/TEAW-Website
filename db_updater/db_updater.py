@@ -15,7 +15,7 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/db_updater.log"
 
 TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
@@ -98,8 +98,10 @@ def update_players_table() -> None:
             cursor.execute("""
                 UPDATE players
                 SET online_duration = 0
-                WHERE uuid NOT IN (SELECT uuid FROM (SELECT uuid FROM json_each(?)))
-            """, (json.dumps(list(online_players.keys())),)) 
+                WHERE uuid NOT IN (
+                    SELECT value FROM json_each(?)
+                )
+            """, (json.dumps(list(online_players.keys())),))
 
 
             conn.commit()
@@ -318,6 +320,7 @@ def update_server_info_table() -> None:
         data = response.json()
         weather = data.get("weather")
         world_time_24h = data.get("world_time_24h")
+        day = data.get("day")
 
         teaw_system_time = data.get("system_time")
         tapi_version = data.get("tapi_version")
@@ -326,6 +329,7 @@ def update_server_info_table() -> None:
         # because 3 discrete DB operations is better than one, right?
         upsert_variable("weather", weather)
         upsert_variable("world_time_24h", world_time_24h)
+        upsert_variable("day", day)
         upsert_variable("teaw_system_time", teaw_system_time)
         upsert_variable("tapi_version", tapi_version)
         upsert_variable("tapi_build", tapi_build)
