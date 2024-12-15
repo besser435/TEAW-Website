@@ -73,6 +73,12 @@
 
 /* Info bubble */
 /* TODO: switch to em units where appropriate */
+.info-bubble-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .info-bubble {
     color: #FFFFFF;
 
@@ -82,8 +88,103 @@
 
     max-width: 200px;
     padding: 3px 5px;
-    border-radius: 7px;
+    margin-right: 0.5em;
+    border-radius: 10px;
 
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+
+/* Search Boxes */
+.search {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+
+    border-radius: 2rem;
+    height: 25px;
+    width: 150px;
+    padding: 2px 10px;
+    margin-left: auto;
+}
+
+
+/* Messages */
+/* Should be in chat.css but it's not working */
+.message-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Inter", sans-serif;
+    margin-bottom: -10px;
+}
+
+.message-info {
+    display: flex;
+    flex-direction: row;
+
+    color: #FFFFFF;
+
+    font-weight: 400;
+    font-style: normal;
+
+    min-width: 220px;
+    padding: 3px 5px 3px 3px;
+    margin-right: 0.5em;
+    border-radius: 10px;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.message-info[data-message-type="status"] {
+    background-color: rgba(0, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.1);
+}
+
+.message-info[data-message-type="join"] {
+    background-color: rgba(0, 255, 0, 0.1);
+    border-color: rgba(0, 255, 0, 0.1);
+}
+
+.message-info[data-message-type="discord"] {
+    background-color: rgba(114, 137, 218, 0.2);
+    border-color: rgba(114, 137, 218, 0.2);
+}
+
+.message-info[data-message-type="quit"] {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.1);
+}
+
+.message-info[data-message-type="death"] {
+    background-color: rgba(100, 25, 255, 0.2);
+    border-color: rgba(100, 25, 255, 0.2);
+}
+
+.message-info[data-message-type="advancement"] {
+    background-color: rgba(255, 200, 0, 0.1);
+    border-color: rgba(255, 200, 0, 0.1);
+}
+
+.message-info .profile-pic {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 5px;
+}
+
+.message-info .sender {
+    font-weight: 800;
+}
+
+.message-info .timestamp {
+    margin-left: auto;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.3);
 }
