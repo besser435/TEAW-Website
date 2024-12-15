@@ -117,8 +117,9 @@
 /* Should be in chat.css but it's not working */
 .chat-feed {
     border: 2px solid rgb(255, 0, 0);
-    height: 20%;
+    height: calc(100vh - 260px);
     overflow-y: scroll;
+    margin-bottom: 10px;
 }
 
 .message-container {
