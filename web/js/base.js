@@ -57,7 +57,7 @@ function updateStatus() {
 
             if (data.status === "ok") {
                 statusLight.dataset.state = "green";
-                onlineCount.textContent = `${data.online_players} players online`;
+                onlineCount.textContent = `${data.online_players} player${data.online_players === 1 ? '' : 's'} online`;
 
                 lastSuccessfulUpdate = currentTime;
                 failureCount = 0;

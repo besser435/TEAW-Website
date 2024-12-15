@@ -115,6 +115,12 @@
 
 /* Messages */
 /* Should be in chat.css but it's not working */
+.chat-feed {
+    border: 2px solid rgb(255, 0, 0);
+    height: 20%;
+    overflow-y: scroll;
+}
+
 .message-container {
     display: flex;
     flex-direction: row;
@@ -129,10 +135,10 @@
     flex-direction: row;
 
     color: #FFFFFF;
-
-    font-weight: 400;
     font-style: normal;
 
+    /* TODO: Make min-width the length of the longest message-info/username.
+    Also set a max length, so that if someone has a crazy name it doesnt overflow. */
     min-width: 220px;
     padding: 3px 5px 3px 3px;
     margin-right: 0.5em;
@@ -140,6 +146,24 @@
 
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.message-info .profile-pic {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 5px;
+    image-rendering: pixelated;
+}
+
+.message-info .sender {
+    font-weight: 800;
+}
+
+.message-info .timestamp {
+    margin-left: auto;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.3);
 }
 
 .message-info[data-message-type="status"] {
@@ -172,19 +196,3 @@
     border-color: rgba(255, 200, 0, 0.1);
 }
 
-.message-info .profile-pic {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    border-radius: 5px;
-}
-
-.message-info .sender {
-    font-weight: 800;
-}
-
-.message-info .timestamp {
-    margin-left: auto;
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.3);
-}

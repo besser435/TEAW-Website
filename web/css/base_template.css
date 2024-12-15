@@ -94,7 +94,7 @@ nav a:not(.nav-logo), .header-button {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(0, 0, 0, 0.2);
     font-family: "Inter", sans-serif;
-    font-weight: 700;
+    font-weight: 500;
     text-decoration: none;
 
     transition: background-color 0.3s, outline 0.3s;
@@ -117,6 +117,7 @@ button.header-button {
 nav a.active, .header-button.active { 
     color: #fff;
     background-color: rgba(255, 255, 255, 0.1);
+    font-weight: 700;
 }
 
 nav a:hover, .header-button:hover {

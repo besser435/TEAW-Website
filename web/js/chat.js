@@ -199,7 +199,7 @@ addMessageToChatFeed(new Message(
 addMessageToChatFeed(new Message(
     3, 
     "SaxboyLaFranks", 
-    "5663c72f-18c5-4012-b28c-78784c2ca736", 
+    "6c7ab286-3ea3-42b4-af47-55376c963d92", 
     "it was for morale boost!",  
     1734194977000, 
     "chat"
@@ -210,7 +210,7 @@ addMessageToChatFeed(new Message(
     4, 
     "besser", 
     "232014294303113216", 
-    "something fruity",  
+    "something fruity. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. ",  
     1734195037000, 
     "discord"
 ));
