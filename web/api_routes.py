@@ -105,7 +105,13 @@ def get_all_towns():
 
 
 
-
+@api_routes.route("/api/chat")
+def get_chat():
+    try:
+        return "ok", 200
+    except Exception as e:
+        log.error(f"Internal error getting `chat`: {e}")
+        return "internal error", 500
 
 
 

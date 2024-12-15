@@ -1,8 +1,3 @@
-
-
-
-
-
 // NOTE: old USAI Code. Edit/uncomment as needed
 // document.addEventListener("DOMContentLoaded", function () {
 //     window.onload = function () {
@@ -30,6 +25,8 @@
 //     };
 // });
 
+const updateRate = 2000;
+
 
 
 // Should only be called for player messages. Otherwise use CSS to select the correct icon
@@ -52,8 +49,7 @@ function getPlayerProfilePicObj(sender_uuid) {
 
 
 function formatEpochTime(epochTime) {
-    //const now = Date.now();
-    const now = 1734195037000;
+    const now = Date.now();
     const diffInMs = now - epochTime;
     const diffInSeconds = Math.floor(diffInMs / 1000);
 
@@ -113,15 +109,14 @@ class Message {
 }
 
 
-
 // NOTE: newest messages will appear at the top. fix later if desired
 // Need to add bold tags depending on message type
-function addMessageToChatFeed(messageObj) {
+function createMessage(messageObj) {
     const chatFeed = document.getElementsByClassName("chat-feed");  // Main message container
 
 
     // Create the message info div (the part before the message)
-    const messageInfo = document.createElement("div");
+    let messageInfo = document.createElement("div");
     messageInfo.className = "message-info";
 
     // PFP
@@ -141,7 +136,7 @@ function addMessageToChatFeed(messageObj) {
     messageInfo.appendChild(sender);
 
     // Add timestamp
-    const timestamp = document.createElement("div");
+    let timestamp = document.createElement("div");
     timestamp.className = "timestamp";
     timestamp.innerHTML = messageObj.timestamp;
     messageInfo.appendChild(timestamp);
@@ -175,18 +170,80 @@ function addMessageToChatFeed(messageObj) {
 }
 
 
+
+// Scroll detection listener for when the user scrolls up and wants to view older messages
+// NOTE: untested. probably doesnt work given we dont set a scroll threshold.
+document.getElementById("chat-feed").addEventListener("scroll", function() {
+    const chatFeed = document.getElementById("chat-feed");
+    if (chatFeed.scrollTop === 0) {
+        const messages = document.getElementsByClassName("message-container");
+        if (messages.length > 0) {
+            const oldestMessageID = messages[0].id;
+            updateNewMessages(oldestMessageID);
+        }
+        console.log(`Scrolled to to: ${chatFeed.scrollTop}`);
+    }
+});
+
+
+
+let firstLoad = true;
+function updateNewMessages(oldest_message_id = 0) {
+    let newMessages;
+    // If its the first load, request messages with no filter to get the newest messages.
+    // Otherwise, send a request for messages with an ID greater than the newest message ID.
+
+    if (firstLoad) {      // First load, get all messages. Get messages[:100]
+        fetch("/api/chat_messages")
+            .then(response => response.json())
+            .then(data => {
+                newMessages = data;
+                firstLoad = false;
+            });
+    } else if (oldest_message_id !== 0) {   // The user is scrolling and wants older messages. Get messages[:oldest_message_id - 100]
+        fetch(`/api/chat_messages?oldest_message_id=${oldest_message_id}`)
+            .then(response => response.json())
+            .then(data => {
+                newMessages = data;
+            });
+    } else {    // Standard update, get messages newer than the newest message. Get messages[:newest_message_id + 100]
+        fetch(`/api/chat_messages?newest_message_id=${newestMessageID}`)
+            .then(response => response.json())
+            .then(data => {
+                newMessages = data;
+            });
+    }
+
+
+
+}
+updateNewMessages();
+setInterval(updateNewMessages, updateRate);
+
+
+
+
+
+function updateInfoBubbles() {
+
+}
+updateInfoBubbles();
+setInterval(updateInfoBubbles, updateRate);
+
+
+
 // status
-addMessageToChatFeed(new Message(
+createMessage(new Message(
     1, 
     "SERVER", 
     "null", 
     "TEAW has started!",
-    1733330977000,
+    Date.now(),
     "status"
 ));
 
 // join
-addMessageToChatFeed(new Message(
+createMessage(new Message(
     2, 
     "SERVER", 
     "5663c72f-18c5-4012-b28c-78784c2ca736", 
@@ -196,7 +253,7 @@ addMessageToChatFeed(new Message(
 ));
 
 // chat
-addMessageToChatFeed(new Message(
+createMessage(new Message(
     3, 
     "SaxboyLaFranks", 
     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
@@ -206,7 +263,7 @@ addMessageToChatFeed(new Message(
 ));
 
 // discord
-addMessageToChatFeed(new Message(
+createMessage(new Message(
     4, 
     "besser", 
     "232014294303113216", 
@@ -216,7 +273,7 @@ addMessageToChatFeed(new Message(
 ));
 
 // advancement
-addMessageToChatFeed(new Message(
+createMessage(new Message(
     5, 
     "SERVER", 
     "5663c72f-18c5-4012-b28c-78784c2ca736", 
@@ -226,7 +283,7 @@ addMessageToChatFeed(new Message(
 ));
 
 // death
-addMessageToChatFeed(new Message(
+createMessage(new Message(
     6, 
     "SERVER", 
     "5663c72f-18c5-4012-b28c-78784c2ca736", 
@@ -236,7 +293,7 @@ addMessageToChatFeed(new Message(
 ));
 
 // quit
-addMessageToChatFeed(new Message(
+createMessage(new Message(
     7, 
     "SERVER", 
     "5663c72f-18c5-4012-b28c-78784c2ca736", 
