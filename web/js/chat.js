@@ -1,32 +1,19 @@
-// NOTE: old USAI Code. Edit/uncomment as needed
-// document.addEventListener("DOMContentLoaded", function () {
-//     window.onload = function () {
-//         // Set the default scroll position to the bottom
-//         // wait for the chat messages and CSS to load,
-//         // or else the scrollHeight will be incorrect (something with CSS margins loading later)
-//         const messageWindow = document.getElementById("message-window");
-//         if (messageWindow) {
-//             messageWindow.scrollTop = messageWindow.scrollHeight;
+const updateRate = 2_000;
+
+
+// Scroll detection listener for when the user scrolls up and wants to view older messages
+// NOTE: untested. probably doesnt work given we dont set a scroll threshold.
+// document.getElementById("chat-feed").addEventListener("scroll", function() {
+//     const chatFeed = document.getElementById("chat-feed");
+//     if (chatFeed.scrollTop === 0) {
+//         const messages = document.getElementsByClassName("message-container");
+//         if (messages.length > 0) {
+//             const oldestMessageID = messages[0].id;
+//             updateNewMessages(oldestMessageID);
 //         }
-
-//         // Add a scroll event listener to the message window
-//         //messageWindow.addEventListener("scroll", updateButtonVisibility);
-
-//         // Disable auto-scroll if the user manually scrolls up and vice versa
-//         const autoScrollCheckbox = document.getElementById("auto-scroll");
-//         messageWindow.addEventListener("scroll", function () {
-//             if (isScrolledToBottom(messageWindow)) {
-//                 autoScrollCheckbox.checked = true;
-//             } else {
-//                 autoScrollCheckbox.checked = false;
-//             }
-//             updateButtonVisibility();
-//         });
-//     };
+//         console.log(`Scrolled to to: ${chatFeed.scrollTop}`);
+//     }
 // });
-
-const updateRate = 2000;
-
 
 
 // Should only be called for player messages. Otherwise use CSS to select the correct icon
@@ -75,17 +62,17 @@ function formatEpochTime(epochTime) {
 class Message {
     /**
      * @param {number} id - Auto-incremented value by the DB.
-     * @param {string} sender_name - The name of the sender.
+     * @param {string} sender - The name of the sender.
      * @param {string} sender_uuid - The UUID of the sender. May be a player or a Discord user.
      * @param {string} message - The content of the message.
      * @param {number} timestamp - The timestamp of the message. Provided epoch will be formatted.
      * @param {string} type - The type of the message.
      */
-    constructor(id, sender_name, sender_uuid, message, timestamp, type) {
+    constructor(id, sender, sender_uuid, message, timestamp, type) {
         /** @type {number} */
         this.id = id;
         /** @type {string} */
-        this.sender_name = sender_name;
+        this.sender = sender;
         /** @type {string} */
         this.sender_uuid = sender_uuid;
         /** @type {string} */
@@ -98,16 +85,12 @@ class Message {
         if (this.type === "chat") {
             this.profilePicObj = getPlayerProfilePicObj(sender_uuid); 
         } else {
-
-            // Cant use null, as a TypeError will be thrown. Just redo how 
-            // we handle the PFPs. The stuff below is a placeholder
-            this.profilePicObj = document.createElement("img");
-            this.profilePicObj.className = "profile-pic";
-            this.profilePicObj.src = "/http/501";
+            this.profilePicObj = document.createElement("div");
+            this.profilePicObj.className = `info-icon ${this.type}`;
+            this.profilePicObj.dataset.messageType = this.type;
         }
     }
 }
-
 
 // NOTE: newest messages will appear at the top. fix later if desired
 // Need to add bold tags depending on message type
@@ -128,7 +111,7 @@ function createMessage(messageObj) {
     sender.className = "sender";
     
     if (messageObj.type === "chat" || messageObj.type === "discord") {
-        sender.innerHTML = messageObj.sender_name;
+        sender.innerHTML = messageObj.sender;
     } else {
         sender.innerHTML = messageObj.type[0].toUpperCase() + messageObj.type.slice(1);
     }
@@ -170,62 +153,75 @@ function createMessage(messageObj) {
 }
 
 
-
-// Scroll detection listener for when the user scrolls up and wants to view older messages
-// NOTE: untested. probably doesnt work given we dont set a scroll threshold.
-document.getElementById("chat-feed").addEventListener("scroll", function() {
-    const chatFeed = document.getElementById("chat-feed");
-    if (chatFeed.scrollTop === 0) {
-        const messages = document.getElementsByClassName("message-container");
-        if (messages.length > 0) {
-            const oldestMessageID = messages[0].id;
-            updateNewMessages(oldestMessageID);
-        }
-        console.log(`Scrolled to to: ${chatFeed.scrollTop}`);
-    }
-});
-
-
-
+// TODO: handle errors
 let firstLoad = true;
 function updateNewMessages(oldest_message_id = 0) {
-    let newMessages;
     // If its the first load, request messages with no filter to get the newest messages.
     // Otherwise, send a request for messages with an ID greater than the newest message ID.
 
-    if (firstLoad) {      // First load, get all messages. Get messages[:100]
+
+    const processMessages = (messages) => {
+        for (const message of messages) {
+            createMessage(new Message(
+                message.id, 
+                message.sender, 
+                message.sender_uuid, 
+                message.message, 
+                message.timestamp, 
+                message.type
+            ));
+        }
+    };
+
+
+    if (firstLoad) {    // First load, get all messages (200 newest messages)
         fetch("/api/chat_messages")
             .then(response => response.json())
             .then(data => {
-                newMessages = data;
+                processMessages(data);
                 firstLoad = false;
+
             });
-    } else if (oldest_message_id !== 0) {   // The user is scrolling and wants older messages. Get messages[:oldest_message_id - 100]
+    } else if (oldest_message_id !== 0) {   // The user is scrolling and wants older messages (200 messages older than the current oldest message)
         fetch(`/api/chat_messages?oldest_message_id=${oldest_message_id}`)
             .then(response => response.json())
             .then(data => {
-                newMessages = data;
+                processMessages(data);
             });
-    } else {    // Standard update, get messages newer than the newest message. Get messages[:newest_message_id + 100]
+    } else {    // Standard update, get messages newer than the newest message  (limit to 200 messages)
+        const messages = document.getElementsByClassName("message-container");
+        const newestMessageID = messages[messages.length - 1]?.id;
+
         fetch(`/api/chat_messages?newest_message_id=${newestMessageID}`)
             .then(response => response.json())
             .then(data => {
-                newMessages = data;
+                processMessages(data);
             });
     }
-
-
-
 }
 updateNewMessages();
 setInterval(updateNewMessages, updateRate);
 
 
-
-
-
 function updateInfoBubbles() {
+    const messagesLoggedBubble = document.getElementById("message-count");
+    const daysElapsedBubble = document.getElementById("days-elapsed");
+    const worldWeatherBubble = document.getElementById("world-weather");
 
+    const worldTimeBubble = document.getElementById("world-time");  // Either remove, or add code to interpolate time between updates
+
+    fetch("/api/chat_misc")
+        .then(response => response.json())
+        .then(data => {
+            messagesLoggedBubble.innerHTML = data.messages_logged.toLocaleString();
+            daysElapsedBubble.innerHTML = data.days_elapsed.toLocaleString();
+            worldWeatherBubble.innerHTML = data.world_weather;
+
+            // https://minecraft.wiki/w/Daylight_cycle
+            // Replace real time with time according to the Minecraft day cycle. This prevents
+            // sporadic time updates.
+            worldTimeBubble.innerHTML = data.world_time;
+        });
 }
 updateInfoBubbles();
 setInterval(updateInfoBubbles, updateRate);
@@ -233,84 +229,111 @@ setInterval(updateInfoBubbles, updateRate);
 
 
 // status
-createMessage(new Message(
-    1, 
-    "SERVER", 
-    "null", 
-    "TEAW has started!",
-    Date.now(),
-    "status"
-));
+// createMessage(new Message(
+//     1, 
+//     "SERVER", 
+//     "null", 
+//     "TEAW has started!",
+//     Date.now(),
+//     "status"
+// ));
 
-// join
-createMessage(new Message(
-    2, 
-    "SERVER", 
-    "5663c72f-18c5-4012-b28c-78784c2ca736", 
-    "SaxboyLaFranks joined the game",  
-    1734180577000, 
-    "join"
-));
+// // join
+// createMessage(new Message(
+//     2, 
+//     "SERVER", 
+//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
+//     "SaxboyLaFranks joined the game",  
+//     1734180577000, 
+//     "join"
+// ));
 
-// chat
-createMessage(new Message(
-    3, 
-    "SaxboyLaFranks", 
-    "6c7ab286-3ea3-42b4-af47-55376c963d92", 
-    "it was for morale boost!",  
-    1734194977000, 
-    "chat"
-));
+// // chat
+// createMessage(new Message(
+//     3, 
+//     "SaxboyLaFranks", 
+//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
+//     "it was for morale boost!",  
+//     1734194977000, 
+//     "chat"
+// ));
 
-// discord
-createMessage(new Message(
-    4, 
-    "besser", 
-    "232014294303113216", 
-    "something fruity. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. ",  
-    1734195037000, 
-    "discord"
-));
+// // discord
+// createMessage(new Message(
+//     4, 
+//     "besser", 
+//     "232014294303113216", 
+//     "something fruity. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. ",  
+//     1734195037000, 
+//     "discord"
+// ));
 
-// advancement
-createMessage(new Message(
-    5, 
-    "SERVER", 
-    "5663c72f-18c5-4012-b28c-78784c2ca736", 
-    "SaxboyLaFranks has made the advancement [Monster Hunter]",
-    1734138565720,
-    "advancement"
-));
+// // advancement
+// createMessage(new Message(
+//     5, 
+//     "SERVER", 
+//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
+//     "SaxboyLaFranks has made the advancement [Monster Hunter]",
+//     1734138565720,
+//     "advancement"
+// ));
 
-// death
-createMessage(new Message(
-    6, 
-    "SERVER", 
-    "5663c72f-18c5-4012-b28c-78784c2ca736", 
-    "SaxboyLaFranks was slain by Zombie",
-    1734138565720,
-    "death"
-));
+// // death
+// createMessage(new Message(
+//     6, 
+//     "SERVER", 
+//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
+//     "SaxboyLaFranks was slain by Zombie",
+//     1734138565720,
+//     "death"
+// ));
 
-// quit
-createMessage(new Message(
-    7, 
-    "SERVER", 
-    "5663c72f-18c5-4012-b28c-78784c2ca736", 
-    "SaxboyLaFranks left the game",
-    1734138565720,
-    "quit"
-));
+// // quit
+// createMessage(new Message(
+//     7, 
+//     "SERVER", 
+//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
+//     "SaxboyLaFranks left the game",
+//     1734138565720,
+//     "quit"
+// ));
 
+// // tests
+// createMessage(new Message(
+//     8, 
+//     "SaxboyLaFranks", 
+//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
+//     "HTML injection test <b>bold</b> <i>italic</i> <a href='https://google.com'>link</a> <img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'>",  
+//     1734194977000, 
+//     "chat"
+// ));
 
-// scroll test
-for (let i = 8; i < 100; i++) {
-    addMessageToChatFeed(new Message(
-        i, 
-        "SERVER", 
-        "5663c72f-18c5-4012-b28c-78784c2ca736", 
-        "SaxboyLaFranks left the game",
-        1734138565720,
-        "quit"
-    ));
-}
+// createMessage(new Message(
+//     9, 
+//     "SaxboyLaFranks", 
+//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
+//     "emoji rendering test \ud83d\ude14",  
+//     1734194977000, 
+//     "chat"
+// ));
+
+// createMessage(new Message(
+//     10, 
+//     "SaxboyLaFranks", 
+//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
+//     "control char rendering test \"real\" \"fake\"",  
+//     1734194977000, 
+//     "chat"
+// ));
+
+// // scroll test
+// for (let i = 8; i < 100; i++) {
+//     addMessageToChatFeed(new Message(
+//         i, 
+//         "SERVER", 
+//         "5663c72f-18c5-4012-b28c-78784c2ca736", 
+//         "SaxboyLaFranks left the game",
+//         1734138565720,
+//         "quit"
+//     ));
+// }

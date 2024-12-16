@@ -127,6 +127,8 @@
     overflow-y: scroll;
     margin-bottom: 10px;
     border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .message-container {
@@ -162,6 +164,12 @@
     margin-right: 5px;
     border-radius: 5px;
     image-rendering: pixelated;
+}
+
+/* debug, put icon styles here */
+.message-info .info-icon {
+    width: 20px;
+    height: 20px;
 }
 
 .message-info .sender {
