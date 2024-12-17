@@ -1,1 +1,95 @@
 /* Styles for the Chat page */
+
+.chat-feed {
+    height: calc(100vh - 260px);
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.message-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Inter", sans-serif;
+    margin-bottom: 10px;
+    color: #FFFFFF
+    
+}
+
+.message-info {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-style: normal;
+
+    /* TODO: Make min-width the length of the longest message-info/username.
+    Also set a max length, so that if someone has a crazy name it doesnt overflow. */
+    min-width: 270px;
+    padding: 3px 5px 3px 3px;
+    margin-right: 0.5em;
+    border-radius: 10px;
+
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+
+    box-sizing: border-box;
+}
+
+.message-info .profile-pic {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+    border-radius: 5px;
+    image-rendering: pixelated;
+}
+
+/* debuggy, put icon styles here */
+.message-info .info-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.message-info .sender {
+    font-weight: 800;
+    margin-right: 10px;
+}
+
+.message-info .timestamp {
+    margin-left: auto;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.message-info[data-message-type="status"] {
+    background-color: rgba(0, 255, 255, 0.1);
+    border-color: rgba(0, 255, 255, 0.1);
+}
+
+.message-info[data-message-type="join"] {
+    background-color: rgba(0, 255, 0, 0.1);
+    border-color: rgba(0, 255, 0, 0.1);
+}
+
+.message-info[data-message-type="discord"] {
+    background-color: rgba(114, 137, 218, 0.2);
+    border-color: rgba(114, 137, 218, 0.2);
+}
+
+.message-info[data-message-type="quit"] {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: rgba(255, 0, 0, 0.1);
+}
+
+.message-info[data-message-type="death"] {
+    background-color: rgba(100, 25, 255, 0.2);
+    border-color: rgba(100, 25, 255, 0.2);
+}
+
+.message-info[data-message-type="advancement"] {
+    background-color: rgba(255, 200, 0, 0.1);
+    border-color: rgba(255, 200, 0, 0.1);
+}

@@ -44,6 +44,7 @@ body {
     background-color: #0D150C;  /* Prevent flashbang before the actual background image loads */
     background-size: cover;
     background-position: center;
+    background-attachment: fixed;
     height: 100vh;
     position: relative;
     overflow: hidden;
@@ -51,7 +52,7 @@ body {
 
     font-family: Arial, sans-serif; /* Default/fallback */
 
-    padding: 14px;
+    padding: 0px;
     margin: 0px;
 
     display: flex;
@@ -65,16 +66,33 @@ body::before {
 
 /* Navbar */
 nav {
-    margin: -16px;
-    padding: calc(0.4em + 16px);
+    padding: 1em 1em 0.5em 1em;
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    background-image: linear-gradient(#00000055, #00000000);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background-image: linear-gradient(#000000ff, #00000077 75%, #00000000);
 }
+
+nav::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    content: "";
+    z-index: -1;
+    height: 65px;
+    backdrop-filter: blur(10px);
+    mask: linear-gradient(0deg, transparent, black 50%);
+    background-color: rgba(25, 25, 25, 0.3);
+}
+
 
 nav a:not(.nav-logo), .header-button {
     color: rgba(255, 255, 255, 0.75);
+    background-color: rgba(0, 0, 0, 0.2);
     font-family: "Inter", sans-serif;
     font-weight: 700;
     text-decoration: none;
@@ -84,11 +102,16 @@ nav a:not(.nav-logo), .header-button {
 
     padding: 0.4em 0.8em;
     border-radius: 10em;
-    margin-right: 1em;
+    margin-inline: 0.5em;
     min-width: 70px;
     text-align: center;
+    backdrop-filter: blur(5px);
 
     outline: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+button.header-button {
+    border: none;
 }
 
 nav a.active, .header-button.active { 
@@ -130,7 +153,7 @@ nav a.nav-logo {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-left: 8px;
+    padding-left: 0.5em;
 }
 
 .header h1 {
@@ -149,6 +172,8 @@ nav a.nav-logo {
 /* Main Content */
 .main-content {
     flex: 1 0 auto;
+    padding-inline: 1em;
+    overflow-y: scroll;
 }
 
 
@@ -156,9 +181,9 @@ nav a.nav-logo {
 /* Push the footer to the bottom if the page content doesn't fill up the screen */
 footer {
     flex-shrink: 0;
-    margin: 10px -14px 14px;
+    margin: 10px 0px 0px;
     height: 48px;
-    padding-inline: 10px;
+    padding-inline: 15px;
     
     display: flex;
     justify-content: flex-start;
@@ -180,7 +205,7 @@ footer p {
 /* Firefox */
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
-        scrollbar-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 1);
+        scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
         scrollbar-width: thin;
     }
 }

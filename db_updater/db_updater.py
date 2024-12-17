@@ -15,7 +15,7 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.DEBUG
+LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/db_updater.log"
 
 TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
@@ -26,7 +26,7 @@ SKIN_TTL_HOURS = 8
 BODY_SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full?capeEnabled=false"
 BODY_SKINS_DIR = "../db/player_body_skins"
 
-FACE_SKIN_API_URL = "https://crafatar.com/avatars/{uuid}?size=8?overlay"   # Should really just use the Mojang API
+FACE_SKIN_API_URL = "https://mc-heads.net/avatar/{uuid}/8"   # Should really just use the Mojang API
 FACE_SKINS_DIR = "../db/player_face_skins"
 
 
@@ -98,8 +98,10 @@ def update_players_table() -> None:
             cursor.execute("""
                 UPDATE players
                 SET online_duration = 0
-                WHERE uuid NOT IN (SELECT uuid FROM (SELECT uuid FROM json_each(?)))
-            """, (json.dumps(list(online_players.keys())),)) 
+                WHERE uuid NOT IN (
+                    SELECT value FROM json_each(?)
+                )
+            """, (json.dumps(list(online_players.keys())),))
 
 
             conn.commit()
@@ -128,9 +130,12 @@ def update_chat_table() -> None:
 
             for chat_entry in chat_data:
                 sender = chat_entry.get("sender")
+                sender_uuid = chat_entry.get("sender_uuid")
                 message = chat_entry.get("message")
                 timestamp = chat_entry.get("timestamp")
                 message_type = chat_entry.get("type")
+
+                if message == "playerlist": continue
 
                 
                 if timestamp > last_timestamp:
@@ -138,9 +143,9 @@ def update_chat_table() -> None:
                     # Since we rely on milliseconds and not some other key, we need to ensure TAPI has 
                     # precision to the millisecond so the same message isn't inserted multiple times.
                     cursor.execute("""
-                        INSERT INTO chat (sender, message, timestamp, type)
-                        VALUES (?, ?, ?, ?)
-                    """, (sender, message, timestamp, message_type))
+                        INSERT INTO chat (sender, sender_uuid, message, timestamp, type)
+                        VALUES (?, ?, ?, ?, ?)
+                    """, (sender, sender_uuid, message, timestamp, message_type))
 
             conn.commit()
             upsert_variable("last_chat_update", int(time.time() * 1000))
@@ -318,6 +323,7 @@ def update_server_info_table() -> None:
         data = response.json()
         weather = data.get("weather")
         world_time_24h = data.get("world_time_24h")
+        day = data.get("day")
 
         teaw_system_time = data.get("system_time")
         tapi_version = data.get("tapi_version")
@@ -326,6 +332,7 @@ def update_server_info_table() -> None:
         # because 3 discrete DB operations is better than one, right?
         upsert_variable("weather", weather)
         upsert_variable("world_time_24h", world_time_24h)
+        upsert_variable("day", day)
         upsert_variable("teaw_system_time", teaw_system_time)
         upsert_variable("tapi_version", tapi_version)
         upsert_variable("tapi_build", tapi_build)
@@ -365,7 +372,7 @@ if __name__ == "__main__":
 
             print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Total time taken was {round((end_time - start_time) * 1000, 2)}ms")
 
-            time.sleep(5)
+            time.sleep(2)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect.
         # This should restart the script and fix the issue, hopefully.

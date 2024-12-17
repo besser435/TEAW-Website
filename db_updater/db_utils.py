@@ -34,6 +34,7 @@ def create_teaw_tables(db_file=TEAW_DB_FILE):
             CREATE TABLE IF NOT EXISTS chat (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,  
                 sender TEXT NOT NULL,                  
+                sender_uuid TEXT,
                 message TEXT NOT NULL,                
                 timestamp INTEGER NOT NULL,
                 type TEXT NOT NULL
@@ -154,5 +155,4 @@ def archive_chat_table(db_file=TEAW_DB_FILE):
 
 if __name__ == "__main__":
     create_teaw_tables()
-    create_stats_tables()
 

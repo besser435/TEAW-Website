@@ -10,6 +10,8 @@
 .status-light {
     width: 16px;
     height: 16px;
+    min-width: 16px;
+
     border-radius: 50%;
     position: relative;
 
@@ -73,6 +75,12 @@
 
 /* Info bubble */
 /* TODO: switch to em units where appropriate */
+.info-bubble-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
 .info-bubble {
     color: #FFFFFF;
 
@@ -82,8 +90,34 @@
 
     max-width: 200px;
     padding: 3px 5px;
-    border-radius: 7px;
+    margin-right: 0.5em;
+    border-radius: 10px;
 
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.1);
 }
+
+
+/* Search Boxes */
+.search {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+
+    border-radius: 2rem;
+    height: 25px;
+    width: 150px;
+    padding: 2px 10px;
+    margin-left: auto;
+
+    transition: border-color 0.15s, box-shadow 0.15s;
+    &:focus {
+        outline: none;
+        border-color: #007BFF;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+}
+
