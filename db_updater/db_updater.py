@@ -26,7 +26,7 @@ SKIN_TTL_HOURS = 8
 BODY_SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full?capeEnabled=false"
 BODY_SKINS_DIR = "../db/player_body_skins"
 
-FACE_SKIN_API_URL = "https://crafatar.com/avatars/{uuid}?size=8?overlay"   # Should really just use the Mojang API
+FACE_SKIN_API_URL = "https://mc-heads.net/avatar/{uuid}/8"   # Should really just use the Mojang API
 FACE_SKINS_DIR = "../db/player_face_skins"
 
 
@@ -134,6 +134,8 @@ def update_chat_table() -> None:
                 message = chat_entry.get("message")
                 timestamp = chat_entry.get("timestamp")
                 message_type = chat_entry.get("type")
+
+                if message == "playerlist": continue
 
                 
                 if timestamp > last_timestamp:
