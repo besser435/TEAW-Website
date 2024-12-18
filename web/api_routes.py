@@ -133,7 +133,7 @@ def get_chat_messages():
                     SELECT id, sender, sender_uuid, message, timestamp, type
                     FROM chat
                     ORDER BY id DESC
-                    LIMIT 200
+                    LIMIT 400
                 """)
 
             chat_messages = [dict(row) for row in cursor.fetchall()]
