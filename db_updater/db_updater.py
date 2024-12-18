@@ -135,7 +135,7 @@ def update_chat_table() -> None:
                 timestamp = chat_entry.get("timestamp")
                 message_type = chat_entry.get("type")
 
-                if message == "playerlist": continue
+                if message.lower() == "playerlist": continue
 
                 
                 if timestamp > last_timestamp:
@@ -156,7 +156,7 @@ def update_chat_table() -> None:
     log.debug(f"Chat table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
-def update_towns_table() -> None:
+def update_towns_table() -> None:   # TODO: Remove towns that no longer exist
     log.debug("Updating towns table...")
 
     with sqlite3.connect(DB_FILE) as conn:
@@ -215,7 +215,7 @@ def update_towns_table() -> None:
     log.debug(f"Towns table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
-def update_nations_table() -> None:
+def update_nations_table() -> None: # TODO: Remove nations that no longer exist
     log.debug("Updating nations table...")
 
     with sqlite3.connect(DB_FILE) as conn:

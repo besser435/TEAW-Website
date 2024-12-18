@@ -5,9 +5,9 @@
 - [ ] Figure out how to not erase db dir on push to prod. Dir outside of the git repo?
 - [ ] Improve tmux script
 - [ ] Figure out a better proxy for the Bluemap
-- [ ] Add some data to the db folder for local development
 - [ ] Finish SW stuff for PWA compatibility (just needs an image I think)
 - [ ] Add image to base.html for embed
+- [ ] Remove towns and nations that no longer exist in db_updater.py
 
 ## Git guidelines
 There are two branches, `prod` and `dev`. The default is `dev`, and where any changes should be made. 

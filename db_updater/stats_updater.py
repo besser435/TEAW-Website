@@ -86,7 +86,7 @@ if __name__ == "__main__":  # autism
 
             end_time = time.time()  
             print(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
-            time.sleep(30)
+            time.sleep(15)
     except requests.exceptions.ConnectTimeout as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.
