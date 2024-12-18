@@ -1,80 +1,102 @@
-// Scroll detection listener for when the user scrolls up and wants to view older messages
-// NOTE: untested. probably doesnt work given we dont set a scroll threshold.
-// document.getElementById("chat-feed").addEventListener("scroll", function() {
-//     const chatFeed = document.getElementById("chat-feed");
-//     if (chatFeed.scrollTop === 0) {
-//         const messages = document.getElementsByClassName("message-container");
-//         if (messages.length > 0) {
-//             const oldestMessageID = messages[0].id;
-//             updateNewMessages(oldestMessageID);
-//         }
-//         console.log(`Scrolled to to: ${chatFeed.scrollTop}`);
-//     }
-// });
+let currentSearchTerm = "";
+function setupSearch() {
+    const searchInput = document.getElementById("chat-search");
+    const noMessagesFound = document.getElementById("no-messages-found");
+
+    searchInput.addEventListener("input", () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const messages = document.querySelectorAll(".message-container");
+
+        let found = false;
+
+        messages.forEach((message) => {
+            const sender = message.querySelector(".sender").textContent.toLowerCase();
+            const messageText = message.querySelector(".message-text").textContent.toLowerCase();
+
+            if (sender.includes(searchTerm) || messageText.includes(searchTerm)) {
+                message.style.display = "flex";
+                found = true;
+
+                highlightText(message.querySelector(".sender"), searchTerm);
+                highlightText(message.querySelector(".message-text"), searchTerm);
+            } else {
+                message.style.display = "none";
+            }
+        });
+        currentSearchTerm = searchTerm;
+
+        noMessagesFound.style.display = found ? "none" : "block";
+
+        // Need to call this again, otherwise the noMessagesFound element will
+        // somehow screw up the message info heights when the search is cleared.
+        // (Removing all code related to the noMessagesFound fixes the issue, 
+        // and would avoid needing to call this function again)
+        setMessageInfoHeight(); 
+
+        scrollToBottom();
+    });
+}
+
+function highlightText(element, searchTerm) {
+    const originalText = element.textContent;
+    const regex = new RegExp(`(${searchTerm})`, "gi");
+    const highlightedHTML = originalText.replace(regex, '<span class="highlight">$1</span>');
+
+    element.innerHTML = highlightedHTML;
+}
+
+window.addEventListener("load", setupSearch);
 
 
+
+
+// --- SCROLLING ---
+// TODO: Refactor this into just two functions, one for getting new messages, and one for updating the info bubbles.
+let autoScrollEnabled = true;
+
+function scrollToBottom() {
+    const chatFeed = document.querySelector(".chat-feed");
+    chatFeed.scrollTop = chatFeed.scrollHeight;
+}
+
+function handleScroll() {
+    const chatFeed = document.querySelector(".chat-feed");
+    const scrollToBottomButton = document.getElementById("scroll-to-bottom");
+
+    if (!chatFeed) return;
+
+    const isAtBottom = Math.abs(chatFeed.scrollHeight - chatFeed.scrollTop - chatFeed.clientHeight) < 5;
+
+    if (isAtBottom) {
+        autoScrollEnabled = true;
+        if (scrollToBottomButton) {
+            scrollToBottomButton.style.display = "none";
+        }
+    } else {
+        autoScrollEnabled = false;
+        if (scrollToBottomButton) {
+            scrollToBottomButton.style.display = "block";
+        }
+    }
+}
+
+function setupScrollBehavior() {
+    const chatFeed = document.querySelector(".chat-feed");
+
+    if (chatFeed) {
+        chatFeed.addEventListener("scroll", handleScroll);
+    }
+}
+
+window.addEventListener("load", () => {
+    setupScrollBehavior();
+});
+
+
+
+
+// --- MESSAGE UPDATES ---
 const updateRate = 2_000;
-
-
-// Should only be called for player messages. Otherwise use CSS to select the correct icon
-function getPlayerProfilePicObj(sender_uuid) {
-    // For if we ever add Discord sender PFPs
-    // if (messageType === "discord") {
-    //     const discordProfilePic = document.createElement("img");
-    //     discordProfilePic.className = "profile-pic";
-    //     discordProfilePic.src = "";
-
-    //     return discordProfilePic;
-
-    // } else 
-    const profilePic = document.createElement("img");
-    profilePic.className = "profile-pic";
-    profilePic.src = "/api/player_face/" + sender_uuid;
-
-    return profilePic;
-}
-
-function messageBolder(message, messageType) {
-    switch (messageType) {
-        case "join":
-        case "quit":
-        case "death":
-        case "status":
-            return message.replace(/^(\w+)/, "<b>$1</b>");
-        
-        case "advancement":
-            return message
-                .replace(/^(\w+)/, "<b>$1</b>")
-                .replace(/(\[.*\])/, "<b>$1</b>");
-        default:
-            return message;
-    }
-}
-
-
-function formatEpochTime(epochTime) {
-    const now = Date.now();
-    const diffInMs = now - epochTime;
-    const diffInSeconds = Math.floor(diffInMs / 1000);
-
-    if (diffInSeconds < 60) {
-        return "Now";
-    }
-
-    const diffInMinutes = Math.floor(diffInSeconds / 60);
-    if (diffInMinutes < 60) {
-        return `${diffInMinutes}m`;
-    }
-
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    if (diffInHours < 24) {
-        return `${diffInHours}h`;
-    }
-
-    const date = new Date(epochTime);
-    return date.toISOString().split("T")[0];
-}
-
 
 class Message {
     /**
@@ -110,6 +132,62 @@ class Message {
     }
 }
 
+function getPlayerProfilePicObj(sender_uuid) {
+    // For if we ever add Discord sender PFPs
+    // if (messageType === "discord") {
+    //     const discordProfilePic = document.createElement("img");
+    //     discordProfilePic.className = "profile-pic";
+    //     discordProfilePic.src = "";
+
+    //     return discordProfilePic;
+
+    // } else 
+    const profilePic = document.createElement("img");
+    profilePic.className = "profile-pic";
+    profilePic.src = "/api/player_face/" + sender_uuid;
+
+    return profilePic;
+}
+
+function messageBolder(message, messageType) {
+    switch (messageType) {
+        case "join":
+        case "quit":
+        case "death":
+        case "status":
+            return message.replace(/^(\w+)/, "<b>$1</b>");
+        
+        case "advancement":
+            return message
+                .replace(/^(\w+)/, "<b>$1</b>")
+                .replace(/(\[.*\])/, "<b>$1</b>");
+        default:
+            return message;
+    }
+}
+
+function formatEpochTime(epochTime) {
+    const now = Date.now();
+    const diffInMs = now - epochTime;
+    const diffInSeconds = Math.floor(diffInMs / 1000);
+
+    if (diffInSeconds < 60) {
+        return "Now";
+    }
+
+    const diffInMinutes = Math.floor(diffInSeconds / 60);
+    if (diffInMinutes < 60) {
+        return `${diffInMinutes}m`;
+    }
+
+    const diffInHours = Math.floor(diffInMinutes / 60);
+    if (diffInHours < 24) {
+        return `${diffInHours}h`;
+    }
+
+    const date = new Date(epochTime);
+    return date.toISOString().split("T")[0];
+}
 
 function addMessage(messageObj) {
     const chatFeed = document.getElementsByClassName("chat-feed");  // Main message container
@@ -157,21 +235,30 @@ function addMessage(messageObj) {
     const messageContainer = document.createElement("div");
     messageContainer.className = "message-container";
     messageContainer.id = messageObj.id;
-    messageContainer.style.display = "flex"; // So we can hide messages on searches later
+
+    if (currentSearchTerm !== "") {
+        messageContainer.style.display = "none";
+    } else {
+        messageContainer.style.display = "flex";
+    }
 
     messageContainer.appendChild(messageInfo);
     messageContainer.appendChild(messageText);
 
 
-
-    // NOTE: newest messages will appear at the top. fix later if desired
+    // NOTE: if we add the ability to fetch older messages, we can't just append to the top
     chatFeed[0].appendChild(messageContainer);
-}
 
+
+    if (autoScrollEnabled) {
+        scrollToBottom();
+    }
+}
 
 // TODO: handle errors
 let firstLoad = true;
-function getNewMessages(oldest_message_id = 0) {
+function getNewMessages() {
+//function getNewMessages(oldestMessageId = 0) {
     const processMessages = (messages) => {
         for (const message of messages) {
             addMessage(new Message(
@@ -193,12 +280,13 @@ function getNewMessages(oldest_message_id = 0) {
                 firstLoad = false;
 
             });
-    } else if (oldest_message_id !== 0) {   // The user is scrolling and wants older messages (200 messages older than the current oldest message)
-        fetch(`/api/chat_messages?oldest_message_id=${oldest_message_id}`)
-            .then(response => response.json())
-            .then(data => {
-                processMessages(data);
-            });
+    // TODO: Add this feature
+    // } else if (oldestMessageId !== 0) {   // The user is scrolling and wants older messages (200 messages older than the current oldest message)
+    //     fetch(`/api/chat_messages?oldest_message_id=${oldest_message_id}`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             processMessages(data);
+    //         });
     } else {    // Standard update, get messages newer than the newest message  (limit to 200 messages)
         const messages = document.getElementsByClassName("message-container");
         const newestMessageID = messages[messages.length - 1]?.id;
@@ -213,7 +301,6 @@ function getNewMessages(oldest_message_id = 0) {
 getNewMessages();
 setInterval(getNewMessages, updateRate);
 
-
 function updateMessageTimestamps() {
     // Once messages are added, their timestamps are not magically updated.
     // This fixes that.
@@ -225,7 +312,6 @@ function updateMessageTimestamps() {
     }
 }
 setInterval(updateMessageTimestamps, 30_000);
-
 
 function updateInfoBubbles() {
     const messagesLoggedBubble = document.getElementById("message-count");
@@ -269,7 +355,8 @@ updateInfoBubbles();
 setInterval(updateInfoBubbles, updateRate);
 
 
-// Style stuff
+
+// --- STYLES ---
 function setMessageInfoHeight() {
     const messageContainers = document.querySelectorAll(".message-container");
 
@@ -288,6 +375,8 @@ window.addEventListener("load", setMessageInfoHeight);
 window.addEventListener("resize", setMessageInfoHeight);
 
 
+
+// --- TESTS ---
 // status
 // addMessage(new Message(
 //     1, 

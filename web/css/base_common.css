@@ -121,3 +121,17 @@
     }
 }
 
+
+/* Highlight text for searches */
+.highlight {
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+}
+
+.search-not-found-msg {
+    display: none;
+    text-align: center;
+    padding: 1em;
+    color: rgb(154, 154, 154);
+}

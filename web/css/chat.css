@@ -28,7 +28,7 @@
 
     /* TODO: Make min-width the length of the longest message-info/username.
     Also set a max length, so that if someone has a crazy name it doesnt overflow. */
-    min-width: 270px;
+    min-width: 290px;
     padding: 3px 5px 3px 3px;
     margin-right: 0.5em;
     border-radius: 10px;
@@ -37,6 +37,23 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
 
     box-sizing: border-box;
+}
+
+#scroll-to-bottom {
+    color: white;
+    background-color: rgb(0, 76, 255);
+    text-align: center;
+
+
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+
+    border: none ;
+    padding: 0.4em 0.8em;
+    border-radius: 10em;
+
+    cursor: pointer;
 }
 
 .message-info .profile-pic {
