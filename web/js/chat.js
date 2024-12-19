@@ -124,10 +124,34 @@ class Message {
 
         if (this.type === "chat") {
             this.profilePicObj = getPlayerProfilePicObj(sender_uuid); 
+        }
+        else if (this.type === "discord") {
+            this.profilePicObj = document.createElement("img");
+            this.profilePicObj.className = "profile-pic";
+
         } else {
-            this.profilePicObj = document.createElement("div");
-            this.profilePicObj.className = `info-icon ${this.type}`;
-            this.profilePicObj.dataset.messageType = this.type;
+            this.profilePicObj = document.createElement("span");
+            this.profilePicObj.className = "material-symbols-rounded";
+        
+            switch (this.type) {
+                case "join":
+                    this.profilePicObj.innerHTML = "login";
+                    break;
+                case "quit":
+                    this.profilePicObj.innerHTML = "logout";
+                    break;
+                case "advancement":
+                    this.profilePicObj.innerHTML = "trophy";
+                    break;
+                case "death":
+                    this.profilePicObj.innerHTML = "skull";
+                    break;
+                case "status":
+                    this.profilePicObj.innerHTML = "dns";
+                    break;
+                    
+            }
+        
         }
     }
 }
@@ -165,6 +189,22 @@ function messageBolder(message, messageType) {
             return message;
     }
 }
+
+function sanitizeMessage(message) {
+    const tempDiv = document.createElement('div');
+    
+    tempDiv.textContent = message;
+    
+    let sanitizedMessage = tempDiv.innerHTML;
+    
+    // Replace potential script tags with their HTML-encoded equivalents
+    sanitizedMessage = sanitizedMessage
+        .replace(/<script/gi, '&lt;script')
+        .replace(/<\/script>/gi, '&lt;/script&gt;');
+    
+    return sanitizedMessage;
+}
+
 
 function formatEpochTime(epochTime) {
     const now = Date.now();
@@ -225,6 +265,7 @@ function addMessage(messageObj) {
 
     // The actual message part
     // Message text
+    const sanitizedMessage = sanitizeMessage(messageObj.message);
     const messageText = document.createElement("div");
     messageText.className = "message-text";
     //messageText.innerHTML = messageObj.message;
@@ -377,7 +418,7 @@ window.addEventListener("resize", setMessageInfoHeight);
 
 
 // --- TESTS ---
-// status
+//status
 // addMessage(new Message(
 //     1, 
 //     "SERVER", 
@@ -412,7 +453,7 @@ window.addEventListener("resize", setMessageInfoHeight);
 //     4, 
 //     "besser", 
 //     "232014294303113216", 
-//     "something fruity. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. This message is very long, and wraps. ",  
+//     "This message is very long, and wraps.",  
 //     1734195037000, 
 //     "discord"
 // ));
@@ -447,7 +488,7 @@ window.addEventListener("resize", setMessageInfoHeight);
 //     "quit"
 // ));
 
-// tests
+// //tests
 // addMessage(new Message(
 //     8, 
 //     "SaxboyLaFranks", 

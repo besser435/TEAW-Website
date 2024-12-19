@@ -3,6 +3,9 @@ from werkzeug.exceptions import NotFound
 import sqlite3
 import traceback
 import time
+import bleach
+ALLOWED_TAGS = []
+ALLOWED_ATTRIBUTES = {}
 
 
 from config import TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR, log
@@ -136,9 +139,20 @@ def get_chat_messages():
                     LIMIT 400
                 """)
 
-            chat_messages = [dict(row) for row in cursor.fetchall()]
 
-        chat_messages.reverse() # TODO: might not be needed
+            chat_messages = []
+            for row in cursor.fetchall():
+                sanitized_message = bleach.clean(row["message"], tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
+                chat_messages.append({
+                    "id": row["id"],
+                    "sender": row["sender"],
+                    "sender_uuid": row["sender_uuid"],
+                    "message": sanitized_message,
+                    "timestamp": row["timestamp"],
+                    "type": row["type"],
+                })
+
+        chat_messages.reverse()
 
         return jsonify(chat_messages), 200
     except Exception:

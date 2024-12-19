@@ -17,10 +17,6 @@ switch (currentPath) {
         const mapLink = document.getElementById("map-link");
         mapLink.classList.add("active");
         break;
-    case "/wars":
-        const warsLink = document.getElementById("wars-link");
-        warsLink.classList.add("active");
-        break;
     case "/showcase":
         const showcaseLink = document.getElementById("showcase-link");
         showcaseLink.classList.add("active");
@@ -79,8 +75,6 @@ function updateStatus() {
                 const onlineCount = document.getElementById("online-count");
                 const minutesSinceUpdate = Math.floor((Date.now() - lastSuccessfulUpdate) / 60000);
                 onlineCount.textContent = `Offline for ${minutesSinceUpdate}m`;
-
-                //console.error(`Failed to fetch status: ${error}`);
             }
         });
 }
