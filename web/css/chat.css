@@ -17,7 +17,6 @@
     font-family: "Inter", sans-serif;
     margin-bottom: 10px;
     color: #FFFFFF
-    
 }
 
 .message-info {
@@ -26,8 +25,6 @@
     justify-content: flex-start;
     font-style: normal;
 
-    /* TODO: Make min-width the length of the longest message-info/username.
-    Also set a max length, so that if someone has a crazy name it doesnt overflow. */
     min-width: 290px;
     padding: 3px 5px 3px 3px;
     margin-right: 0.5em;
