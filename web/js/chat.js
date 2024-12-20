@@ -49,11 +49,8 @@ window.addEventListener("load", setupSearch);
 
 
 
-
 // --- SCROLLING ---
-// TODO: Refactor this into just two functions, one for getting new messages, and one for updating the info bubbles.
 let autoScrollEnabled = true;
-
 function scrollToBottom() {
     const chatFeed = document.querySelector(".chat-feed");
     chatFeed.scrollTop = chatFeed.scrollHeight;
@@ -94,8 +91,7 @@ window.addEventListener("load", () => {
 
 
 
-
-// --- MESSAGE UPDATES ---
+// --- MESSAGE HELPERS ---
 const updateRate = 2_000;
 
 class Message {
@@ -128,6 +124,7 @@ class Message {
         else if (this.type === "discord") {
             this.profilePicObj = document.createElement("img");
             this.profilePicObj.className = "profile-pic";
+            this.profilePicObj.src = "/imgs/discord.svg";
 
         } else {
             this.profilePicObj = document.createElement("span");
@@ -149,9 +146,7 @@ class Message {
                 case "status":
                     this.profilePicObj.innerHTML = "dns";
                     break;
-                    
             }
-        
         }
     }
 }
@@ -205,7 +200,6 @@ function sanitizeMessage(message) {
     return sanitizedMessage;
 }
 
-
 function formatEpochTime(epochTime) {
     const now = Date.now();
     const diffInMs = now - epochTime;
@@ -229,6 +223,9 @@ function formatEpochTime(epochTime) {
     return date.toISOString().split("T")[0];
 }
 
+
+
+// --- MESSAGE UPDATES ---
 function addMessage(messageObj) {
     const chatFeed = document.getElementsByClassName("chat-feed");  // Main message container
 
@@ -296,7 +293,6 @@ function addMessage(messageObj) {
     }
 }
 
-// TODO: handle errors
 let firstLoad = true;
 function getNewMessages() {
 //function getNewMessages(oldestMessageId = 0) {
@@ -415,115 +411,3 @@ function setMessageInfoHeight() {
 window.addEventListener("load", setMessageInfoHeight);
 window.addEventListener("resize", setMessageInfoHeight);
 
-
-
-// --- TESTS ---
-//status
-// addMessage(new Message(
-//     1, 
-//     "SERVER", 
-//     "null", 
-//     "TEAW has started!",
-//     Date.now(),
-//     "status"
-// ));
-
-// // join
-// addMessage(new Message(
-//     2, 
-//     "SERVER", 
-//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
-//     "SaxboyLaFranks joined the game",  
-//     1734180577000, 
-//     "join"
-// ));
-
-// // chat
-// addMessage(new Message(
-//     3, 
-//     "SaxboyLaFranks", 
-//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
-//     "it was for morale boost!",  
-//     1734194977000, 
-//     "chat"
-// ));
-
-// // discord
-// addMessage(new Message(
-//     4, 
-//     "besser", 
-//     "232014294303113216", 
-//     "This message is very long, and wraps.",  
-//     1734195037000, 
-//     "discord"
-// ));
-
-// // advancement
-// addMessage(new Message(
-//     5, 
-//     "SERVER", 
-//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
-//     "SaxboyLaFranks has made the advancement [Monster Hunter]",
-//     1734138565720,
-//     "advancement"
-// ));
-
-// // death
-// addMessage(new Message(
-//     6, 
-//     "SERVER", 
-//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
-//     "SaxboyLaFranks was slain by Zombie",
-//     1734138565720,
-//     "death"
-// ));
-
-// // quit
-// addMessage(new Message(
-//     7, 
-//     "SERVER", 
-//     "5663c72f-18c5-4012-b28c-78784c2ca736", 
-//     "SaxboyLaFranks left the game",
-//     1734138565720,
-//     "quit"
-// ));
-
-// //tests
-// addMessage(new Message(
-//     8, 
-//     "SaxboyLaFranks", 
-//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
-//     "HTML injection test <b>bold</b> <i>italic</i> <a href='https://google.com'>link</a> <img src='https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png'>",  
-//     1734194977000, 
-//     "chat"
-// ));
-
-// addMessage(new Message(
-//     9, 
-//     "SaxboyLaFranks", 
-//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
-//     "emoji rendering test \ud83d\ude14",  
-//     1734194977000, 
-//     "chat"
-// ));
-
-// addMessage(new Message(
-//     10, 
-//     "SaxboyLaFranks", 
-//     "6c7ab286-3ea3-42b4-af47-55376c963d92", 
-//     "control char rendering test \"real\" \"fake\"",  
-//     Date.now() - 58_000, 
-//     "chat"
-// ));
-
-// // scroll test
-// for (let i = 8; i < 100; i++) {
-//     addMessageToChatFeed(new Message(
-//         i, 
-//         "SERVER", 
-//         "5663c72f-18c5-4012-b28c-78784c2ca736", 
-//         "SaxboyLaFranks left the game",
-//         1734138565720,
-//         "quit"
-//     ));
-// }

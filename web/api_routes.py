@@ -4,14 +4,14 @@ import sqlite3
 import traceback
 import time
 import bleach
-ALLOWED_TAGS = []
-ALLOWED_ATTRIBUTES = {}
-
 
 from config import TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR, log
 
 
 api_routes = Blueprint("api_blueprint", __name__)
+
+ALLOWED_TAGS = []
+ALLOWED_ATTRIBUTES = {}
 
 
 # NOTE: Routes only return the required data for each page, not every column in the database.
@@ -139,9 +139,9 @@ def get_chat_messages():
                     LIMIT 400
                 """)
 
-
             chat_messages = []
-            for row in cursor.fetchall():
+
+            for row in cursor.fetchall():   # TODO: needs further testing
                 sanitized_message = bleach.clean(row["message"], tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
                 chat_messages.append({
                     "id": row["id"],
