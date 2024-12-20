@@ -1,3 +1,4 @@
+// --- SEARCH ---
 let currentSearchTerm = "";
 function setupSearch() {
     const searchInput = document.getElementById("chat-search");
@@ -124,7 +125,7 @@ class Message {
         else if (this.type === "discord") {
             this.profilePicObj = document.createElement("img");
             this.profilePicObj.className = "profile-pic";
-            this.profilePicObj.src = "/imgs/discord-mark.svg";
+            this.profilePicObj.src = "/imgs/discord_mark.svg";
 
         } else {
             this.profilePicObj = document.createElement("span");

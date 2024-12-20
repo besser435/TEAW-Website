@@ -1,6 +1,6 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, abort
 import requests
-import json
+import traceback
 import datetime
 
 from config import log
@@ -57,15 +57,23 @@ def towns():
 def map():
     return render_template("map.html")
 
-@template_routes.route("/wars")
-def wars():
-    return render_template("wars.html")
-
 @template_routes.route("/showcase")
 def showcase():
     return render_template("showcase.html")
 
-@template_routes.route("/error")
-def error(code):
-    return render_template("error.html")
 
+@template_routes.app_errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html", error_message="Page not found", error_code=404), 404
+
+@template_routes.app_errorhandler(500)
+def internal_server_error(e):
+    return render_template("error.html", error_message="Internal server error", error_code=500), 500
+
+@template_routes.errorhandler(Exception)
+def handle_all_errors(e):
+    log.error(traceback.format_exc())
+    error_code = getattr(e, "code", 500)
+    error_message = "An unexpected error occurred"
+
+    return render_template("error.html", error_message=error_message, error_code=error_code), error_code

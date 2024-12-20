@@ -48,7 +48,7 @@ body {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    overflow-y: scroll; /* BUG: shitfuck  */
+    overflow-y: scroll; /* BUG: messes up scrollbars  */
 
     font-family: Arial, sans-serif; /* Default/fallback */
 
@@ -170,6 +170,7 @@ nav a.nav-logo {
 
 
 /* Main Content */
+/* BUG: messes up scrollbars  */
 .main-content {
     flex: 1 0 auto;
     padding-inline: 1em;
