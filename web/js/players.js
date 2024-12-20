@@ -56,13 +56,8 @@ class Player {
         this.text_status = getStatusText(this);
         this.last_online = last_online;
         this.status = status;
-        
+
         this.playerSkin = getPlayerSkin(this.uuid);
-    }
-
-
-    updateScore(newScore) {
-        this.score = newScore;
     }
 }
 
@@ -88,8 +83,11 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     playerDetails.className = "player-details";
 
     // Status text
-    const statusDuration = document.createElement("p");
-    playerDetails.appendChild(statusDuration);
+    const textStatus = document.createElement("p");
+    //textStatus.textContent = playerObj.text_status;
+    textStatus.textContent = "Last online 2 hours ago";
+    playerDetails.appendChild(textStatus);
+
 
     // Nation and town (doing it this way prevents HTML injection)
     // Probably can just clean it in the API to avoid this (is it even possible to inject HTML from Towny?)
@@ -98,14 +96,23 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     nationLabel.textContent = "Nation: ";
     nationName.appendChild(nationLabel);
     nationName.appendChild(document.createTextNode(playerObj.nation_name));
-    playerDetails.appendChild(nationName);
     
+    // delete this if we want to keep the "none" text
+    // conditional doesnt work for some reason
+    //if (!playerObj.nation_name == "none") {
+        playerDetails.appendChild(nationName);
+    //}
+
+
     const townName = document.createElement("p");
     const townLabel = document.createElement("b");
     townLabel.textContent = "Town: ";
     townName.appendChild(townLabel);
     townName.appendChild(document.createTextNode(playerObj.town_name));
-    playerDetails.appendChild(townName);
+
+    //if (!playerObj.town_name == "none") {
+        playerDetails.appendChild(townName);
+    //}
     
 
     // Status light
