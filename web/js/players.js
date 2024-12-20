@@ -73,14 +73,14 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     // Player skin
     card.appendChild(playerObj.playerSkin);
 
-    // Username
-    const name = document.createElement("h3");
-    name.textContent = playerObj.name;
-    card.appendChild(name);
-
 
     const playerDetails = document.createElement("div");
     playerDetails.className = "player-details";
+
+    // Username
+    const name = document.createElement("h3");
+    name.textContent = playerObj.name;
+    playerDetails.appendChild(name);
 
     // Status text
     const textStatus = document.createElement("p");
