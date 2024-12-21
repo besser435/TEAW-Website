@@ -81,7 +81,13 @@ def get_all_players():
                         ELSE 'offline'
                     END AS status
                 FROM players
-                ORDER BY status, last_online DESC, name
+                ORDER BY    -- Online first, then AFK, then offline.
+                    CASE 
+                        WHEN online_duration > 0 AND afk_duration = 0 THEN 1
+                        WHEN online_duration > 0 AND afk_duration > 0 THEN 2
+                        ELSE 3
+                    END,
+                    last_online DESC  -- Most recent within each status group
             """)
             
             players = [dict(row) for row in cursor.fetchall()]
@@ -90,7 +96,6 @@ def get_all_players():
     except Exception:
         log.error(f"Internal error getting `players`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
-
 
 
 @api_routes.route("/api/towns")

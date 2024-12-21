@@ -53,15 +53,16 @@ class Player {
         this.afk_duration = afk_duration;
         this.town_name = town_name || "none";
         this.nation_name = nation_name || "none";
-        this.text_status = getStatusText(this);
-        this.last_online = last_online;
         this.status = status;
-
+        this.last_online = last_online;
+        
+        this.text_status = getStatusText(this);
         this.playerSkin = getPlayerSkin(this.uuid);
     }
+
 }
 
-
+// rather than creating seperate function, this one should also update player cards if the card already exist
 function addPlayerCard(playerObj) { // Adds a player card to the grid
     const playerGrid = document.querySelector(".player-grid");  // Main player container
 
@@ -84,8 +85,8 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
 
     // Status text
     const textStatus = document.createElement("p");
-    //textStatus.textContent = playerObj.text_status;
-    textStatus.textContent = "Last online 2 hours ago";
+    textStatus.textContent = playerObj.text_status;
+    //textStatus.textContent = "Last online 2 hours ago";
     playerDetails.appendChild(textStatus);
 
 
@@ -103,7 +104,6 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
         playerDetails.appendChild(nationName);
     //}
 
-
     const townName = document.createElement("p");
     const townLabel = document.createElement("b");
     townLabel.textContent = "Town: ";
@@ -118,8 +118,19 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     // Status light
     const statusLight = document.createElement("div");
     statusLight.className = "status-light";
-    statusLight.setAttribute("data-state", "red");
+    switch (playerObj.status) {
+        case "online":
+            statusLight.setAttribute("data-state", "green");
+            break;
+        case "afk":
+            statusLight.setAttribute("data-state", "yellow");
+            break;
+        case "offline":
+            statusLight.setAttribute("data-state", "off");
+            break;
+    }
 
+    console.log(playerObj.status);
 
     card.appendChild(playerDetails);
     card.appendChild(statusLight);
