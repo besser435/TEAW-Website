@@ -148,7 +148,7 @@ def get_chat_messages():
 
             chat_messages = []
 
-            for row in cursor.fetchall():   # TODO: needs further testing
+            for row in cursor.fetchall():   # Prevents HTML injection
                 sanitized_message = bleach.clean(row["message"], tags=ALLOWED_TAGS, attributes=ALLOWED_ATTRIBUTES)
                 chat_messages.append({
                     "id": row["id"],

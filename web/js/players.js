@@ -15,7 +15,7 @@ Then just update the data on the cards.
 */
 
 // --- HELPER FUNCTIONS --- 
-function getPlayerSkin(sender_uuid) {
+function getPlayerSkinObj(sender_uuid) {
     const profilePic = document.createElement("img");
     profilePic.className = "player-skin";
     profilePic.src = "/api/player_skin/" + sender_uuid;
@@ -23,19 +23,35 @@ function getPlayerSkin(sender_uuid) {
     return profilePic;
 }
 
-function formatEpochTime(duration) {    // Converts an epoch to a string like "1 hour" or "3 days"
-    return 1; // Placeholder
+function formatDuration(ms) {
+    const seconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+        return `${days} day${days > 1 ? 's' : ''}`;
+    } else if (hours > 0) {
+        return `${hours} hour${hours > 1 ? 's' : ''}`;
+    } else if (minutes > 0) {
+        return `${minutes} minute${minutes > 1 ? 's' : ''}`;
+    } else {
+        return `${seconds} second${seconds > 1 ? 's' : ''}`;
+    }
 }
 
-
-// "AFK for 38 minutes", "Online for 2 hours", or "Last online 2 days ago"
 function getStatusText(PlayerObj) {
     if (PlayerObj.status === "online") {
-        return `Online for ${formatEpochTime(PlayerObj.online_duration)}`;
+        const onlineDuration = PlayerObj.online_duration;
+        return `Online for ${formatDuration(onlineDuration)}`;
     } else if (PlayerObj.status === "afk") {
-        return `AFK for ${formatEpochTime(PlayerObj.afk_duration)}`;
+        const afkDuration = PlayerObj.afk_duration;
+        return `AFK for ${formatDuration(afkDuration)}`;
     } else if (PlayerObj.status === "offline") {
-        return `Last online ${formatEpochTime(PlayerObj.last_online)} ago`;
+        const lastOnline = PlayerObj.last_online;
+        const timeNow = Date.now();
+        const durationSinceLastOnline = timeNow - lastOnline;
+        return `Last online ${formatDuration(durationSinceLastOnline)} ago`;
     }
 }
 
@@ -51,18 +67,17 @@ class Player {
         this.name = name;
         this.online_duration = online_duration;
         this.afk_duration = afk_duration;
-        this.town_name = town_name || "none";
-        this.nation_name = nation_name || "none";
+        this.town_name = town_name || null;
+        this.nation_name = nation_name || null;
         this.status = status;
         this.last_online = last_online;
         
         this.text_status = getStatusText(this);
-        this.playerSkin = getPlayerSkin(this.uuid);
+        this.playerSkin = getPlayerSkinObj(this.uuid);
     }
-
 }
 
-// rather than creating seperate function, this one should also update player cards if the card already exist
+// rather than creating separate function, this one should also update player cards if the card already exist
 function addPlayerCard(playerObj) { // Adds a player card to the grid
     const playerGrid = document.querySelector(".player-grid");  // Main player container
 
@@ -73,7 +88,6 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
 
     // Player skin
     card.appendChild(playerObj.playerSkin);
-
 
     const playerDetails = document.createElement("div");
     playerDetails.className = "player-details";
@@ -89,7 +103,6 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     //textStatus.textContent = "Last online 2 hours ago";
     playerDetails.appendChild(textStatus);
 
-
     // Nation and town (doing it this way prevents HTML injection)
     // Probably can just clean it in the API to avoid this (is it even possible to inject HTML from Towny?)
     const nationName = document.createElement("p");
@@ -97,22 +110,15 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     nationLabel.textContent = "Nation: ";
     nationName.appendChild(nationLabel);
     nationName.appendChild(document.createTextNode(playerObj.nation_name));
+    playerObj.nation_name ? playerDetails.appendChild(nationName) : null;
     
-    // delete this if we want to keep the "none" text
-    // conditional doesnt work for some reason
-    //if (!playerObj.nation_name == "none") {
-        playerDetails.appendChild(nationName);
-    //}
 
     const townName = document.createElement("p");
     const townLabel = document.createElement("b");
     townLabel.textContent = "Town: ";
     townName.appendChild(townLabel);
     townName.appendChild(document.createTextNode(playerObj.town_name));
-
-    //if (!playerObj.town_name == "none") {
-        playerDetails.appendChild(townName);
-    //}
+    playerObj.town_name ? playerDetails.appendChild(townName) : null;
     
 
     // Status light
@@ -130,14 +136,10 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
             break;
     }
 
-    console.log(playerObj.status);
-
     card.appendChild(playerDetails);
     card.appendChild(statusLight);
     playerGrid.appendChild(card);
 }
-
-
 
 async function initializePlayers() { // Create all player cards on page load
     const players = await getPlayers();
