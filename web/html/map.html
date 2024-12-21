@@ -8,8 +8,27 @@
     <a href="https://map.toendallwars.org" target="_blank" class="header-button">Open in New Tab</a>
 </div>
 
-<!-- Takes a while to load, add placeholder that is the same size as the iframe, then delete it when the map starts to load -->
-<!-- Height is card coded, fix -->
-<iframe src="https://map.toendallwars.org" width="100%" height="1000px" style="border: none; border-radius: 16px;"></iframe>
+<!-- Takes a while to load, which is why we have the placeholder -->
+<div class="placeholder"><iframe width=100% height=100% src="https://map.toendallwars.org" ></iframe></div>
+
+
+<style>
+    .placeholder {
+        background-color: black;
+        background-size: cover;
+        background-position: center;
+        background-image: url("/imgs/loading.svg");
+
+        border-radius: 16px;
+
+        width: 100%;
+        height: 90%;
+    }
+
+    iframe {
+        border: none;
+        border-radius: 16px;
+    }
+</style>
 
 {% endblock %}
