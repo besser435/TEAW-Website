@@ -142,6 +142,31 @@ def get_stat(player_uuid, category, stat_key):
 
         result = cursor.fetchone()
         return result[0] if result else None
+    
+
+def insert_player(
+    uuid, name, online_duration=0, afk_duration=0, balance=0.0, 
+    title=None, town=None, town_name=None, nation=None, 
+    nation_name=None, last_online=None, db_file=TEAW_DB_FILE
+):
+    
+    with sqlite3.connect(db_file) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT OR REPLACE INTO players (
+                uuid, name, online_duration, afk_duration, balance, title, 
+                town, town_name, nation, nation_name, last_online
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            uuid, name, online_duration, afk_duration, balance, title, 
+            town, town_name, nation, nation_name, last_online
+        ))
+        
+        conn.commit()
+
+    print(f"Inserted or updated player: {name} ({uuid})")
 
 
 # DB performance might get slow once we get in the hundreds of thousands range, as we often
@@ -154,5 +179,20 @@ def archive_chat_table(db_file=TEAW_DB_FILE):
 
 
 if __name__ == "__main__":
-    create_teaw_tables()
+    #create_teaw_tables()
+
+
+    insert_player(
+        uuid="cbb82a16-fbb8-44ab-b201-5db723494ede", name="josamo8",
+        online_duration=0, afk_duration=0, balance=0.0,
+        title="", town="", town_name="", nation="",
+        nation_name="", last_online=1704517074000
+    )
+
+    insert_player(
+        uuid="75418e9c-34ef-4926-af64-96d98d10954c", name="brandonusa",
+        online_duration=0, afk_duration=0, balance=0.0,
+        title="Cowgirl", town="", town_name="", nation="",
+        nation_name="", last_online=1704530881000
+    )
 
