@@ -92,7 +92,7 @@ if __name__ == "__main__":  # autism
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting
 
-        log.info(f"Connection timed out. {e}")
+        log.info(f"Connection timed out.")
 
         time.sleep(30)
 

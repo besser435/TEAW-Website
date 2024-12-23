@@ -1,5 +1,7 @@
 import os
 from flask import Flask
+from flask_cors import CORS
+
 import os
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
@@ -12,6 +14,7 @@ from config import log
 log.info("---- Starting TEAW Webserver ----")
 
 app = Flask(__name__, template_folder="html", static_folder="")  # Tell Flask `static` is the current directory
+CORS(app, resources={r"/*": {"origins": "https://usa-industries.net"}})
 
 app.register_blueprint(template_routes)
 app.register_blueprint(api_routes)

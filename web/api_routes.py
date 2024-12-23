@@ -87,14 +87,55 @@ def get_all_players():
                         WHEN online_duration > 0 AND afk_duration > 0 THEN 2
                         ELSE 3
                     END,
-                    last_online DESC  -- Most recent within each status group
+                    CASE 
+                        WHEN online_duration > 0 AND afk_duration = 0 THEN -online_duration
+                        ELSE last_online
+                    END DESC
             """)
-            
             players = [dict(row) for row in cursor.fetchall()]
 
         return jsonify(players), 200
     except Exception:
         log.error(f"Internal error getting `players`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+
+
+@api_routes.route("/api/uuid_to_name/<uuid>")
+def get_name_from_uuid(uuid):
+    try:
+        with sqlite3.connect(TEAW_DB_FILE) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT name FROM players WHERE uuid = ?", (uuid,))
+            result = cursor.fetchone()
+
+        if result:
+            return result[0], 200
+        else:
+            return "player not found", 404
+    except Exception:
+        log.error(f"Internal error getting `uuid_to_name`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+
+
+@api_routes.route("/api/fishing_leaderboard")
+def get_fishing_leaderboard():
+    try:
+        with sqlite3.connect(STATS_DB_FILE) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT player_uuid, stat_value
+                FROM player_statistics
+                WHERE category = 'general' AND stat_key = 'FISH_CAUGHT'
+                ORDER BY stat_value DESC
+                LIMIT 10
+            """)
+            leaderboard = [{"uuid": row[0], "fish_caught": row[1]} for row in cursor.fetchall()]
+
+        return jsonify(leaderboard), 200
+    except Exception:
+        log.error(f"Internal error getting `fishing_leaderboard`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
 
