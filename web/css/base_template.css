@@ -74,6 +74,7 @@ nav {
     top: 0;
     z-index: 20;
     background-image: linear-gradient(#000000ff, #00000077 75%, #00000000);
+    flex-wrap: nowrap;
 }
 
 nav::before {
@@ -132,6 +133,37 @@ nav a.nav-logo {
     margin-right: 20px;
 }
 
+@media (max-width: 950px) {
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        position: static;
+        gap: 0.6em;
+    }
+
+    nav a:not(.nav-logo), .header-button {
+        margin-inline: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    .online-players {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    nav a.nav-logo {
+        margin: 0px;
+        scale: 0.8;
+    }
+
+    nav::before {
+        height: 48px;
+    }
+}
+
 
 /* Online Players Indicator */
 .online-players {
@@ -172,6 +204,15 @@ nav a.nav-logo {
     margin-inline: 20px;
 }
 
+@media (max-width: 950px) {
+    .header h1 {
+        font-size: 1.6em;
+    }
+
+    .header h3 {
+        font-size: 1.2em;
+    }
+}
 
 /* Main Content */
 /* BUG: messes up scrollbars  */
