@@ -144,6 +144,27 @@ def get_stat(player_uuid, category, stat_key):
         return result[0] if result else None
     
 
+def colon_three_leaderboard():
+    with sqlite3.connect(TEAW_DB_FILE) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT 
+                sender_uuid,
+                SUM(
+                    (LENGTH(message) - 
+                    LENGTH(REPLACE(LOWER(message), ':3', ''))) / 2
+                ) as total_count
+            FROM chat
+            WHERE sender_uuid IS NOT NULL
+            GROUP BY sender_uuid
+            HAVING total_count > 0
+            ORDER BY total_count DESC
+        """)
+
+        result = cursor.fetchall()
+        return result
+
 def insert_player(
     uuid, name, online_duration=0, afk_duration=0, balance=0.0, 
     title=None, town=None, town_name=None, nation=None, 
@@ -182,17 +203,7 @@ if __name__ == "__main__":
     #create_teaw_tables()
 
 
-    insert_player(
-        uuid="cbb82a16-fbb8-44ab-b201-5db723494ede", name="josamo8",
-        online_duration=0, afk_duration=0, balance=0.0,
-        title="", town="", town_name="", nation="",
-        nation_name="", last_online=1704517074000
-    )
-
-    insert_player(
-        uuid="75418e9c-34ef-4926-af64-96d98d10954c", name="brandonusa",
-        online_duration=0, afk_duration=0, balance=0.0,
-        title="Cowgirl", town="", town_name="", nation="",
-        nation_name="", last_online=1704530881000
-    )
+    # pretty print the colon three leaderboard
+    for i, (uuid, count) in enumerate(colon_three_leaderboard()):
+        print(f"{i + 1}. {uuid} - {count}")
 

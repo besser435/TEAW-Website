@@ -109,15 +109,14 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     const nationLabel = document.createElement("b");
     nationLabel.textContent = "Nation: ";
     nationName.appendChild(nationLabel);
-    nationName.appendChild(document.createTextNode(playerObj.nation_name));
+    nationName.appendChild(document.createTextNode(playerObj.nation_name?.replace(/_/g, " ")));
     playerObj.nation_name ? playerDetails.appendChild(nationName) : null;
     
-
     const townName = document.createElement("p");
     const townLabel = document.createElement("b");
     townLabel.textContent = "Town: ";
     townName.appendChild(townLabel);
-    townName.appendChild(document.createTextNode(playerObj.town_name));
+    townName.appendChild(document.createTextNode(playerObj.town_name?.replace(/_/g, " ")));
     playerObj.town_name ? playerDetails.appendChild(townName) : null;
     
 
@@ -134,6 +133,11 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
         case "offline":
             statusLight.setAttribute("data-state", "off");
             break;
+    }
+
+    if (playerObj.name === "josamo8") {
+        statusLight.setAttribute("data-state", "red");
+        statusLight.setAttribute("data-pulse", "true");
     }
 
     card.appendChild(playerDetails);

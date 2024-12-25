@@ -8,6 +8,7 @@
 - [ ] Finish SW stuff for PWA compatibility (just needs an image I think)
 - [ ] Add image to base.html for embed
 - [ ] Remove towns and nations that no longer exist in db_updater.py
+- [ ] Put the project in a venv
 
 ## Git guidelines
 There are two branches, `prod` and `dev`. The default is `dev`, and where any changes should be made. 
