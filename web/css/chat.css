@@ -51,6 +51,13 @@
     border-radius: 10em;
 
     cursor: pointer;
+    
+    transition: background-color 0.3s, outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#scroll-to-bottom:hover {
+    background-color: #0056b3;
 }
 
 .message-info .profile-pic {

@@ -61,6 +61,10 @@ def map():
 def showcase():
     return render_template("showcase.html")
 
+@template_routes.route("/showcase/submit")
+def showcase_submit():
+    return render_template("showcase_submit.html")
+
 
 @template_routes.app_errorhandler(404)
 def page_not_found(e):
