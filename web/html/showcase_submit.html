@@ -11,9 +11,12 @@
 
 <div class="showcase-form-container">
     <form id="showcase-form" enctype="multipart/form-data">
-        <input type="text" id="photo-title" name="photo-title" placeholder="Photo Title" required>
-        <input type="date" id="photo-date" name="photo-date" placeholder="Photo Date (YYYY-MM-DD)" required>
-        <input type="text" id="photographer" name="photographer" placeholder="Photographer (in-game name)" required>
+        <label for="photo-title">Photo Title</label>
+        <input type="text" id="photo-title" name="photo-title" placeholder="Title" required>
+        <label for="photo-date">Photo Date</label>
+        <input type="date" id="photo-date" name="photo-date" required>
+        <label for="photographer">Photographer (in-game-name)</label>
+        <input type="text" id="photographer" name="photographer" placeholder="Username" required>
         
         <div class="file-upload-container">
             <label for="photo-file" class="upload-button">Upload image</label>

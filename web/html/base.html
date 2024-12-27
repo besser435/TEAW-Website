@@ -26,6 +26,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
         
+        <!-- Google Icons -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu_book" />
+
         <!-- 
         TODO: Add umami analytics
         https://umami.is/docs/getting-started
@@ -83,10 +86,12 @@
         <footer class="footer">
             <p style="margin-top: 5px;">Version: {{ last_commit_date }}</p>
 
-            <a href="https://discord.com/invite/aNMhxynFS2" target="_blank">discord</a>
-            <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank">modpack</a>
-            <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank">wiki</a>
-            <a href="https://github.com/besser435/TEAW-Website" target="_blank">github</a>
+            <div class="footer-links">
+                <a href="https://discord.com/invite/aNMhxynFS2" target="_blank"><img src="/imgs/discord_mark.svg" height="20"></a>
+                <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank"><img src="/imgs/curseforge_mark.svg" height="17"></a>
+                <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank"><span class="material-symbols-outlined">menu_book</span></a>
+                <a href="https://github.com/besser435/TEAW-Website" target="_blank"><img src="/imgs/github_mark.svg" height="23"></a>
+            </div>
         </footer>
     </body>
 
