@@ -212,6 +212,10 @@ nav a.nav-logo {
     .header h3 {
         font-size: 1.2em;
     }
+
+    .separator {
+        height: 30px;
+    }
 }
 
 /* Main Content */
