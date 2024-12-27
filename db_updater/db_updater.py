@@ -156,7 +156,7 @@ def update_chat_table() -> None:
     log.debug(f"Chat table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
-def update_towns_table() -> None:   # TODO: Remove towns that no longer exist
+def update_towns_table() -> None:
     log.debug("Updating towns table...")
 
     with sqlite3.connect(DB_FILE) as conn:
@@ -168,6 +168,20 @@ def update_towns_table() -> None:   # TODO: Remove towns that no longer exist
             data = response.json()
             towns = data.get("towns", {})
 
+
+            # Purge towns that no longer exist
+            api_town_uuids = set(towns.keys())
+
+            cursor.execute("SELECT uuid FROM towns")
+            db_town_uuids = {row[0] for row in cursor.fetchall()}
+
+            towns_to_delete = db_town_uuids - api_town_uuids
+            if towns_to_delete:
+                cursor.executemany("DELETE FROM towns WHERE uuid = ?", [(uuid,) for uuid in towns_to_delete])
+                log.info(f"Removed {len(towns_to_delete)} towns no longer present in the API")
+
+
+            # Update/insert town data
             for town_uuid, town_data in towns.items():
                 resident_tax_percent = town_data.get("resident_tax_percent", 0.0)
                 is_active = town_data.get("is_active", False)
@@ -215,7 +229,7 @@ def update_towns_table() -> None:   # TODO: Remove towns that no longer exist
     log.debug(f"Towns table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
 
-def update_nations_table() -> None: # TODO: Remove nations that no longer exist
+def update_nations_table() -> None:
     log.debug("Updating nations table...")
 
     with sqlite3.connect(DB_FILE) as conn:
@@ -227,6 +241,20 @@ def update_nations_table() -> None: # TODO: Remove nations that no longer exist
             data = response.json()
             nations = data.get("nations", {})
 
+
+            # Purge nations that no longer exist
+            api_nation_uuids = set(nations.keys())
+
+            cursor.execute("SELECT uuid FROM nations")
+            db_nation_uuids = {row[0] for row in cursor.fetchall()}
+
+            nations_to_delete = db_nation_uuids - api_nation_uuids
+            if nations_to_delete:
+                cursor.executemany("DELETE FROM nations WHERE uuid = ?", [(uuid,) for uuid in nations_to_delete])
+                log.info(f"Removed {len(nations_to_delete)} nations no longer present in the API")
+
+
+            # Update/insert nation data
             for nation_id, nation_data in nations.items():
                 leader = nation_data.get("leader")
                 capitol_town = nation_data.get("capitol_town")
@@ -373,7 +401,7 @@ if __name__ == "__main__":
             print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Total time taken was {round((end_time - start_time) * 1000, 2)}ms")
 
             time.sleep(2)
-    except requests.exceptions.ConnectTimeout as e:
+    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect.
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting.
