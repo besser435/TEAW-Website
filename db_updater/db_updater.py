@@ -325,8 +325,8 @@ def update_skin_dir(type) -> None:
             if current_time - last_modified_time < SKIN_TTL_HOURS * 3600:
                 continue    # Skip if skin is still fresh
 
-        if type == "body": response = requests.get(BODY_SKIN_API_URL.format(uuid=uuid), timeout=5)
-        elif type == "face": response = requests.get(FACE_SKIN_API_URL.format(uuid=uuid), timeout=5)
+        if type == "body": response = requests.get(BODY_SKIN_API_URL.format(uuid=uuid), timeout=10)
+        elif type == "face": response = requests.get(FACE_SKIN_API_URL.format(uuid=uuid), timeout=10)
 
         if response.status_code == 200:
             with open(skin_path, "wb") as skin_file:

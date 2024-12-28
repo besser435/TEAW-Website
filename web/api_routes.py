@@ -4,8 +4,11 @@ import sqlite3
 import traceback
 import time
 import bleach
+import os
+import json
+import uuid
 
-from config import TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR, log
+from config import TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR, log, SHOWCASE_SUBMISSIONS_DIR
 
 
 api_routes = Blueprint("api_blueprint", __name__)
@@ -259,3 +262,60 @@ def get_player_face(uuid):
     except Exception:
         log.error(f"Internal error getting `player_face`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
+
+
+@api_routes.route("/api/submit_photo", methods=["POST"])
+def submit_build():
+    try:
+        os.makedirs(SHOWCASE_SUBMISSIONS_DIR, exist_ok=True)
+
+        photo_title = request.form.get("photo-title")
+        photo_date = request.form.get("photo-date")
+        photographer = request.form.get("photographer")
+
+        # Validate form data
+        if not photo_title or not photo_date or not photographer:
+            return jsonify({"error": "Missing required form data"}), 400
+
+        photo_file = request.files.get("photo-file")
+        if not photo_file:
+            return jsonify({"error": "No file provided"}), 400
+
+        if len(photo_file.read()) > 10 * 1024 * 1024:  # 10 MB limit
+            return jsonify({"error": "File size exceeds limit"}), 400
+        photo_file.seek(0)
+
+        # Clean the file name
+        extension = os.path.splitext(photo_file.filename)[1].lower()
+        sanitized_title = photo_title.replace(" ", "_").strip()
+        file_name = f"{sanitized_title}_{photo_date}{extension}"
+
+        # Ensure folder name is unique
+        base_folder_name = f"{sanitized_title}_{photo_date}".strip()
+        folder_name = base_folder_name
+        folder_path = os.path.join(SHOWCASE_SUBMISSIONS_DIR, folder_name)
+        while os.path.exists(folder_path):
+            folder_name = f"{base_folder_name}_{uuid.uuid4().hex[:8]}"  # autism but it works
+            folder_path = os.path.join(SHOWCASE_SUBMISSIONS_DIR, folder_name)
+
+        os.makedirs(folder_path, exist_ok=True)
+
+        # Save the image and metadata
+        image_metadata = {
+            "photo_title": photo_title,
+            "photo_date": photo_date,
+            "photographer": photographer,
+            "img_src": f"showcase_imgs/{file_name}"
+        }
+        with open(os.path.join(folder_path, "data.json"), "w") as json_file:
+            json.dump(image_metadata, json_file, indent=4)
+
+        photo_file_path = os.path.join(folder_path, file_name)
+        photo_file.save(photo_file_path)
+
+        log.info(f"Submission saved in folder: {folder_name}")
+
+        return jsonify({"message": "Submission successful"}), 200
+    except Exception:
+        log.error(f"Error processing showcase submission: {traceback.format_exc()}")
+        return jsonify({"error": "Internal server error"}), 500
