@@ -25,12 +25,12 @@ https://user-images.githubusercontent.com/613943/204413553-4ad63bb2-50eb-4f17-a0
 
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px;
-    padding: 10px;
+    padding: 8px 10px;
 
     margin-bottom: 10px;
 
     overflow-y: scroll;
-    max-height: 50vh;
+    height: calc(100vh - 270px);
 }
 
 .player-card {

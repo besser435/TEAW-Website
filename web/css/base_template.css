@@ -55,19 +55,20 @@ body {
     padding: 0px;
     margin: 0px;
 
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    gap: 0;
+    grid-template-rows: 70px auto 60px;
 }
 
 body::before {
     z-index: -5;
 }
 
-
 /* Navbar */
 nav {
     padding: 1em 1em 0.5em 1em;
     display: flex;
+    height: 50px;
     justify-content: flex-start;
     align-items: center;
     position: sticky;
@@ -216,12 +217,23 @@ nav a.nav-logo {
     .separator {
         height: 30px;
     }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    nav { 
+        height: fit-content;
+    }
 }
 
 /* Main Content */
 /* BUG: messes up scrollbars  */
 .main-content {
-    flex: 1 0 auto;
+    display: grid;
+    gap: 0;
+    grid-template-rows: 70px auto 35px;
     padding-inline: 1em;
     /* overflow-y: scroll; */
 }
