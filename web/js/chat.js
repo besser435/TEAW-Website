@@ -28,12 +28,6 @@ function setupSearch() {
 
         noMessagesFound.style.display = found ? "none" : "block";
 
-        // Need to call this again, otherwise the noMessagesFound element will
-        // somehow screw up the message info heights when the search is cleared.
-        // (Removing all code related to the noMessagesFound fixes the issue, 
-        // and would avoid needing to call this function again)
-        setMessageInfoHeight(); 
-
         scrollToBottom();
     });
 }
@@ -316,7 +310,6 @@ function getNewMessages() {
             .then(data => {
                 processMessages(data);
                 firstLoad = false;
-
             });
     // TODO: Add this feature
     // } else if (oldestMessageId !== 0) {   // The user is scrolling and wants older messages (200 messages older than the current oldest message)
@@ -391,24 +384,3 @@ function updateInfoBubbles() {
 }
 updateInfoBubbles();
 setInterval(updateInfoBubbles, updateRate);
-
-
-
-// --- STYLES ---
-function setMessageInfoHeight() {
-    const messageContainers = document.querySelectorAll(".message-container");
-
-    messageContainers.forEach(container => {
-        const messageInfo = container.querySelector(".message-info");
-        if (messageInfo) {
-            messageInfo.style.height = "auto";
-
-            const containerHeight = container.offsetHeight;
-
-            messageInfo.style.height = `${containerHeight}px`;
-        }
-    });
-}
-window.addEventListener("load", setMessageInfoHeight);
-window.addEventListener("resize", setMessageInfoHeight);
-

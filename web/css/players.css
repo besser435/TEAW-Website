@@ -3,6 +3,7 @@
 .player-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    /* grid-gap: 12px; */
     gap: 12px;
 
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -13,6 +14,8 @@
 
     overflow-y: scroll;
     height: calc(100vh - 270px);
+
+    align-content: start;
 }
 
 .player-card {
