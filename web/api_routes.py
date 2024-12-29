@@ -8,8 +8,8 @@ import os
 import json
 import uuid
 
-from config import TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR, log, SHOWCASE_SUBMISSIONS_DIR
-
+from config import log, TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR
+from config import SHOWCASE_SUBMISSIONS_DIR, SHOWCASE_IMAGES_DIR
 
 api_routes = Blueprint("api_blueprint", __name__)
 
@@ -305,7 +305,7 @@ def submit_build():
             "photo_title": photo_title,
             "photo_date": photo_date,
             "photographer": photographer,
-            "img_src": f"showcase_imgs/{file_name}"
+            "img_src": f"imgs/showcase_imgs/{file_name}"
         }
         with open(os.path.join(folder_path, "data.json"), "w") as json_file:
             json.dump(image_metadata, json_file, indent=4)
@@ -318,4 +318,29 @@ def submit_build():
         return jsonify({"message": "Submission successful"}), 200
     except Exception:
         log.error(f"Error processing showcase submission: {traceback.format_exc()}")
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": "internal error"}), 500
+    
+
+@api_routes.route("/api/showcase_manifest")
+def get_showcase_manifest():
+    try:
+        with open("../db/showcase_imgs/showcase_manifest.json", "r") as file:
+            return jsonify(json.load(file)), 200
+    except Exception:
+        log.error(f"Error getting `showcase_submissions`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+
+
+@api_routes.route("/api/showcase_img/<file_name>")
+def get_showcase_img(file_name):
+    try:
+
+        print(SHOWCASE_IMAGES_DIR, file_name)
+        return send_from_directory(SHOWCASE_IMAGES_DIR, file_name)
+    except NotFound:
+        print(traceback.format_exc())
+        return "not found", 404
+        
+    except Exception:
+        log.error(f"Internal error getting `showcase_img`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500

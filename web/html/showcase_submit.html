@@ -3,34 +3,37 @@
 {% block content %}
 
 <div class="header">
-    <h1>Player Build Showcase</h1>
+    <h1>Player Photo Showcase</h1>
 
     <div class="separator"></div>
-    <a href="" target="_blank" class="header-button active">Submit a Build</a>
+    <a href="" class="header-button active">Submit a Build</a>
 </div>
 
 <div class="showcase-form-container">
     <form id="showcase-form" enctype="multipart/form-data">
         <label for="photo-title">Photo Title</label>
-        <input type="text" id="photo-title" name="photo-title" placeholder="Title" required>
+        <input type="text" id="photo-title" name="photo-title" placeholder="Title" autocomplete="off" required>
+        
         <label for="photo-date">Photo Date</label>
-        <input type="date" id="photo-date" name="photo-date" required>
-        <label for="photographer">Photographer (in-game-name)</label>
-        <input type="text" id="photographer" name="photographer" placeholder="Username" required>
+        <input type="date" id="photo-date" name="photo-date" autocomplete="off" required>
+
+        <label for="photographer">Photographer (in-game name)</label>
+        <input type="text" id="photographer" name="photographer" placeholder="Username" autocomplete="off" required>
         
-        <div class="file-upload-container">
-            <label for="photo-file" class="upload-button">Upload image</label>
-            <input type="file" id="photo-file" name="photo-file" accept="image/*" required>
-        </div>
-        
+        <label for="photo-file">Image (10MB max)</label>
+        <input type="file" id="photo-file" name="photo-file" accept=".png,.webp,.jpg,.jpeg,.gif" required>
+    
         <button type="submit" id="submit-button">Submit</button>
     </form>
 
-    <div class="submission-message" id="submission-message">
+    <div class="submission-message" id="submission-message" hidden>
         Photo Submitted! <br> It will take us a few days to review your photo.
     </div>
+
+    <div class="submission-message" id="sending-message" hidden>Uploading...</div>
 </div>
 
 <link rel="stylesheet" type="text/css" href="/css/showcase_submit.css">
+<script src="/js/showcase_submit.js"></script>
 
 {% endblock %}

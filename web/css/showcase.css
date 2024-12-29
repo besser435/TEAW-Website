@@ -1,5 +1,12 @@
 /* Styles for the Showcase page */
 
+.main-content {
+    grid-template-rows: 70px auto;
+    display: unset;
+}
+
+
+
 .showcase-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(650px, 1fr));
@@ -31,6 +38,7 @@
     width: 100%;
     height: auto;
     border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .photo-info {
