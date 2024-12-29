@@ -131,4 +131,8 @@
     .message-info .timestamp {
         margin-left: auto;
     }
+
+    .message-text {
+        padding-top: 4px;
+    }
 }

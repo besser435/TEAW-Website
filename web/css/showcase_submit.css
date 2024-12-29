@@ -36,7 +36,8 @@ form button, .upload-button {  /* Copied from base_common.css .search  */
 
     border-radius: 2rem;
     height: 25px;
-    width: 250px;
+    /* width: 250px; */
+    width: 96%;
     padding: 2px 10px;
 
     transition: border-color 0.15s, box-shadow 0.15s;

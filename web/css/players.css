@@ -1,23 +1,5 @@
 /* Styles for the Players page */
 
-
-
-
-
-/* TODO: 
-Remove hard coded px values where appropriate 
-
-Use border radius formula for border-radius values (do this on other pages
-https://user-images.githubusercontent.com/613943/204413553-4ad63bb2-50eb-4f17-a019-f2f0c2bf7812.png
-
-
-
-*/
-
-
-
-
-
 .player-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
