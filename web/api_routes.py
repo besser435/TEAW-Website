@@ -24,7 +24,7 @@ def api():
     return "ok", 200
 
 
-@api_routes.route("/api/status")    # For status indicator in the navbar. Call every 2s
+@api_routes.route("/api/status")  # For status indicator in the navbar. Call every 2s
 def get_status():
     try:
         with sqlite3.connect(TEAW_DB_FILE) as conn:
@@ -49,17 +49,26 @@ def get_status():
         last_players_update = int(result.get("last_players_update", 0))
         last_chat_update = int(result.get("last_chat_update", 0))
 
-        current_time = int(time.time()) * 1000  # DB time is in ms
+        current_time = int(time.time()) * 1000
 
-        if (current_time - last_players_update < 15_000) and (current_time - last_chat_update < 15_000):
+        players_update_age = (current_time - last_players_update) // 60000
+        chat_update_age = (current_time - last_chat_update) // 60000
+
+        if players_update_age < 15 and chat_update_age < 15:
             status = "ok"
         else:
             status = "stale"
 
-        return dict(status=status, online_players=online_players_count), 200
+        return {
+            "status": status,
+            "online_players": online_players_count,
+            "last_players_update_age": players_update_age,
+            "last_chat_update_age": chat_update_age,
+        }, 200
     except Exception:
         log.error(f"Internal error getting `status`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
+
 
 
 @api_routes.route("/api/players")

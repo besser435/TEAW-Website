@@ -38,7 +38,6 @@ function chooseAlternateImage() {
 chooseAlternateImage();
 
 
-
 let failureCount = 0;
 let lastSuccessfulUpdate = Date.now();
 function updateStatus() {
@@ -50,8 +49,6 @@ function updateStatus() {
             return response.json();
         })
         .then(data => {
-            const currentTime = Date.now();
-
             const onlineCount = document.getElementById("online-count");
             const statusLight = document.getElementById("nav-status-light");
 
@@ -59,13 +56,13 @@ function updateStatus() {
                 statusLight.dataset.state = "green";
                 onlineCount.textContent = `${data.online_players} player${data.online_players === 1 ? '' : 's'} online`;
 
-                lastSuccessfulUpdate = currentTime;
                 failureCount = 0;
             } else {
                 statusLight.dataset.state = "red";
-
-                const minutesSinceUpdate = Math.floor((Date.now() - lastSuccessfulUpdate) / 60000);
-                onlineCount.textContent = `Last update ${minutesSinceUpdate}m ago`;
+                onlineCount.textContent = `Last update ${Math.max(
+                    data.last_players_update_age,
+                    data.last_chat_update_age
+                )}m ago`;
             }
         })
         .catch(error => {

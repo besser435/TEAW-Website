@@ -325,8 +325,8 @@ def update_skin_dir(type) -> None:
             if current_time - last_modified_time < SKIN_TTL_HOURS * 3600:
                 continue    # Skip if skin is still fresh
 
-        if type == "body": response = requests.get(BODY_SKIN_API_URL.format(uuid=uuid), timeout=10)
-        elif type == "face": response = requests.get(FACE_SKIN_API_URL.format(uuid=uuid), timeout=10)
+        if type == "body": response = requests.get(BODY_SKIN_API_URL.format(uuid=uuid), timeout=5)
+        elif type == "face": response = requests.get(FACE_SKIN_API_URL.format(uuid=uuid), timeout=5)
 
         if response.status_code == 200:
             with open(skin_path, "wb") as skin_file:
@@ -393,8 +393,11 @@ if __name__ == "__main__":
             update_nations_table()
             update_server_info_table()
 
-            update_skin_dir("body")
-            update_skin_dir("face")
+            try:
+                update_skin_dir("body")
+                update_skin_dir("face")
+            except Exception as e:  # Not super critical, sometimes the APIs go down
+                log.warning(f"Failed to update skins: {e}")
 
             end_time = time.time()
 
