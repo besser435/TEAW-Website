@@ -55,9 +55,8 @@ body {
     padding: 0px;
     margin: 0px;
 
-    display: grid;
-    gap: 0;
-    grid-template-rows: 70px auto 60px;
+    display: flex;
+    flex-direction: column;
 }
 
 body::before {
@@ -232,10 +231,10 @@ nav a.nav-logo {
 /* Main Content */
 /* BUG: messes up scrollbars  */
 .main-content {
-    display: grid;
-    gap: 0;
-    grid-template-rows: 70px auto 35px;
+    display: flex;
+    flex-direction: column;
     padding-inline: 1em;
+    margin-bottom: auto;
     /* overflow-y: scroll; */
 }
 

@@ -1,7 +1,7 @@
 /* Styles for the Chat page */
 
 .chat-feed {
-    height: calc(100vh - 270px);
+    height: calc(100vh - 280px);
     overflow-y: scroll;
     margin-bottom: 10px;
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -31,9 +31,7 @@
 }
 
 .message-text {
-    display: flex;
-    align-items: center;
-    word-break: break-all;
+    margin-block: auto;
 }
 
 #scroll-to-bottom {
