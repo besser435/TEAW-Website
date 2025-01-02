@@ -1,4 +1,11 @@
 /* Styles for the Showcase Submission page */
+.main-content {
+    grid-template-rows: 70px auto;
+    display: unset;
+}
+
+
+
 .showcase-form-container {
     flex-direction: column;
     align-items: center;

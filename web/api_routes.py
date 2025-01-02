@@ -19,12 +19,12 @@ ALLOWED_ATTRIBUTES = {}
 
 # NOTE: Routes only return the required data for each page, not every column in the database.
 
+# Status
 @api_routes.route("/api")
 def api():
     return "ok", 200
 
-
-@api_routes.route("/api/status")  # For status indicator in the navbar. Call every 2s
+@api_routes.route("/api/status")
 def get_status():
     try:
         with sqlite3.connect(TEAW_DB_FILE) as conn:
@@ -70,7 +70,7 @@ def get_status():
         return {"error": "internal error"}, 500
 
 
-
+# Players
 @api_routes.route("/api/players")
 def get_all_players():
     try:
@@ -111,7 +111,6 @@ def get_all_players():
         log.error(f"Internal error getting `players`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
-
 @api_routes.route("/api/uuid_to_name/<uuid>")
 def get_name_from_uuid(uuid):
     try:
@@ -129,28 +128,38 @@ def get_name_from_uuid(uuid):
         log.error(f"Internal error getting `uuid_to_name`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
-
-@api_routes.route("/api/fishing_leaderboard")
-def get_fishing_leaderboard():
+@api_routes.route("/api/players_misc")
+def get_players_misc():
     try:
-        with sqlite3.connect(STATS_DB_FILE) as conn:
+        with sqlite3.connect(TEAW_DB_FILE) as conn:
             cursor = conn.cursor()
 
-            cursor.execute("""
-                SELECT player_uuid, stat_value
-                FROM player_statistics
-                WHERE category = 'general' AND stat_key = 'FISH_CAUGHT'
-                ORDER BY stat_value DESC
-                LIMIT 10
-            """)
-            leaderboard = [{"uuid": row[0], "fish_caught": row[1]} for row in cursor.fetchall()]
+            cursor.execute("SELECT COUNT(*) FROM players")
+            total_players = cursor.fetchone()[0]
 
-        return jsonify(leaderboard), 200
+            # A player is considered active if they've logged in within the last 14 days
+            fourteen_days_ago_ms = (int(time.time()) - (14 * 24 * 60 * 60)) * 1000
+            cursor.execute("""
+                SELECT COUNT(*)
+                FROM players
+                WHERE last_online >= ?
+            """, (fourteen_days_ago_ms,))
+            active_players = cursor.fetchone()[0]
+
+            cursor.execute("SELECT SUM(balance) FROM players")
+            total_money = int(cursor.fetchone()[0]) or 0
+
+        return {
+            "total_players": total_players,
+            "active_players": active_players,
+            "total_money": total_money,
+        }, 200
     except Exception:
-        log.error(f"Internal error getting `fishing_leaderboard`: {traceback.format_exc()}")
+        log.error(f"Internal error getting `players_misc`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
 
+# Towns
 @api_routes.route("/api/towns")
 def get_all_towns():
     try:
@@ -160,6 +169,7 @@ def get_all_towns():
         return {"error": "internal error"}, 500
 
 
+# Chat
 @api_routes.route("/api/chat_messages")
 def get_chat_messages():
     try:
@@ -219,7 +229,6 @@ def get_chat_messages():
         log.error(f"Internal error getting `chat_messages`: {traceback.format_exc()}")
         return "internal error", 500
 
-
 @api_routes.route("/api/chat_misc")
 def get_chat_misc():
     try:
@@ -251,6 +260,8 @@ def get_chat_misc():
         return {"error": "internal error"}, 500
 
 
+
+# Skins
 @api_routes.route("/api/player_skin/<uuid>")
 def get_player_skin(uuid):
     try:
@@ -260,7 +271,6 @@ def get_player_skin(uuid):
     except Exception:
         log.error(f"Internal error getting `player_skin`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
-
 
 @api_routes.route("/api/player_face/<uuid>")
 def get_player_face(uuid):
@@ -273,6 +283,8 @@ def get_player_face(uuid):
         return {"error": "internal error"}, 500
 
 
+
+# Showcase
 @api_routes.route("/api/submit_photo", methods=["POST"])
 def submit_build():
     try:
@@ -329,7 +341,6 @@ def submit_build():
         log.error(f"Error processing showcase submission: {traceback.format_exc()}")
         return jsonify({"error": "internal error"}), 500
     
-
 @api_routes.route("/api/showcase_manifest")
 def get_showcase_manifest():
     try:
@@ -338,7 +349,6 @@ def get_showcase_manifest():
     except Exception:
         log.error(f"Error getting `showcase_submissions`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
-
 
 @api_routes.route("/api/showcase_img/<file_name>")
 def get_showcase_img(file_name):
@@ -352,4 +362,26 @@ def get_showcase_img(file_name):
         
     except Exception:
         log.error(f"Internal error getting `showcase_img`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+    
+
+# Fishing
+@api_routes.route("/api/fishing_leaderboard")
+def get_fishing_leaderboard():
+    try:
+        with sqlite3.connect(STATS_DB_FILE) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("""
+                SELECT player_uuid, stat_value
+                FROM player_statistics
+                WHERE category = 'general' AND stat_key = 'FISH_CAUGHT'
+                ORDER BY stat_value DESC
+                LIMIT 10
+            """)
+            leaderboard = [{"uuid": row[0], "fish_caught": row[1]} for row in cursor.fetchall()]
+
+        return jsonify(leaderboard), 200
+    except Exception:
+        log.error(f"Internal error getting `fishing_leaderboard`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500

@@ -79,6 +79,8 @@ if __name__ == "__main__":  # autism
                         stats_json = stats_response.json()
                         insert_statistics(uuid, stats_json)
                         log.debug(f"Updated player stats for {player_data['name']} ({uuid})")
+                    elif response.status_code == 404:   # Player logged out before we could fetch stats. This is fine.
+                        log.info(f"Attempted to fetch stats for {uuid} who is now offline. Skipping.")
                     else:
                         log.warning(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
             else:

@@ -344,6 +344,9 @@ function updateMessageTimestamps() {
 }
 setInterval(updateMessageTimestamps, 30_000);
 
+
+
+// --- MISC. UPDATES ---
 function updateInfoBubbles() {
     const messagesLoggedBubble = document.getElementById("message-count");
     const daysElapsedBubble = document.getElementById("days-elapsed");

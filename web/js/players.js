@@ -36,25 +36,31 @@ function formatDuration(ms) {
     } else if (minutes > 0) {
         return `${minutes} minute${minutes > 1 ? 's' : ''}`;
     } else {
-        return `${seconds} second${seconds > 1 ? 's' : ''}`;
+        return `0 minutes`;
     }
 }
 
-function getStatusText(PlayerObj) {
-    if (PlayerObj.status === "online") {
-        const onlineDuration = PlayerObj.online_duration;
+function getStatusText(playerObj) {
+    if (playerObj.name === "josamo8") {
+        const lastOnline = playerObj.last_online;
+        const timeNow = Date.now();
+        const durationSinceLastOnline = timeNow - lastOnline;
+        return `Banned ${formatDuration(durationSinceLastOnline)} ago`;
+    }
+
+    if (playerObj.status === "online") {
+        const onlineDuration = playerObj.online_duration;
         return `Online for ${formatDuration(onlineDuration)}`;
-    } else if (PlayerObj.status === "afk") {
-        const afkDuration = PlayerObj.afk_duration;
+    } else if (playerObj.status === "afk") {
+        const afkDuration = playerObj.afk_duration;
         return `AFK for ${formatDuration(afkDuration)}`;
-    } else if (PlayerObj.status === "offline") {
-        const lastOnline = PlayerObj.last_online;
+    } else if (playerObj.status === "offline") {
+        const lastOnline = playerObj.last_online;
         const timeNow = Date.now();
         const durationSinceLastOnline = timeNow - lastOnline;
         return `Last online ${formatDuration(durationSinceLastOnline)} ago`;
     }
 }
-
 
 class Player {
     constructor(
@@ -77,8 +83,15 @@ class Player {
     }
 }
 
-// rather than creating separate function, this one should also update player cards if the card already exist
-function addPlayerCard(playerObj) { // Adds a player card to the grid
+
+
+// --- PLAYER UPDATES --- 
+const updateRate = 10_000;
+
+function addPlayerCard(playerObj) {
+    // rather than creating separate function, this one should also update player cards if the card already exist.
+    // Could maybe update the position of the cards in the DOM based on the API order if it differs from the current order.
+    // Skip player image updates, as those are slow and not necessary. The page auto refreshes every 24hrs anyway.
     const playerGrid = document.querySelector(".player-grid");  // Main player container
 
     // Main card
@@ -145,14 +158,18 @@ function addPlayerCard(playerObj) { // Adds a player card to the grid
     playerGrid.appendChild(card);
 }
 
-async function initializePlayers() { // Create all player cards on page load
+async function initializePlayers() {
     const players = await getPlayers();
+
+    const playerGrid = document.querySelector(".player-grid");
+    playerGrid.innerHTML = "";
 
     players.forEach(player => {
         addPlayerCard(player);
     });
 }
 initializePlayers();
+setInterval(initializePlayers, updateRate);
 
 
 async function getPlayers() {
@@ -176,3 +193,22 @@ async function getPlayers() {
     }
     return players;
 }
+
+
+
+// --- MISC. UPDATES ---
+function updateInfoBubbles() {
+    const activePlayersBubble = document.getElementById("active-count");
+    const totalPlayersBubble = document.getElementById("total-count");
+    const totalMoneyBubble = document.getElementById("total-player-money");
+
+    fetch("/api/players_misc")
+        .then(response => response.json())
+        .then(data => {
+            activePlayersBubble.innerHTML = data.active_players.toLocaleString();
+            totalPlayersBubble.innerHTML = data.total_players.toLocaleString();
+            totalMoneyBubble.innerHTML = `$${data.total_money.toLocaleString()}`;
+        });
+}
+updateInfoBubbles();
+setInterval(updateInfoBubbles, updateRate);
