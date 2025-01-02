@@ -13,7 +13,7 @@
     display: grid;
     grid-template-columns: 290px 1fr;
     gap: 0.5em;
-    align-items: stretch;
+    align-items: center;
     font-family: "Inter", sans-serif;
     margin-top: 10px;
     color: #FFFFFF;
@@ -39,7 +39,6 @@
     font-family: "Inter", sans-serif;
     font-weight: 700;
     text-decoration: none;
-
     border: none ;
     padding: 0.4em 0.8em;
     border-radius: 10em;

@@ -2,9 +2,10 @@
 
 .main-content {
     grid-template-rows: 70px auto;
+
+    /* Causes the header to expand. Removing it breaks the boxes though. */
     display: unset;
 }
-
 
 
 .showcase-grid {
