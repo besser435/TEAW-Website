@@ -40,8 +40,8 @@ p {
 
 /* Body and background Image */
 body {
-    background-image: url("/imgs/background_embedded.png");
     background-color: #0D150C;  /* Prevent flashbang before the actual background image loads */
+    background-image: url("/imgs/background_embedded.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -186,7 +186,7 @@ nav a.nav-logo {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-left: 0.5em;
+    /* padding-left: 0.5em; */
 }
 
 .header h1 {
@@ -227,6 +227,7 @@ nav a.nav-logo {
         height: fit-content;
     }
 }
+
 
 /* Main Content */
 /* BUG: messes up scrollbars  */
@@ -279,6 +280,11 @@ footer p {
 .footer-links a:hover {
     opacity: 100%;
 }
+
+.material-symbols-outlined {
+    font-size: 26px !important;
+}
+
 
 /* Scroll bars */
 /* Firefox */

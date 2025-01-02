@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>{% block title %}TEAW{% endblock %}</title>
-
-        <!-- Favicon is too small. Could get rid of the sword and just have "TEAW", or vice versa? -->
-        <!-- Also disappears in light mode -->
         <link rel="shortcut icon" href="/imgs/teaw_logo.svg" media="(prefers-color-scheme: dark)">
         <link rel="shortcut icon" href="/imgs/teaw_logo_light.svg" media="(prefers-color-scheme: light)">
+
+        <!-- Preload important stuff -->
+        <link rel="preload" href="/css/base_template.css" as="style">
+        <link rel="preload" href="/css/base_common.css" as="style">
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" as="style">
 
         <link rel="stylesheet" type="text/css" href="/css/base_template.css">
         <link rel="stylesheet" type="text/css" href="/css/base_common.css">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <style>
+            body {
+                background-color: #0D150C;  /* Prevent flashbang before the actual background image loads */
+            }
+        </style>
+
+        <!-- Meta stuff -->
+        <meta name="description" content="The website for the ToEndAllWars modded Minecraft server.">
 
         <!-- Embed stuff -->
         <meta property="og:title" content="ToEndAllWars">
@@ -26,40 +37,10 @@
         <!-- From Google Fonts Embed section -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+        <link href="" rel="stylesheet">
         
         <!-- Google Icons -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu_book" />
-
-        <!-- 
-        TODO: Add umami analytics
-        https://umami.is/docs/getting-started
-        -->
-
-        <!-- PWA setup -->
-        <!-- <link rel="manifest" href="/manifest.json">
-        <script>
-            // This was from some example on GitHub, can't find it though :(
-            if ("serviceWorker" in navigator) {
-                navigator.serviceWorker
-                .register("/js/sw.js")
-                .then(function (registration) {
-                })
-                .catch(function (err) {
-                    console.log("ServiceWorker registration failed: ", err);
-                });
-            }
-            window.addEventListener("beforeinstallprompt", function (e) {
-                e.userChoice.then(function (choiceResult) {
-                console.log(choiceResult.outcome);
-                if (choiceResult.outcome == "dismissed") {
-                    console.log("User cancelled home screen install");
-                } else {
-                    console.log("User added to home screen");
-                }
-                });
-            });
-            </script> -->
     </head>
 
     <body>
@@ -89,10 +70,10 @@
             <p style="margin-top: 5px;">Version: {{ last_commit_date }}</p>
 
             <div class="footer-links">
-                <a href="https://discord.com/invite/aNMhxynFS2" target="_blank"><img src="/imgs/discord_mark.svg" height="20"></a>
-                <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank"><img src="/imgs/curseforge_mark.svg" height="17"></a>
-                <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank"><span class="material-symbols-outlined">menu_book</span></a>
-                <a href="https://github.com/besser435/TEAW-Website" target="_blank"><img src="/imgs/github_mark.svg" height="23"></a>
+                <a href="https://discord.com/invite/aNMhxynFS2" target="_blank"><img src="/imgs/discord_mark.svg" height="20" alt="Discord link"></a>
+                <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars" target="_blank"><img src="/imgs/curseforge_mark.svg" height="17" alt="Modpack link"></a>
+                <a href="https://toendallwars.fandom.com/wiki/ToEndAllWars_Wiki" target="_blank"><span class="material-symbols-outlined" title="TEAW Wiki link">menu_book</span></a>
+                <a href="https://github.com/besser435/TEAW-Website" target="_blank"><img src="/imgs/github_mark.svg" height="23" alt="Website GitHub link"></a>
             </div>
         </footer>
     </body>

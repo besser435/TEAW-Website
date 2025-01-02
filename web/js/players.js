@@ -19,6 +19,7 @@ function getPlayerSkinObj(sender_uuid) {
     const profilePic = document.createElement("img");
     profilePic.className = "player-skin";
     profilePic.src = "/api/player_skin/" + sender_uuid;
+    profilePic.alt = "Player skin";
 
     return profilePic;
 }
@@ -106,7 +107,7 @@ function addPlayerCard(playerObj) {
     playerDetails.className = "player-details";
 
     // Username
-    const name = document.createElement("h3");
+    const name = document.createElement("h2");
     name.textContent = playerObj.name;
     playerDetails.appendChild(name);
 
@@ -160,6 +161,11 @@ function addPlayerCard(playerObj) {
 
 async function initializePlayers() {
     const players = await getPlayers();
+
+    // Prevent clearing the player grid if the call fails
+    if (players.length === 0) {
+        return;
+    }
 
     const playerGrid = document.querySelector(".player-grid");
     playerGrid.innerHTML = "";

@@ -50,7 +50,7 @@
     flex-direction: column;
 }
 
-.player-card h3 {
+.player-card h2 {
     margin: 0;
     font-size: 1.5em;
     font-weight: bold;
