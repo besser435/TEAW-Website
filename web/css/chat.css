@@ -13,7 +13,7 @@
     display: grid;
     grid-template-columns: 290px 1fr;
     gap: 0.5em;
-    align-items: center;
+    align-items: stretch;
     font-family: "Inter", sans-serif;
     margin-top: 10px;
     color: #FFFFFF;
@@ -28,6 +28,12 @@
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.1);
     box-sizing: border-box;
+}
+
+.message-text {
+    display: flex;
+    align-items: center;
+    word-break: break-all;
 }
 
 #scroll-to-bottom {
@@ -123,5 +129,9 @@
 
     .message-info .timestamp {
         margin-left: auto;
+    }
+
+    .message-text {
+        padding-left: 5px;
     }
 }

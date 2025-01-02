@@ -78,11 +78,27 @@ class Player {
         this.nation_name = nation_name || null;
         this.status = status;
         this.last_online = last_online;
-        
+    
         this.text_status = getStatusText(this);
         this.playerSkin = getPlayerSkinObj(this.uuid);
     }
 }
+
+function onLoadAddFakePlayers() {   // Takes a while to populate the player cards, so add some fake players on page load
+    const playerGrid = document.querySelector(".player-grid");  // Main player container
+    const fakePlayer = document.createElement("div");
+    fakePlayer.className = "player-card";
+
+    const statusLight = document.createElement("div");
+    statusLight.className = "status-light";
+    statusLight.setAttribute("data-state", "off");
+    fakePlayer.appendChild(statusLight);
+
+    for (let i = 0; i < 50; i++) {
+        playerGrid.appendChild(fakePlayer.cloneNode(true));
+    }
+}
+onLoadAddFakePlayers();
 
 
 
@@ -114,7 +130,6 @@ function addPlayerCard(playerObj) {
     // Status text
     const textStatus = document.createElement("p");
     textStatus.textContent = playerObj.text_status;
-    //textStatus.textContent = "Last online 2 hours ago";
     playerDetails.appendChild(textStatus);
 
     // Nation and town (doing it this way prevents HTML injection)

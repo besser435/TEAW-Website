@@ -180,20 +180,6 @@ function messageBolder(message, messageType) {
     }
 }
 
-function sanitizeMessage(message) {
-    const tempDiv = document.createElement('div');
-    
-    tempDiv.textContent = message;
-    
-    let sanitizedMessage = tempDiv.innerHTML;
-    
-    // Replace potential script tags with their HTML-encoded equivalents
-    sanitizedMessage = sanitizedMessage
-        .replace(/<script/gi, '&lt;script')
-        .replace(/<\/script>/gi, '&lt;/script&gt;');
-    
-    return sanitizedMessage;
-}
 
 function formatEpochTime(epochTime) {
     const now = Date.now();
@@ -217,6 +203,68 @@ function formatEpochTime(epochTime) {
     const date = new Date(epochTime);
     return date.toISOString().split("T")[0];
 }
+
+
+
+
+
+
+
+// TODO: remove fake messages once we add the real ones
+// TODO: now that we use a flexblox to center the message text int the div, the bolded messages in 
+// advancements have no space between the icon and the message. Fix this.
+
+
+
+
+
+function onLoadAddFakeMessages() {   // Takes a while to populate the player cards, so add some fake messages on page load
+    const messageFeed = document.querySelector(".chat-feed");
+
+    // Message container
+    const fakeMessage = document.createElement("div");
+    fakeMessage.style.display = "flex";
+    fakeMessage.className = "message-container";
+
+    // Info container
+    const fakeMessageInfo = document.createElement("div");
+    fakeMessageInfo.className = "message-info";
+    fakeMessageInfo.setAttribute("data-message-type", "chat");
+    fakeMessage.appendChild(fakeMessageInfo);
+
+    // PFP
+    const fakeProfilePic = document.createElement("img");
+    fakeProfilePic.className = "profile-pic";
+
+    fakeProfilePic.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='grey'/%3E%3C/svg%3E";
+    fakeMessageInfo.appendChild(fakeProfilePic);
+
+    // Sender
+    const fakeSender = document.createElement("div");
+    fakeSender.className = "sender";
+    fakeSender.innerHTML = "";
+    fakeMessageInfo.appendChild(fakeSender);
+
+    // Timestamp
+    const fakeTimestamp = document.createElement("div");
+    fakeTimestamp.className = "timestamp";
+    fakeTimestamp.innerHTML = "";
+    fakeMessageInfo.appendChild(fakeTimestamp);
+
+    // Message text
+    const fakeMessageText = document.createElement("div");
+    fakeMessageText.className = "message-text";
+    fakeMessageText.innerHTML = "⠀";
+    fakeMessage.appendChild(fakeMessageText);
+
+
+    for (let i = 0; i < 50; i++) {
+        messageFeed.appendChild(fakeMessage.cloneNode(true));
+    }
+
+    scrollToBottom();
+}
+onLoadAddFakeMessages();
 
 
 
@@ -252,15 +300,11 @@ function addMessage(messageObj) {
     messageInfo.appendChild(timestamp);
     timestamp.setAttribute("data-epoch-timestamp", messageObj.epoch_timestamp); // For updating timestamps later
 
-    // Add message type CSS data class
     messageInfo.setAttribute("data-message-type", messageObj.type);
 
-    // The actual message part
     // Message text
-    const sanitizedMessage = sanitizeMessage(messageObj.message);
     const messageText = document.createElement("div");
     messageText.className = "message-text";
-    //messageText.innerHTML = messageObj.message;
     messageText.innerHTML = messageBolder(messageObj.message, messageObj.type);
 
 
@@ -334,12 +378,15 @@ setInterval(getNewMessages, updateRate);
 
 function updateMessageTimestamps() {
     // Once messages are added, their timestamps are not magically updated.
-    // This fixes that.
+    // This fixes that. 
+    // Could we maybe just attach an event to the timestamp divs instead?
 
-    const formatted_timestamps = document.getElementsByClassName("timestamp");
-    for (const timestamp of formatted_timestamps) {
-        const epoch_timestamp = parseInt(timestamp.getAttribute("data-epoch-timestamp"));
-        timestamp.innerHTML = formatEpochTime(epoch_timestamp);
+    const formattedTimestamps = document.getElementsByClassName("timestamp");
+
+    for (const timestamp of formattedTimestamps) {
+        const epochTimestampString = timestamp.getAttribute("data-epoch-timestamp");
+        const epochTimestamp = Number(epochTimestampString);
+        timestamp.innerHTML = formatEpochTime(epochTimestamp);
     }
 }
 setInterval(updateMessageTimestamps, 30_000);
