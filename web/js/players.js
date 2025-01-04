@@ -227,39 +227,6 @@ async function getPlayers() {
     return players;
 }
 
-// async function updatePlayers() {
-//     const players = await getPlayers();
-
-//     // Prevent clearing the player grid if the call fails
-//     if (players.length === 0) {
-//         return;
-//     }
-
-//     // Removes the old stuff, while keeping the "No messages found" message
-//     const playerGrid = document.querySelector(".player-grid");
-//     playerGrid.querySelectorAll(".player-card").forEach(el => el.remove());
-
-//     const sortedPlayers = sortPlayers(players);
-
-//     sortedPlayers.forEach(player => {
-//         const card = addPlayerCard(player);
-
-
-//         // If there's an active search, only show matching players
-//         if (currentSearchTerm !== "") {
-//             const username = player.name.toLowerCase();
-
-//             if (!username.includes(currentSearchTerm.toLowerCase())) {
-//                 card.style.display = "none";
-//             } else {
-//                 highlightText(card.querySelector(".player-name"), currentSearchTerm);
-//             }
-//         }
-//         playerGrid.appendChild(card);
-//     });
-// }
-
-
 async function updatePlayers() {
     const players = await getPlayers();
 
@@ -268,6 +235,7 @@ async function updatePlayers() {
         return;
     }
 
+    // Removes the old stuff, while keeping the "No messages found" message
     const playerGrid = document.querySelector(".player-grid");
     playerGrid.querySelectorAll(".player-card").forEach(el => el.remove());
 
@@ -276,37 +244,20 @@ async function updatePlayers() {
     sortedPlayers.forEach(player => {
         const card = addPlayerCard(player);
 
+
         // If there's an active search, only show matching players
         if (currentSearchTerm !== "") {
-            const searchTerm = currentSearchTerm.toLowerCase();
             const username = player.name.toLowerCase();
-            const nationName = player.nation_name?.toLowerCase() || "";
-            const nationNameNoLabel = nationName.split(": ")[1] || nationName;
-            const townName = player.town_name?.toLowerCase() || "";
-            const townNameNoLabel = townName.split(": ")[1] || townName;
 
-            // Check if the search term matches any field
-            const matchesUsername = username.includes(searchTerm);
-            const matchesNation = nationNameNoLabel.includes(searchTerm);
-            const matchesTown = townNameNoLabel.includes(searchTerm);
-
-            if (matchesUsername || matchesNation || matchesTown) {
-                // Highlight matching fields
-                if (matchesUsername) highlightText(card.querySelector(".player-name"), searchTerm);
-                if (matchesNation) highlightText(card.querySelector(".nation-name"), searchTerm);
-                if (matchesTown) highlightText(card.querySelector(".town-name"), searchTerm);
+            if (!username.includes(currentSearchTerm.toLowerCase())) {
+                card.style.display = "none";
             } else {
-                card.style.display = "none"; // Hide if no match is found
+                highlightText(card.querySelector(".player-name"), currentSearchTerm);
             }
         }
-
         playerGrid.appendChild(card);
     });
 }
-
-
-
-
 updatePlayers();
 setInterval(updatePlayers, updateRate);
 
@@ -331,51 +282,6 @@ setInterval(updateInfoBubbles, updateRate);
 
 
 // --- SEARCH ---
-
-
-
-/*
-NOTE:
-SPACES ARE FUCK
-When searching for a space, we also get the town/nation label ex. "town: ".
-When searching for a space, this is also a problem.
-The message bolder also does not apply on searched and highlighted terms.
-
-In the players object, the label and content should be different elements.
-
-*/
-
-
-
-// function setupSearch() {
-//     const searchInput = document.getElementById("player-search");
-//     const noPlayersFound = document.getElementById("no-players-found");
-
-//     searchInput.addEventListener("input", () => {
-//         const searchTerm = searchInput.value.toLowerCase();
-//         const players = document.querySelectorAll(".player-card");
-
-//         let found = false;
-
-//         players.forEach((player) => {
-//             const username = player.querySelector(".player-name").textContent.toLowerCase();
-
-//             if (username.includes(searchTerm)) {
-//                 highlightText(player.querySelector(".player-name"), searchTerm);
-//                 player.style.display = "flex";
-//                 found = true;
-//             } else {
-//                 player.style.display = "none";
-//             }
-            
-//         });
-//         currentSearchTerm = searchTerm;
-
-//         noPlayersFound.style.display = found ? "none" : "block";
-//     });
-// }
-
-
 function setupSearch() {
     const searchInput = document.getElementById("player-search");
     const noPlayersFound = document.getElementById("no-players-found");
@@ -388,30 +294,21 @@ function setupSearch() {
 
         players.forEach((player) => {
             const username = player.querySelector(".player-name").textContent.toLowerCase();
-            const nationName = player.querySelector(".nation-name")?.textContent.toLowerCase() || "";
-            const nationNameNoLabel = nationName.split(": ")[1] || nationName;
-            const townName = player.querySelector(".town-name")?.textContent.toLowerCase() || "";
-            const townNameNoLabel = townName.split(": ")[1] || townName;
 
-            console.log(nationNameNoLabel);
-            console.log(townNameNoLabel);
-            // Check if the search term matches any of the fields
-            if (username.includes(searchTerm) || nationNameNoLabel.includes(searchTerm) || townNameNoLabel.includes(searchTerm)) {
+            if (username.includes(searchTerm)) {
                 highlightText(player.querySelector(".player-name"), searchTerm);
-                highlightText(player.querySelector(".nation-name"), searchTerm);
-                highlightText(player.querySelector(".town-name"), searchTerm);
                 player.style.display = "flex";
                 found = true;
             } else {
                 player.style.display = "none";
             }
+            
         });
         currentSearchTerm = searchTerm;
 
         noPlayersFound.style.display = found ? "none" : "block";
     });
 }
-
 
 
 function highlightText(element, searchTerm) {
