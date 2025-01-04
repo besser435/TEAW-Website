@@ -32,6 +32,7 @@
 
 .message-text {
     margin-block: auto;
+    word-break: break-all;
 }
 
 #scroll-to-bottom {
@@ -130,6 +131,7 @@
     }
 
     .message-text {
-        padding-left: 5px;
+        padding-left: 4px;
+        padding-right: 4px;
     }
 }

@@ -204,21 +204,7 @@ function formatEpochTime(epochTime) {
     return date.toISOString().split("T")[0];
 }
 
-
-
-
-
-
-
-// TODO: remove fake messages once we add the real ones
-// TODO: now that we use a flexblox to center the message text int the div, the bolded messages in 
-// advancements have no space between the icon and the message. Fix this.
-
-
-
-
-
-function onLoadAddFakeMessages() {   // Takes a while to populate the player cards, so add some fake messages on page load
+function onLoadAddFakeMessages() {   // Takes a while to populate the player cards, so add some placeholders on page load
     const messageFeed = document.querySelector(".chat-feed");
 
     // Message container
@@ -334,7 +320,7 @@ function addMessage(messageObj) {
 
 let firstLoad = true;
 function getNewMessages() {
-//function getNewMessages(oldestMessageId = 0) {
+    //function getNewMessages(oldestMessageId = 0) {
     const processMessages = (messages) => {
         for (const message of messages) {
             addMessage(new Message(
@@ -352,6 +338,10 @@ function getNewMessages() {
         fetch("/api/chat_messages")
             .then(response => response.json())
             .then(data => {
+                // Removes the placeholder messages, while keeping the "No messages found" message
+                const chatFeed = document.querySelector(".chat-feed");
+                chatFeed.querySelectorAll(".message-container").forEach(el => el.remove());
+
                 processMessages(data);
                 firstLoad = false;
             });
