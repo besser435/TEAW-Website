@@ -1,13 +1,4 @@
 /* Styles for the Showcase page */
-
-.main-content {
-    grid-template-rows: 70px auto;
-
-    /* Causes the header to expand. Removing it breaks the boxes though. */
-    display: unset;
-}
-
-
 .showcase-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(650px, 1fr));
