@@ -123,7 +123,7 @@ def get_name_from_uuid(uuid):
         if result:
             return result[0], 200
         else:
-            return "player not found", 404
+            {"error": "player not found"}, 404
     except Exception:
         log.error(f"Internal error getting `uuid_to_name`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
@@ -267,7 +267,7 @@ def get_player_skin(uuid):
     try:
         return send_from_directory(PLAYER_BODY_SKIN_DIR, f"{uuid}.png")
     except NotFound:
-        return "player skin not found", 404
+        return {"error": "player not found"}, 404
     except Exception:
         log.error(f"Internal error getting `player_skin`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
@@ -277,7 +277,7 @@ def get_player_face(uuid):
     try:
         return send_from_directory(PLAYER_FACE_SKIN_DIR, f"{uuid}.png")
     except NotFound:
-        return "player face not found", 404
+        return {"error": "player not found"}, 404
     except Exception:
         log.error(f"Internal error getting `player_face`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
@@ -296,14 +296,14 @@ def submit_build():
 
         # Validate form data
         if not photo_title or not photo_date or not photographer:
-            return jsonify({"error": "Missing required form data"}), 400
+            return jsonify({"error": "missing required form data"}), 400
 
         photo_file = request.files.get("photo-file")
         if not photo_file:
-            return jsonify({"error": "No file provided"}), 400
+            return jsonify({"error": "no file provided"}), 400
 
         if len(photo_file.read()) > 10 * 1024 * 1024:  # 10 MB limit
-            return jsonify({"error": "File size exceeds limit"}), 400
+            return jsonify({"error": "file size exceeds limit"}), 400
         photo_file.seek(0)
 
         # Clean the file name
@@ -353,35 +353,9 @@ def get_showcase_manifest():
 @api_routes.route("/api/showcase_img/<file_name>")
 def get_showcase_img(file_name):
     try:
-
-        print(SHOWCASE_IMAGES_DIR, file_name)
         return send_from_directory(SHOWCASE_IMAGES_DIR, file_name)
     except NotFound:
-        print(traceback.format_exc())
-        return "not found", 404
-        
+        return {"error": "not found"}, 404
     except Exception:
         log.error(f"Internal error getting `showcase_img`: {traceback.format_exc()}")
-        return {"error": "internal error"}, 500
-    
-
-# Fishing
-@api_routes.route("/api/fishing_leaderboard")
-def get_fishing_leaderboard():
-    try:
-        with sqlite3.connect(STATS_DB_FILE) as conn:
-            cursor = conn.cursor()
-
-            cursor.execute("""
-                SELECT player_uuid, stat_value
-                FROM player_statistics
-                WHERE category = 'general' AND stat_key = 'FISH_CAUGHT'
-                ORDER BY stat_value DESC
-                LIMIT 10
-            """)
-            leaderboard = [{"uuid": row[0], "fish_caught": row[1]} for row in cursor.fetchall()]
-
-        return jsonify(leaderboard), 200
-    except Exception:
-        log.error(f"Internal error getting `fishing_leaderboard`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
