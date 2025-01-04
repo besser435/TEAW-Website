@@ -203,7 +203,7 @@ function addPlayerCard(playerObj) {
 
 
 // --- PLAYER UPDATES --- 
-const updateRate = 3_000;
+const updateRate = 10_000;
 
 async function getPlayers() {
     const players = [];
@@ -244,7 +244,6 @@ async function updatePlayers() {
     sortedPlayers.forEach(player => {
         const card = addPlayerCard(player);
 
-
         // If there's an active search, only show matching players
         if (currentSearchTerm !== "") {
             const username = player.name.toLowerCase();
@@ -281,6 +280,7 @@ updateInfoBubbles();
 setInterval(updateInfoBubbles, updateRate);
 
 
+
 // --- SEARCH ---
 function setupSearch() {
     const searchInput = document.getElementById("player-search");
@@ -293,24 +293,27 @@ function setupSearch() {
         let found = false;
 
         players.forEach((player) => {
-            const username = player.querySelector(".player-name").textContent.toLowerCase();
+            const playerName = player.querySelector(".player-name");
+            const username = playerName.textContent.toLowerCase();
 
-            if (username.includes(searchTerm)) {
-                highlightText(player.querySelector(".player-name"), searchTerm);
+            if (!searchTerm) {
+                // Clear highlights when search is empty
+                playerName.textContent = playerName.textContent;
+                player.style.display = "flex";
+                found = true;
+            } else if (username.includes(searchTerm)) {
+                highlightText(playerName, searchTerm);
                 player.style.display = "flex";
                 found = true;
             } else {
                 player.style.display = "none";
             }
-            
         });
         currentSearchTerm = searchTerm;
 
         noPlayersFound.style.display = found ? "none" : "block";
     });
 }
-
-
 function highlightText(element, searchTerm) {
     if (!element) return;
     

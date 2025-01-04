@@ -11,15 +11,24 @@ function setupSearch() {
         let found = false;
 
         messages.forEach((message) => {
-            const sender = message.querySelector(".sender").textContent.toLowerCase();
-            const messageText = message.querySelector(".message-text").textContent.toLowerCase();
+            const sender = message.querySelector(".sender");
+            const messageText = message.querySelector(".message-text");
 
-            if (sender.includes(searchTerm) || messageText.includes(searchTerm)) {
+            // If search is empty, restore original text without the highlight spans
+            if (!searchTerm) {
+                // Just setting the text content will remove all HTML tags
+                sender.textContent = sender.textContent;
+                messageText.textContent = messageText.textContent;
+                message.style.display = "flex";
+                found = true;
+            } else if (sender.textContent.toLowerCase().includes(searchTerm) || 
+                       messageText.textContent.toLowerCase().includes(searchTerm)) {
+
                 message.style.display = "flex";
                 found = true;
 
-                highlightText(message.querySelector(".sender"), searchTerm);
-                highlightText(message.querySelector(".message-text"), searchTerm);
+                highlightText(sender, searchTerm);
+                highlightText(messageText, searchTerm);
             } else {
                 message.style.display = "none";
             }
