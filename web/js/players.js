@@ -1,11 +1,10 @@
 /* 
-Please for the love of god do not use the same architecture 
-as the USAI page. Recreating each card on each update caused so many problems.
+Please for the love of god update this at some point to just update the data
+on the cards, not destroy and recreate them like the USAI page. 
+Recreating each card on each update caused so many problems.
 
 Create the cards on page load. Add new players if present. 
 Then update each card with the new data.
-
-
 
 There should be a function that only creates cards. It will be called
 on page load and when a new player is seen.
@@ -15,6 +14,36 @@ Then just update the data on the cards.
 */
 
 // --- HELPER FUNCTIONS --- 
+let currentSortMethod = "last_online";
+
+
+
+let currentSearchTerm = "";
+
+
+
+function sortPlayers(players) {
+    if (currentSortMethod === "username") {
+        return players.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+        return players.sort((a, b) => {
+            if (a.status === "online" && b.status !== "online") return -1;
+            if (a.status !== "online" && b.status === "online") return 1;
+            
+            return b.last_online - a.last_online;
+        });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const sortSelect = document.getElementById('sort-select');
+    
+    sortSelect.addEventListener('change', (e) => {
+        currentSortMethod = e.target.value;
+        updatePlayers();    // bad, but it works.
+    });
+});
+
 function getPlayerSkinObj(sender_uuid) {
     const profilePic = document.createElement("img");
     profilePic.className = "player-skin";
@@ -63,6 +92,9 @@ function getStatusText(playerObj) {
     }
 }
 
+
+
+// --- OBJECTS --- 
 class Player {
     constructor(
         uuid, name, 
@@ -74,8 +106,8 @@ class Player {
         this.name = name;
         this.online_duration = online_duration;
         this.afk_duration = afk_duration;
-        this.town_name = town_name || null;
-        this.nation_name = nation_name || null;
+        this.town_name = (town_name.replace(/_/g, " ")) || null;
+        this.nation_name = (nation_name.replace(/_/g, " ")) || null;
         this.status = status;
         this.last_online = last_online;
     
@@ -84,7 +116,7 @@ class Player {
     }
 }
 
-function onLoadAddFakePlayers() {   // Takes a while to populate the player cards, so add some fake players on page load
+function onLoadAddFakePlayers() {   // Takes a while to populate the player cards, so add some placeholders on page load
     const playerGrid = document.querySelector(".player-grid");  // Main player container
     const fakePlayer = document.createElement("div");
     fakePlayer.className = "player-card";
@@ -100,17 +132,7 @@ function onLoadAddFakePlayers() {   // Takes a while to populate the player card
 }
 onLoadAddFakePlayers();
 
-
-
-// --- PLAYER UPDATES --- 
-const updateRate = 10_000;
-
 function addPlayerCard(playerObj) {
-    // rather than creating separate function, this one should also update player cards if the card already exist.
-    // Could maybe update the position of the cards in the DOM based on the API order if it differs from the current order.
-    // Skip player image updates, as those are slow and not necessary. The page auto refreshes every 24hrs anyway.
-    const playerGrid = document.querySelector(".player-grid");  // Main player container
-
     // Main card
     const card = document.createElement("div");
     card.className = "player-card";
@@ -125,6 +147,7 @@ function addPlayerCard(playerObj) {
     // Username
     const name = document.createElement("h2");
     name.textContent = playerObj.name;
+    name.className = "player-name";
     playerDetails.appendChild(name);
 
     // Status text
@@ -137,16 +160,18 @@ function addPlayerCard(playerObj) {
     const nationName = document.createElement("p");
     const nationLabel = document.createElement("b");
     nationLabel.textContent = "Nation: ";
+    nationName.className = "nation-name";
     nationName.appendChild(nationLabel);
-    nationName.appendChild(document.createTextNode(playerObj.nation_name?.replace(/_/g, " ")));
-    playerObj.nation_name ? playerDetails.appendChild(nationName) : null;
+    nationName.appendChild(document.createTextNode(playerObj.nation_name));
+    playerObj.nation_name ? playerDetails.appendChild(nationName) : null;   // Only add if the player is in a nation
     
     const townName = document.createElement("p");
     const townLabel = document.createElement("b");
     townLabel.textContent = "Town: ";
+    townName.className = "town-name";
     townName.appendChild(townLabel);
-    townName.appendChild(document.createTextNode(playerObj.town_name?.replace(/_/g, " ")));
-    playerObj.town_name ? playerDetails.appendChild(townName) : null;
+    townName.appendChild(document.createTextNode(playerObj.town_name));
+    playerObj.town_name ? playerDetails.appendChild(townName) : null;   // Only add if the player is in a town
     
 
     // Status light
@@ -171,27 +196,14 @@ function addPlayerCard(playerObj) {
 
     card.appendChild(playerDetails);
     card.appendChild(statusLight);
-    playerGrid.appendChild(card);
+
+    return card;
 }
 
-async function initializePlayers() {
-    const players = await getPlayers();
 
-    // Prevent clearing the player grid if the call fails
-    if (players.length === 0) {
-        return;
-    }
 
-    const playerGrid = document.querySelector(".player-grid");
-    playerGrid.innerHTML = "";
-
-    players.forEach(player => {
-        addPlayerCard(player);
-    });
-}
-initializePlayers();
-setInterval(initializePlayers, updateRate);
-
+// --- PLAYER UPDATES --- 
+const updateRate = 3_000;
 
 async function getPlayers() {
     const players = [];
@@ -215,6 +227,89 @@ async function getPlayers() {
     return players;
 }
 
+// async function updatePlayers() {
+//     const players = await getPlayers();
+
+//     // Prevent clearing the player grid if the call fails
+//     if (players.length === 0) {
+//         return;
+//     }
+
+//     // Removes the old stuff, while keeping the "No messages found" message
+//     const playerGrid = document.querySelector(".player-grid");
+//     playerGrid.querySelectorAll(".player-card").forEach(el => el.remove());
+
+//     const sortedPlayers = sortPlayers(players);
+
+//     sortedPlayers.forEach(player => {
+//         const card = addPlayerCard(player);
+
+
+//         // If there's an active search, only show matching players
+//         if (currentSearchTerm !== "") {
+//             const username = player.name.toLowerCase();
+
+//             if (!username.includes(currentSearchTerm.toLowerCase())) {
+//                 card.style.display = "none";
+//             } else {
+//                 highlightText(card.querySelector(".player-name"), currentSearchTerm);
+//             }
+//         }
+//         playerGrid.appendChild(card);
+//     });
+// }
+
+
+async function updatePlayers() {
+    const players = await getPlayers();
+
+    // Prevent clearing the player grid if the call fails
+    if (players.length === 0) {
+        return;
+    }
+
+    const playerGrid = document.querySelector(".player-grid");
+    playerGrid.querySelectorAll(".player-card").forEach(el => el.remove());
+
+    const sortedPlayers = sortPlayers(players);
+
+    sortedPlayers.forEach(player => {
+        const card = addPlayerCard(player);
+
+        // If there's an active search, only show matching players
+        if (currentSearchTerm !== "") {
+            const searchTerm = currentSearchTerm.toLowerCase();
+            const username = player.name.toLowerCase();
+            const nationName = player.nation_name?.toLowerCase() || "";
+            const nationNameNoLabel = nationName.split(": ")[1] || nationName;
+            const townName = player.town_name?.toLowerCase() || "";
+            const townNameNoLabel = townName.split(": ")[1] || townName;
+
+            // Check if the search term matches any field
+            const matchesUsername = username.includes(searchTerm);
+            const matchesNation = nationNameNoLabel.includes(searchTerm);
+            const matchesTown = townNameNoLabel.includes(searchTerm);
+
+            if (matchesUsername || matchesNation || matchesTown) {
+                // Highlight matching fields
+                if (matchesUsername) highlightText(card.querySelector(".player-name"), searchTerm);
+                if (matchesNation) highlightText(card.querySelector(".nation-name"), searchTerm);
+                if (matchesTown) highlightText(card.querySelector(".town-name"), searchTerm);
+            } else {
+                card.style.display = "none"; // Hide if no match is found
+            }
+        }
+
+        playerGrid.appendChild(card);
+    });
+}
+
+
+
+
+updatePlayers();
+setInterval(updatePlayers, updateRate);
+
 
 
 // --- MISC. UPDATES ---
@@ -233,3 +328,101 @@ function updateInfoBubbles() {
 }
 updateInfoBubbles();
 setInterval(updateInfoBubbles, updateRate);
+
+
+// --- SEARCH ---
+
+
+
+/*
+NOTE:
+SPACES ARE FUCK
+When searching for a space, we also get the town/nation label ex. "town: ".
+When searching for a space, this is also a problem.
+The message bolder also does not apply on searched and highlighted terms.
+
+In the players object, the label and content should be different elements.
+
+*/
+
+
+
+// function setupSearch() {
+//     const searchInput = document.getElementById("player-search");
+//     const noPlayersFound = document.getElementById("no-players-found");
+
+//     searchInput.addEventListener("input", () => {
+//         const searchTerm = searchInput.value.toLowerCase();
+//         const players = document.querySelectorAll(".player-card");
+
+//         let found = false;
+
+//         players.forEach((player) => {
+//             const username = player.querySelector(".player-name").textContent.toLowerCase();
+
+//             if (username.includes(searchTerm)) {
+//                 highlightText(player.querySelector(".player-name"), searchTerm);
+//                 player.style.display = "flex";
+//                 found = true;
+//             } else {
+//                 player.style.display = "none";
+//             }
+            
+//         });
+//         currentSearchTerm = searchTerm;
+
+//         noPlayersFound.style.display = found ? "none" : "block";
+//     });
+// }
+
+
+function setupSearch() {
+    const searchInput = document.getElementById("player-search");
+    const noPlayersFound = document.getElementById("no-players-found");
+
+    searchInput.addEventListener("input", () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const players = document.querySelectorAll(".player-card");
+
+        let found = false;
+
+        players.forEach((player) => {
+            const username = player.querySelector(".player-name").textContent.toLowerCase();
+            const nationName = player.querySelector(".nation-name")?.textContent.toLowerCase() || "";
+            const nationNameNoLabel = nationName.split(": ")[1] || nationName;
+            const townName = player.querySelector(".town-name")?.textContent.toLowerCase() || "";
+            const townNameNoLabel = townName.split(": ")[1] || townName;
+
+            console.log(nationNameNoLabel);
+            console.log(townNameNoLabel);
+            // Check if the search term matches any of the fields
+            if (username.includes(searchTerm) || nationNameNoLabel.includes(searchTerm) || townNameNoLabel.includes(searchTerm)) {
+                highlightText(player.querySelector(".player-name"), searchTerm);
+                highlightText(player.querySelector(".nation-name"), searchTerm);
+                highlightText(player.querySelector(".town-name"), searchTerm);
+                player.style.display = "flex";
+                found = true;
+            } else {
+                player.style.display = "none";
+            }
+        });
+        currentSearchTerm = searchTerm;
+
+        noPlayersFound.style.display = found ? "none" : "block";
+    });
+}
+
+
+
+function highlightText(element, searchTerm) {
+    if (!element) return;
+    
+    const originalText = element.textContent;
+    const regex = new RegExp(`(${searchTerm})`, "gi");
+    const highlightedHTML = originalText.replace(regex, '<span class="highlight">$1</span>');
+
+    element.innerHTML = highlightedHTML;
+}
+
+window.addEventListener("load", setupSearch);
+

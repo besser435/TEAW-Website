@@ -4,11 +4,20 @@
 
 <div class="header">
     <h1>Players</h1>
-    
-    <input class="search" type="text" id="chat-search" autocomplete="off" spellcheck="false" placeholder="Search">
+
+    <div class="separator"></div>
+    <h2>Sort by:</h2>
+    <select id="sort-select" class="sort-select">
+        <option value="last_online">Last Online</option>
+        <option value="username">Username</option>
+    </select>
+
+    <input class="search" type="text" id="player-search" autocomplete="off" spellcheck="false" placeholder="Search">
 </div>
 
-<div class="player-grid"></div>
+<div class="player-grid">
+    <div class="search-not-found-msg" id="no-players-found" style="display: none;">Your search did not match any players</div>
+</div>
 
 <div class="info-bubble-container">
     <div class="info-bubble"><b><span id="active-count">0</span></b> Active players</div>
