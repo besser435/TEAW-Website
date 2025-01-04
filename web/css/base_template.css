@@ -91,7 +91,7 @@ nav::before {
 }
 
 
-nav a:not(.nav-logo), .header-button {
+nav a:not(.nav-logo), .header-button, .sort-select {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(0, 0, 0, 0.2);
     font-family: "Inter", sans-serif;
@@ -111,7 +111,7 @@ nav a:not(.nav-logo), .header-button {
     outline: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-button.header-button {
+button.header-button, .sort-select {
     border: none;
 }
 
@@ -120,9 +120,10 @@ nav a.active, .header-button.active {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-nav a:hover, .header-button:hover {
+nav a:hover, .header-button:hover, .sort-select:hover {
     background-color: rgba(255, 255, 255, 0.2);
     outline: 2px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
 }
 
 nav a.nav-logo {
@@ -190,6 +191,10 @@ nav a.nav-logo {
 
 .header h1 {
     font-weight: 800;
+}
+
+.header h2 {
+    font-size: 20px;
 }
 
 .header h3 {
