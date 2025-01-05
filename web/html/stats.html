@@ -41,7 +41,9 @@
 
     <div class="vertical-seperator"></div>
 
-    <div class="stats-container"></div>
+    <div class="stats-container">
+        <div class="search-not-found-msg" id="no-players-found" style="display: none;">Your search did not match any players</div>
+    </div>
 </div>
 
 
@@ -95,7 +97,7 @@
 
     function sortLeaderboard(data, sortMethod) {
         const entriesCopy = [...data];  // Copy to avoid bunging the original data
-        console.log(data);
+
         // Sorted by rank rather than value, as if there are ties the ranks can be out of order,
         // which would look funny.
         switch (sortMethod) {
@@ -110,23 +112,18 @@
 
 
     function renderLeaderboard(data, unit, currentSort) {
-        const unitLabel = document.getElementById("unit-label");
-        unitLabel.textContent = unit.charAt(0).toUpperCase() + unit.slice(1);
-
+        // Clears the current entries but not the search error message
         const statsContainerSelector = document.querySelector(".stats-container");
         statsContainerSelector.querySelectorAll(".stat-entry").forEach(el => el.remove());
 
-        const statsContainer = document.querySelector(".stats-container");
+        const unitLabel = document.getElementById("unit-label");
+        unitLabel.textContent = unit.charAt(0).toUpperCase() + unit.slice(1);
 
-        // Sort the data
-        const sortedData = sortLeaderboard(data, currentSort);
         
-        // Update ranks after sorting
-        // sortedData.forEach((entry, index) => {
-        //     entry.rank = index + 1;
-        // });
-
         // Create and append new entries
+        const statsContainer = document.querySelector(".stats-container");
+        const sortedData = sortLeaderboard(data, currentSort);
+
         sortedData.forEach(entry => {
             const entryDiv = document.createElement("div");
             entryDiv.className = "stat-entry";
@@ -138,7 +135,7 @@
                 <h3 class="player-stat-value">${entry.value}</h3>
             `;
             
-            statsContainerSelector.appendChild(entryDiv);
+            statsContainer.appendChild(entryDiv);
         });
     }
 
@@ -150,21 +147,22 @@
 
         let currentSort = sortSelect.value;
         let searchQuery = "";
+        let currentData = null;
 
         // Initial load
-        const data = await fetchLeaderboard();
-        if (data) renderLeaderboard(data.entries, data.units, currentSort);
+        currentData = await fetchLeaderboard();
+        if (currentData) renderLeaderboard(currentData.entries, currentData.units, currentSort);
 
         // Sort method changes
         sortSelect.addEventListener("change", () => {
             currentSort = sortSelect.value;
-            if (data) renderLeaderboard(data.entries, data.units, currentSort);
+            if (currentData) renderLeaderboard(currentData.entries, currentData.units, currentSort);
         });
 
         // Selected stat changes
         statSelect.addEventListener("change", async () => {
-            const newData = await fetchLeaderboard();
-            if (newData) renderLeaderboard(newData.entries, newData.units, currentSort);
+            currentData = await fetchLeaderboard();
+            if (currentData) renderLeaderboard(currentData.entries, currentData.units, currentSort);
         });
 
         // Search input
@@ -172,8 +170,8 @@
 
         // Periodic updates
         setInterval(async () => {
-            const newData = await fetchLeaderboard();
-            if (newData) renderLeaderboard(newData.entries, newData.units, currentSort);
+            currentData = await fetchLeaderboard();
+            if (currentData) renderLeaderboard(currentData.entries, currentData.units, currentSort);
         }, updateRate);
     }
     initializeLeaderboard();
