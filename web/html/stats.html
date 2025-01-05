@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}Stats - TEAW{% endblock %}
+{% block content %}
+
+
+<div class="header">
+    <h1>Statistics Leaderboard</h1>
+
+    <div class="separator"></div>
+    <h2>Sort by:</h2>
+    <select id="sort-select" class="sort-select">
+        <option value="high-to-low">High to Low</option>
+        <option value="low-to-high">Low to High</option>
+        <option value="username">Username</option>
+    </select>
+
+    <input class="search" type="text" id="player-search" autocomplete="off" spellcheck="false" placeholder="Search">
+</div>
+
+
+
+<div class="leaderboard-container">
+    <select id="stat-select" class="sort-select">
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+    </select>
+
+    <h3 id="unit"></h3>
+</div>
+
+
+<script>
+   
+</script>
+
+<style>
+    .leaderboard-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        padding: 0px;
+        border-radius: 16px;
+    }
+
+    .leaderboard-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 80%;
+        max-width: 600px;
+        padding: 0 20px;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-size: 0.8em;
+    }
+
+    .leaderboard-entry {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 80%;
+        max-width: 600px;
+        background-color: #333;
+        padding: 10px 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+    }
+
+    .rank-container, .fish-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 60px;
+    }
+
+    .player-info {
+        flex-grow: 1;
+        text-align: left;
+        margin-left: 68px;
+    }
+
+    .rank {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+    }
+
+    .pfp {
+        width: 48px;
+        height: 48px;
+        border-radius: 5%;
+        margin-right: 20px;
+        image-rendering: pixelated;
+    }
+
+    .name {
+        flex-grow: 1;
+        font-size: 1.2em;
+        font-weight: 500;
+        color: #fff;
+        text-align: left;
+    }
+
+    .fish-total {
+        font-size: 1.5em;
+        font-weight: bold;
+        color: #007BFF;
+        text-align: center;
+    }
+
+    .powered-by {
+        color: grey;
+        text-align: center;
+        margin-top: 10px;
+        font: bold 0.9em 'Ubuntu', sans-serif;
+    }
+
+    @media (max-width: 950px) {
+        .leaderboard-entry, .leaderboard-header {
+            max-width: 100%;
+            width: 100%;
+        }
+        
+        .pfp {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
+        }
+
+        .player-info {
+            margin-left: 42px;
+        }
+    }
+</style>
+
+
+{% endblock %}

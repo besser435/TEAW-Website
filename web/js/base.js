@@ -13,6 +13,10 @@ switch (currentPath) {  // TODO: redo, kind of long
         const townsLink = document.getElementById("towns-link");
         townsLink.classList.add("active");
         break;
+    case "/stats":
+        const statsLink = document.getElementById("stats-link");
+        statsLink.classList.add("active");
+        break;
     case "/map":
         const mapLink = document.getElementById("map-link");
         mapLink.classList.add("active");
@@ -36,6 +40,7 @@ function chooseAlternateImage() {
     }
 }
 chooseAlternateImage();
+
 
 
 let failureCount = 0;

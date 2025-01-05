@@ -91,7 +91,7 @@ nav::before {
 }
 
 
-nav a:not(.nav-logo), .header-button, .sort-select {
+nav a:not(.nav-logo), .header-button, select {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(0, 0, 0, 0.2);
     font-family: "Inter", sans-serif;
@@ -111,7 +111,7 @@ nav a:not(.nav-logo), .header-button, .sort-select {
     outline: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-button.header-button, .sort-select {
+button.header-button, select {
     border: none;
 }
 
@@ -120,7 +120,7 @@ nav a.active, .header-button.active {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-nav a:hover, .header-button:hover, .sort-select:hover {
+nav a:hover, .header-button:hover, select:hover {
     background-color: rgba(255, 255, 255, 0.2);
     outline: 2px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
@@ -152,6 +152,10 @@ nav a.nav-logo {
         margin-inline: 0;
         width: 100%;
         text-align: center;
+    }
+
+    select {
+        margin-inline: 0px;
     }
 
     .online-players {
@@ -235,10 +239,6 @@ nav a.nav-logo {
         margin-inline: 14px;
         width: 3px;
         min-width: 3px;
-    }
-
-    .sort-select {
-        margin-inline: 0px;
     }
 
     body {

@@ -53,6 +53,10 @@ def chat():
 def towns():
     return render_template("towns.html")
 
+@template_routes.route("/stats")
+def stats():
+    return render_template("stats.html")
+
 @template_routes.route("/map")
 def map():
     return render_template("map.html")
