@@ -126,6 +126,12 @@ nav a:hover, .header-button:hover, .sort-select:hover {
     cursor: pointer;
 }
 
+select option {
+    background-color: #000;
+    font-family: "Inter", sans-serif;
+    font-size: 1.2em;
+}
+
 nav a.nav-logo {
     padding: 0;
     border-radius: 0;
@@ -194,7 +200,8 @@ nav a.nav-logo {
 }
 
 .header h2 {
-    font-size: 20px;
+    font-size: 1.8em;
+    padding-right: 8px;
 }
 
 .header h3 {
@@ -203,7 +210,8 @@ nav a.nav-logo {
 
 .separator {
     width: 4px;
-    height: 40px;
+    min-width: 4px;
+    height: 60%;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 2rem;
     margin-inline: 20px;
@@ -214,12 +222,23 @@ nav a.nav-logo {
         font-size: 1.6em;
     }
 
+    .header h2 {
+        /* Hacky way to remove the "Sort by:" text on mobile, but it works */
+        display: none;
+    }
+
     .header h3 {
-        font-size: 1.2em;
+        font-size: 1.0em;
     }
 
     .separator {
-        height: 30px;
+        margin-inline: 14px;
+        width: 3px;
+        min-width: 3px;
+    }
+
+    .sort-select {
+        margin-inline: 0px;
     }
 
     body {

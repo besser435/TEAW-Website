@@ -1,7 +1,7 @@
 /* Styles for the Players page */
 .player-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
     /* grid-gap: 12px; */
     gap: 12px;
 
@@ -64,4 +64,13 @@
 .player-card .status-light{
     align-self: flex-start;
     margin: 10px 10px 0 auto;
+}
+
+@media (max-width: 950px) {
+    .player-card .player-skin {
+        width: 30px;
+        position: unset;
+        top: 20px;
+        align-self: unset;
+    }
 }
