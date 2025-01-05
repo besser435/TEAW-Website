@@ -314,22 +314,25 @@ footer p {
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
-        scrollbar-width: thin;
+        scrollbar-width: 3px;
     }
 }
 
 /* Webkit */
 *::-webkit-scrollbar {
-    width: 10px;
+    width: 3px;
 }
 
 *::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0);
 }
 
 *::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2); 
     border-radius: 10em;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    background-clip: content-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {
