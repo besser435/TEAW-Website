@@ -8,134 +8,217 @@
 
     <div class="separator"></div>
     <h2>Sort by:</h2>
-    <select id="sort-select" class="sort-select">
+    <select id="sort-select">
         <option value="high-to-low">High to Low</option>
         <option value="low-to-high">Low to High</option>
         <option value="username">Username</option>
     </select>
 
-    <input class="search" type="text" id="player-search" autocomplete="off" spellcheck="false" placeholder="Search">
+    <input class="search" type="text" id="search" autocomplete="off" spellcheck="false" placeholder="Search">
 </div>
 
 
+<div class="leaderboard">
+    <select id="stat-select">
+        <!-- Normal stats with their endpoint -->
+        <option value="DEATHS" data-stat-type="0">Number of deaths</option>
+        <option value="TIME_SINCE_DEATH" data-stat-type="0">Time since last death</option>
+        <option value="PLAYER_KILLS" data-stat-type="0">Player kills</option>
+        <option value="TOTAL_WORLD_TIME" data-stat-type="0">Time played</option>
+        <option value="PIG_ONE_CM" data-stat-type="0">Distance by pig</option>
+        <option value="ANIMALS_BRED" data-stat-type="0">Animals bred</option>
+        <option value="CAKE_SLICES_EATEN" data-stat-type="0">Cake slices eaten</option>
+        <option value="CRAFTING_TABLE_INTERACTION" data-stat-type="0">Interactions with crafting table</option>
+        <option value="TRADED_WITH_VILLAGER" data-stat-type="0">Traded with villagers</option>
+        <option value="SLEEP_IN_BED" data-stat-type="0">Times slept in a bed</option>
 
-<div class="leaderboard-container">
-    <select id="stat-select" class="sort-select">
-        <option value=""></option>
-        <option value=""></option>
-        <option value=""></option>
+        <!-- Custom stats on a different endpoint -->
+        <option value="PLAYTIME_DEATH_RATIO" data-stat-type="1">Playtime to death ratio</option>
+        <option value="BLOCKS_MINED" data-stat-type="1">Total Blocks Mined</option>
     </select>
 
-    <h3 id="unit"></h3>
+    <h3 id="unit-label"></h3>
+
+    <div class="vertical-seperator"></div>
+
+    <div class="stats-container"></div>
 </div>
 
 
 <script>
-   
+    const updateRate = 3_000;   // TODO: up to 10s after debugging
+
+    class StatEntry {
+        constructor(rank, uuid, username, value) {
+            this.rank = rank;
+            this.uuid = uuid;
+            this.username = username;
+            this.value = value;
+        }
+    }
+
+    async function fetchLeaderboard() {
+        try {
+            const stat = document.getElementById("stat-select");
+            const selectedOption = stat.options[stat.selectedIndex];
+            const statType = selectedOption.getAttribute("data-stat-type");
+
+            let response;
+            if (statType === "0") {
+                response = await fetch(`/api/get_general_leaderboard/${stat.value}`);
+            } else if (statType === "1") {
+                response = await fetch(`/api/get_custom_stat/${stat.value}`);
+            }
+
+            const data = await response.json();
+            
+            const entries = data.leaderboard.map((entry, index) => {
+                return new StatEntry(
+                    index + 1,
+                    entry.uuid,
+                    entry.name,
+                    parseFloat(entry.value)
+                );
+            });
+
+            return {
+                entries: entries,
+                units: data.units
+            };
+
+        } catch (error) {
+            console.error(error);
+            return null;
+        }
+    }
+
+
+    function sortLeaderboard(data, sortMethod) {
+        const entriesCopy = [...data];  // Copy to avoid bunging the original data
+        console.log(data);
+        // Sorted by rank rather than value, as if there are ties the ranks can be out of order,
+        // which would look funny.
+        switch (sortMethod) {
+            case "high-to-low":
+                return entriesCopy.sort((a, b) => a.rank - b.rank);
+            case "low-to-high":
+                return entriesCopy.sort((a, b) => b.rank - a.rank);
+            case "username":
+                return entriesCopy.sort((a, b) => a.username.localeCompare(b.username));
+        }
+    }
+
+
+    function renderLeaderboard(data, unit, currentSort) {
+        const unitLabel = document.getElementById("unit-label");
+        unitLabel.textContent = unit.charAt(0).toUpperCase() + unit.slice(1);
+
+        const statsContainerSelector = document.querySelector(".stats-container");
+        statsContainerSelector.querySelectorAll(".stat-entry").forEach(el => el.remove());
+
+        const statsContainer = document.querySelector(".stats-container");
+
+        // Sort the data
+        const sortedData = sortLeaderboard(data, currentSort);
+        
+        // Update ranks after sorting
+        // sortedData.forEach((entry, index) => {
+        //     entry.rank = index + 1;
+        // });
+
+        // Create and append new entries
+        sortedData.forEach(entry => {
+            const entryDiv = document.createElement("div");
+            entryDiv.className = "stat-entry";
+            
+            entryDiv.innerHTML = `
+                <h3 class="player-rank">#${entry.rank}</h3>
+                <img class="player-face" src="/api/player_face/${entry.uuid}">
+                <h3 class="player-name">${entry.username}</h3>
+                <h3 class="player-stat-value">${entry.value}</h3>
+            `;
+            
+            statsContainerSelector.appendChild(entryDiv);
+        });
+    }
+
+
+    async function initializeLeaderboard() {
+        const statSelect = document.getElementById("stat-select");
+        const sortSelect = document.getElementById("sort-select");
+        const search = document.getElementById("search");
+
+        let currentSort = sortSelect.value;
+        let searchQuery = "";
+
+        // Initial load
+        const data = await fetchLeaderboard();
+        if (data) renderLeaderboard(data.entries, data.units, currentSort);
+
+        // Sort method changes
+        sortSelect.addEventListener("change", () => {
+            currentSort = sortSelect.value;
+            if (data) renderLeaderboard(data.entries, data.units, currentSort);
+        });
+
+        // Selected stat changes
+        statSelect.addEventListener("change", async () => {
+            const newData = await fetchLeaderboard();
+            if (newData) renderLeaderboard(newData.entries, newData.units, currentSort);
+        });
+
+        // Search input
+        // will add later
+
+        // Periodic updates
+        setInterval(async () => {
+            const newData = await fetchLeaderboard();
+            if (newData) renderLeaderboard(newData.entries, newData.units, currentSort);
+        }, updateRate);
+    }
+    initializeLeaderboard();
 </script>
 
+
+
+
 <style>
-    .leaderboard-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 12px;
-        padding: 0px;
-        border-radius: 16px;
+    .leaderboard {
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 28px;
+        padding: 10px;
     }
 
-    .leaderboard-header {
+    .stat-entry {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        width: 80%;
-        max-width: 600px;
-        padding: 0 20px;
-        color: #fff;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-        font-size: 0.8em;
+        padding: 8px 16px;
+        background-color: rgba(255, 255, 255, 0.05);
+        margin: 4px 0;
+        border-radius: 8px;
+        color: rgba(255, 255, 255, 0.85);
+        font-family: "Inter", sans-serif;
     }
 
-    .leaderboard-entry {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 80%;
-        max-width: 600px;
-        background-color: #333;
-        padding: 10px 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        box-sizing: border-box;
+    .stat-entry h3 {
+        font-size: 1.2em;
     }
 
-    .rank-container, .fish-container {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-width: 60px;
-    }
-
-    .player-info {
-        flex-grow: 1;
-        text-align: left;
-        margin-left: 68px;
-    }
-
-    .rank {
-        font-size: 1.5em;
-        font-weight: bold;
-        color: #fff;
-        text-align: center;
-    }
-
-    .pfp {
-        width: 48px;
-        height: 48px;
-        border-radius: 5%;
-        margin-right: 20px;
+    .player-face {
+        width: 32px;
+        height: 32px;
+        border-radius: 5px;
         image-rendering: pixelated;
     }
 
-    .name {
-        flex-grow: 1;
-        font-size: 1.2em;
-        font-weight: 500;
-        color: #fff;
-        text-align: left;
-    }
-
-    .fish-total {
-        font-size: 1.5em;
+    .player-name {
         font-weight: bold;
-        color: #007BFF;
-        text-align: center;
     }
 
-    .powered-by {
-        color: grey;
-        text-align: center;
-        margin-top: 10px;
-        font: bold 0.9em 'Ubuntu', sans-serif;
+    .player-stat-value {
+        text-align: right;
     }
 
-    @media (max-width: 950px) {
-        .leaderboard-entry, .leaderboard-header {
-            max-width: 100%;
-            width: 100%;
-        }
-        
-        .pfp {
-            width: 32px;
-            height: 32px;
-            margin-right: 10px;
-        }
-
-        .player-info {
-            margin-left: 42px;
-        }
-    }
 </style>
 
 

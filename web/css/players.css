@@ -1,13 +1,13 @@
 /* Styles for the Players page */
 .player-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     /* grid-gap: 12px; */
     gap: 12px;
 
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px;
-    padding: 8px 10px;
+    padding: 10px;
 
     margin-bottom: 10px;
 

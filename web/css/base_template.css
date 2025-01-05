@@ -90,7 +90,6 @@ nav::before {
     background-color: rgba(25, 25, 25, 0.3);
 }
 
-
 nav a:not(.nav-logo), .header-button, select {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(0, 0, 0, 0.2);
@@ -130,6 +129,7 @@ select option {
     background-color: #000;
     font-family: "Inter", sans-serif;
     font-size: 1.2em;
+    text-align: left;
 }
 
 nav a.nav-logo {
@@ -196,7 +196,6 @@ nav a.nav-logo {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    /* padding-left: 0.5em; */
 }
 
 .header h1 {
@@ -259,7 +258,6 @@ nav a.nav-logo {
     flex-direction: column;
     padding-inline: 1em;
     margin-bottom: auto;
-    /* overflow-y: scroll; */
 }
 
 
@@ -314,13 +312,13 @@ footer p {
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
-        scrollbar-width: 3px;
+        scrollbar-width: 10px;
     }
 }
 
 /* Webkit */
 *::-webkit-scrollbar {
-    width: 3px;
+    width: 10px;
 }
 
 *::-webkit-scrollbar-track {
@@ -329,7 +327,6 @@ footer p {
 
 *::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2); 
-    border-radius: 10em;
     border-top: 20px solid transparent;
     border-bottom: 20px solid transparent;
     background-clip: content-box;

@@ -41,9 +41,26 @@ AVAILABLE_GENERAL_STATS = {
     "SLEEP_IN_BED": count                   # Times slept in a bed
 }
 
+# AVAILABLE_CUSTOM_STATS = {
+#     "PLAYTIME_DEATH_RATIO": count,
+#     "TOTAL_BLOCKS_BROKEN": count
+# }
 
-# General stats handler
-@stats_routes.route("/api/get_stats_leaderboard/<stat>")
+
+# Helper functions
+def get_name_and_skin(uuid):
+    with sqlite3.connect(TEAW_DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""SELECT name FROM players WHERE uuid = ?""", (uuid,))
+        name = cursor.fetchone()
+        name = name[0] if name else "Unknown"
+
+    skin = 0
+    return name, skin
+
+
+# General stats
+@stats_routes.route("/api/get_general_leaderboard/<stat>")
 def get_stats_leaderboard(stat):
     try:
         stat = stat.upper()
@@ -63,7 +80,7 @@ def get_stats_leaderboard(stat):
                 FROM player_statistics
                 WHERE category = 'general' AND stat_key = ?
                 ORDER BY stat_value DESC
-                LIMIT 100
+                LIMIT 500
             """, (stat,))
 
             leaderboard = []
@@ -92,6 +109,34 @@ def get_stats_leaderboard(stat):
     except Exception:
         log.error(f"Internal error getting `stats_leaderboard` for stat '{stat}': {traceback.format_exc()}")
         return {"error": "internal error"}, 500
+
+
+# Custom stats
+# def get_playtime_death_ratio():
+#     return 0
+
+# def get_total_blocks_broken():
+#     return 0
+
+
+# @stats_routes.route("/api/get_custom_stat/<stat>")
+# def handle_custom_stat(stat):
+#     try:
+#         stat = stat.upper()
+#         if stat not in AVAILABLE_CUSTOM_STATS:
+#             return {"error": "invalid stat key"}, 400
+        
+#         if stat == "PLAYTIME_DEATH_RATIO":
+#             value = get_playtime_death_ratio()
+#         elif stat == "TOTAL_BLOCKS_BROKEN":
+#             value = get_total_blocks_broken()
+
+#         return jsonify({"value": value}), 200
+
+#     except Exception:
+#         log.error(f"Internal error handling custom_stat for stat '{stat}': {traceback.format_exc()}")
+#         return {"error": "internal error"}, 500
+       
 
 
 # Fishing (Hosted on USAI.net)
