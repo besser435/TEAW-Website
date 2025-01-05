@@ -23,4 +23,4 @@ app.register_blueprint(stats_routes)
 if __name__ == "__main__":
     # Run in debug mode if this file is being run.
     # Otherwise run `app` from a WSGI server.
-    app.run(debug=True, port=1851, host="192.168.0.101")
+    app.run(debug=True, port=1851)

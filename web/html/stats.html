@@ -19,25 +19,27 @@
 
 
 <div class="leaderboard">
-    <select id="stat-select">
-        <!-- Normal stats with their endpoint -->
-        <option value="DEATHS" data-stat-type="0">Number of deaths</option>
-        <option value="TIME_SINCE_DEATH" data-stat-type="0">Time since last death</option>
-        <option value="PLAYER_KILLS" data-stat-type="0">Player kills</option>
-        <option value="TOTAL_WORLD_TIME" data-stat-type="0">Time played</option>
-        <option value="PIG_ONE_CM" data-stat-type="0">Distance by pig</option>
-        <option value="ANIMALS_BRED" data-stat-type="0">Animals bred</option>
-        <option value="CAKE_SLICES_EATEN" data-stat-type="0">Cake slices eaten</option>
-        <option value="CRAFTING_TABLE_INTERACTION" data-stat-type="0">Interactions with crafting table</option>
-        <option value="TRADED_WITH_VILLAGER" data-stat-type="0">Traded with villagers</option>
-        <option value="SLEEP_IN_BED" data-stat-type="0">Times slept in a bed</option>
+    <div class="leaderboard-header">
+        <select id="stat-select">
+            <!-- Normal stats with their endpoint -->
+            <option value="DEATHS" data-stat-type="0">Number of deaths</option>
+            <option value="TIME_SINCE_DEATH" data-stat-type="0">Time since last death</option>
+            <option value="PLAYER_KILLS" data-stat-type="0">Player kills</option>
+            <option value="TOTAL_WORLD_TIME" data-stat-type="0">Time played</option>
+            <option value="PIG_ONE_CM" data-stat-type="0">Distance by pig</option>
+            <option value="ANIMALS_BRED" data-stat-type="0">Animals bred</option>
+            <option value="CAKE_SLICES_EATEN" data-stat-type="0">Cake slices eaten</option>
+            <option value="CRAFTING_TABLE_INTERACTION" data-stat-type="0">Interactions with crafting table</option>
+            <option value="TRADED_WITH_VILLAGER" data-stat-type="0">Traded with villagers</option>
+            <option value="SLEEP_IN_BED" data-stat-type="0">Times slept in a bed</option>
 
-        <!-- Custom stats on a different endpoint -->
-        <option value="PLAYTIME_DEATH_RATIO" data-stat-type="1">Playtime to death ratio</option>
-        <option value="BLOCKS_MINED" data-stat-type="1">Total Blocks Mined</option>
-    </select>
+            <!-- Custom stats on a different endpoint -->
+            <option value="PLAYTIME_DEATH_RATIO" data-stat-type="1">Playtime to death ratio</option>
+            <option value="BLOCKS_MINED" data-stat-type="1">Total Blocks Mined</option>
+        </select>
 
-    <h3 id="unit-label"></h3>
+        <h3 id="unit-label"></h3>
+    </div>
 
     <div class="vertical-seperator"></div>
 
@@ -185,15 +187,21 @@
         border: 2px solid rgba(255, 255, 255, 0.1);
         border-radius: 28px;
         padding: 10px;
+        padding-bottom: 0px;
+        width: 500px;
+        margin-inline: auto;
+        overflow: hidden;
     }
 
     .stat-entry {
         display: flex;
-        justify-content: space-between;
-        padding: 8px 16px;
-        background-color: rgba(255, 255, 255, 0.05);
-        margin: 4px 0;
-        border-radius: 8px;
+        justify-content: left;
+        align-items: center;
+        padding: 5px 16px;
+        background-color: rgba(69, 69, 69, 0.4);
+        margin: 7px 0;
+        border-radius: 2rem;
+        border: 2px solid rgba(255, 255, 255, 0.1);
         color: rgba(255, 255, 255, 0.85);
         font-family: "Inter", sans-serif;
     }
@@ -202,11 +210,47 @@
         font-size: 1.2em;
     }
 
+    .leaderboard-header {
+        display: flex;
+        height: 27px;
+        align-items: center;
+    }
+
+    #stat-select {
+        margin-left: 0px;
+    }
+
+    #unit-label {
+        margin-left: auto;
+        margin-right: 10px;
+        color:rgba(255, 255, 255, 0.8);
+        font-size: 1.2rem;
+    }
+
+    .vertical-seperator {
+        min-height: 4px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 2rem;
+        margin-top: 10px;
+    }
+
+    .stats-container {
+        overflow-y: scroll;
+        height: calc(100vh - 276px);
+        padding-block: 5px;
+    }
+
+    .player-rank {
+        min-width: 70px;
+        color: rgba(255, 255, 255, 0.85)
+    }
+
     .player-face {
         width: 32px;
         height: 32px;
         border-radius: 5px;
         image-rendering: pixelated;
+        margin-right: 10px;
     }
 
     .player-name {
@@ -214,7 +258,7 @@
     }
 
     .player-stat-value {
-        text-align: right;
+        margin-left: auto;
     }
 
 </style>
