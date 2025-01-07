@@ -20,10 +20,10 @@ def count(count):
     return int(count), "quantity"
 
 def ticks_to_hours(ticks):
-    return format(float(ticks / 20 / 60 / 60), '.1f'), "hours"
+    return f"{ticks / 20 / 60 / 60:.1f}", "hours"
 
 def cm_to_km(cm):
-    return format(float(cm / 100_000), '.3f'), "kilometers"
+    return f"{cm / 100_000:.3f}", "kilometers"
 
 
 # This lists queryable stats, and what translation to use for the result. The comments are what appears in game.

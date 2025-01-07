@@ -314,6 +314,7 @@ function setupSearch() {
         noPlayersFound.style.display = found ? "none" : "block";
     });
 }
+
 function highlightText(element, searchTerm) {
     if (!element) return;
     
