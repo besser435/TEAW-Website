@@ -1,0 +1,7 @@
+Rate limit is configured for the URI /api/submit_photo 
+1 Request is allowed every 10 seconds, with a 10 second ban
+Go to Security > WAF > Rate limiting rules
+
+There is also a challenge set up for /showcase/submit before it loads.
+This is bad, as it only protects the page, not the actual API endpoint.
+Go to Security > WAF > Custom rules

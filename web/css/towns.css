@@ -1,1 +1,29 @@
 /* Styles for the Towns page */
+.color-pill {
+    display: inline-block;
+    width: 1.4em;
+    height: 80%;
+    margin: 12px;
+    border-radius: 10em;
+
+    border: 0.2em solid;  /* Larger for testing, prod will be 2px */
+
+    /* Red and green for testing, will be #000 before being updated by the JS */
+    border-color: #00FF00;
+    background-color: #FF1100;
+}
+
+@media (max-width: 950px) {
+    .color-pill {
+        display: inline-block;
+        width: 1.6em;
+        height: 80%;
+        margin: 16px;
+        border-radius: 10em;
+    }
+
+    .placeholder-color-pill {
+        width: 16px;
+        margin: 10px;
+    }
+}

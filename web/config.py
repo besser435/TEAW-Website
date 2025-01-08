@@ -18,5 +18,9 @@ STATS_DB_FILE = "../db/stats.db"
 PLAYER_BODY_SKIN_DIR = "../db/player_body_skins/"
 PLAYER_FACE_SKIN_DIR = "../db/player_face_skins/"
 
+SHOWCASE_SUBMISSIONS_DIR = "../db/showcase_submissions/"
+SHOWCASE_IMAGES_DIR = "../db/showcase_imgs/"
+
+
 # Setup Logger
 log = setup_logger(LOG_FILE, log_level)

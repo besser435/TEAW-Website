@@ -79,6 +79,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .info-bubble {
@@ -92,6 +93,7 @@
     padding: 3px 5px;
     margin-right: 0.5em;
     border-radius: 10px;
+    margin-block: 3px;
 
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -121,3 +123,28 @@
     }
 }
 
+.search::placeholder {
+    font-weight: 400;
+    text-align: center;
+}
+
+
+/* Highlight text for searches */
+.highlight {
+    background-color: yellow;
+    color: black;
+    font-weight: bold;
+}
+
+.search-not-found-msg {
+    display: none;
+    text-align: center;
+    padding: 1em;
+    color: rgb(154, 154, 154);
+}
+
+@media (max-width: 950px) {
+    .search {
+        width: 25%;
+    }
+}

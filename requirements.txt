@@ -1,4 +1,7 @@
+bleach
 Flask
+Flask_Cors
+flask_squeeze
 Pillow
 Requests
 Werkzeug

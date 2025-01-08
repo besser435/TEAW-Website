@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}Stats - TEAW{% endblock %}
+{% block content %}
+
+
+<div class="header">
+    <h1>Statistics Leaderboard</h1>
+
+    <div class="separator"></div>
+    <h2>Sort by:</h2>
+    <select id="sort-select">
+        <option value="high-to-low">High to Low</option>
+        <option value="low-to-high">Low to High</option>
+        <option value="username">Username</option>
+    </select>
+
+    <input class="search" type="text" id="search" autocomplete="off" spellcheck="false" placeholder="Search">
+</div>
+
+<div class="leaderboard">
+    <div class="leaderboard-header">
+        <select id="stat-select">
+            <!-- Normal stats with their endpoint -->
+            <option value="DEATHS" data-stat-type="0">Number of deaths</option>
+            <option value="TIME_SINCE_DEATH" data-stat-type="0">Time since last death</option>
+            <option value="PLAYER_KILLS" data-stat-type="0">Player kills</option>
+            <option value="TOTAL_WORLD_TIME" data-stat-type="0">Time played</option>
+            <option value="PIG_ONE_CM" data-stat-type="0">Distance by pig</option>
+            <option value="ANIMALS_BRED" data-stat-type="0">Animals bred</option>
+            <option value="CAKE_SLICES_EATEN" data-stat-type="0">Cake slices eaten</option>
+            <option value="CRAFTING_TABLE_INTERACTION" data-stat-type="0">Interactions with crafting table</option>
+            <option value="TRADED_WITH_VILLAGER" data-stat-type="0">Traded with villagers</option>
+            <option value="SLEEP_IN_BED" data-stat-type="0">Times slept in a bed</option>
+
+            <!-- Custom stats on a different endpoint -->
+            <!-- <option value="PLAYTIME_DEATH_RATIO" data-stat-type="1">Playtime to death ratio</option>
+            <option value="BLOCKS_MINED" data-stat-type="1">Total Blocks Mined</option> -->
+        </select>
+
+        <h3 id="unit-label"></h3>
+    </div>
+
+    <div class="vertical-separator"></div>
+
+    <div class="stats-container">
+        <div class="search-not-found-msg" id="no-players-found" style="display: none;">Your search did not match any players</div>
+    </div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/css/stats.css">
+<script src="/js/stats.js"></script>
+
+{% endblock %}

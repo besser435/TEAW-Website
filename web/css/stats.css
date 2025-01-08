@@ -1,0 +1,78 @@
+.leaderboard {
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 28px;
+    padding: 10px;
+    padding-bottom: 0px;
+    width: 500px;
+    margin-inline: auto;
+    overflow: hidden;
+}
+
+.stat-entry {
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    padding: 5px 16px;
+    background-color: rgba(69, 69, 69, 0.4);
+    margin: 7px 0;
+    border-radius: 2rem;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.85);
+    font-family: "Inter", sans-serif;
+}
+
+.stat-entry h3 {
+    font-size: 1.2em;
+}
+
+.leaderboard-header {
+    display: flex;
+    height: 27px;
+    align-items: center;
+}
+
+#stat-select {
+    margin-left: 0px;
+}
+
+#unit-label {
+    margin-left: auto;
+    margin-right: 10px;
+    color:rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+}
+
+/* move to wherever the horizontal one is */
+.vertical-separator {
+    min-height: 4px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 2rem;
+    margin-top: 10px;
+}
+
+.stats-container {
+    overflow-y: scroll;
+    height: calc(100vh - 276px);
+    padding-block: 5px;
+}
+
+.player-rank {
+    min-width: 70px;
+    color: rgba(255, 255, 255, 0.85)
+}
+
+.player-face {
+    width: 32px;
+    height: 32px;
+    border-radius: 5px;
+    image-rendering: pixelated;
+    margin-right: 10px;
+}
+
+.player-name {
+    font-weight: bold;
+}
+
+.player-stat-value {
+    margin-left: auto;
+}

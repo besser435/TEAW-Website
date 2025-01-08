@@ -7,32 +7,20 @@
     <input class="search" type="text" id="chat-search" autocomplete="off" spellcheck="false" placeholder="Search">
 </div>
 
-
-<div>
-    <h3>TODO:</h3>
-
-    <h3>INVESTIGATE TAPI MESSAGE DISPLAY TYPE</h3>
-
-    <li>Fix HTML injection. Ensure emojis and control chars still work.</li>
-    <li>Search by username or message content</li>
-
-    <li>Fix scrollbars being present when no need for them.</li>
-    <li>Add page scrolling and scroll to bottom button</li>
-
-    <style>li, h3 {color: red;}</style>
+<div class="chat-feed">
+    <div class="search-not-found-msg" id="no-messages-found" style="display: none;">Your search did not match any messages or senders</div>
 </div>
-
-
-<div class="chat-feed"></div>
 
 <div class="info-bubble-container">
-    <div class="info-bubble"><b><span id="message-count">0</span></b> Messages logged</div>
-    <div class="info-bubble"> Day: <b><span id="days-elapsed">0</b></span></div>
+    <div class="info-bubble"><b><span id="message-count">00,000</span></b> Messages logged</div>
+    <div class="info-bubble"> Day: <b><span id="days-elapsed">00,000</b></span></div>
     <div class="info-bubble"> Weather: <b><span id="world-weather">Clear</span></b></div>
+    <div class="info-bubble"> Time: <b><span id="world-time">Day</span></b></div>
 
-     <!-- Either remove, or add code to interpolate time between updates -->
-    <div class="info-bubble"> Time: <b><span id="world-time">06:00</span></b></div>
+    <button id="scroll-to-bottom" onclick="scrollToBottom()" style="display: none;">Scroll to recent</button>
 </div>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=dns,login,logout,skull,trophy" />
 
 <link rel="stylesheet" type="text/css" href="/css/chat.css">
 <script src="/js/chat.js"></script>

@@ -1,0 +1,86 @@
+/* Styles for the Showcase Submission page */
+.showcase-form-container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+form#showcase-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+}
+
+form label {
+    text-align: left;
+    font-family: "Inter", sans-serif;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: -7px;
+    margin-left: 5px;
+    font-weight: 700;
+}
+
+form input,
+form button, .upload-button {  /* Copied from base_common.css .search  */
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+
+    border-radius: 2rem;
+    height: 25px;
+    /* width: 250px; */
+    width: 96%;
+    padding: 2px 10px;
+
+    transition: border-color 0.15s, box-shadow 0.15s;
+    &:focus {
+        outline: none;
+        border-color: #007BFF;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
+    }
+}
+
+#photo-file {
+    &::file-selector-button {
+        font-family: "Inter", sans-serif;
+        font-weight: 500;
+        color: #000;
+        background-color: #fff;
+        border: none;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        margin-top: 3px;
+    }
+}
+
+#submit-button {
+    background-color: #0056b3;
+    border: none;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    height: 33px;
+    width: 117px;
+
+    transition: background-color 0.3s, outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#submit-button:hover {
+    background-color: #007BFF;
+}
+
+.submission-message {
+    margin-top: 20px;
+    font-size: 1.2em;
+    color: #bbb;
+    text-align: center;
+}

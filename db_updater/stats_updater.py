@@ -79,6 +79,8 @@ if __name__ == "__main__":  # autism
                         stats_json = stats_response.json()
                         insert_statistics(uuid, stats_json)
                         log.debug(f"Updated player stats for {player_data['name']} ({uuid})")
+                    elif response.status_code == 404:   # Player logged out before we could fetch stats. This is fine.
+                        log.info(f"Attempted to fetch stats for {uuid} who is now offline. Skipping.")
                     else:
                         log.warning(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
             else:
@@ -86,13 +88,13 @@ if __name__ == "__main__":  # autism
 
             end_time = time.time()  
             print(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
-            time.sleep(30)
-    except requests.exceptions.ConnectTimeout as e:
+            time.sleep(15)
+    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting
 
-        log.info(f"Connection timed out. {e}")
+        log.info(f"Connection timed out.")
 
         time.sleep(30)
 

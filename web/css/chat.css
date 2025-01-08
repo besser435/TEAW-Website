@@ -1,61 +1,73 @@
 /* Styles for the Chat page */
 
 .chat-feed {
-    height: calc(100vh - 260px);
+    height: calc(100vh - 280px);
     overflow-y: scroll;
     margin-bottom: 10px;
     border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 16px;
     padding: 10px;
 }
 
 .message-container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: 290px 1fr;
+    gap: 0.5em;
+    align-items: stretch;
     font-family: "Inter", sans-serif;
-    margin-bottom: 10px;
-    color: #FFFFFF
-    
+    margin-top: 10px;
+    color: #FFFFFF;
 }
 
 .message-info {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    font-style: normal;
-
-    /* TODO: Make min-width the length of the longest message-info/username.
-    Also set a max length, so that if someone has a crazy name it doesnt overflow. */
-    min-width: 270px;
+    min-width: 290px;
     padding: 3px 5px 3px 3px;
-    margin-right: 0.5em;
     border-radius: 10px;
-
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.1);
-
     box-sizing: border-box;
+}
+
+.message-text {
+    margin-block: auto;
+    word-break: break-all;
+}
+
+#scroll-to-bottom {
+    color: white;
+    background-color: rgb(0, 76, 255);
+    text-align: center;
+
+
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    border: none ;
+    padding: 0.4em 0.8em;
+    border-radius: 10em;
+
+    cursor: pointer;
+    
+    transition: background-color 0.3s, outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#scroll-to-bottom:hover {
+    background-color: #0056b3;
 }
 
 .message-info .profile-pic {
     width: 20px;
     height: 20px;
-    margin-right: 5px;
     border-radius: 5px;
     image-rendering: pixelated;
 }
 
-/* debuggy, put icon styles here */
-.message-info .info-icon {
-    width: 20px;
-    height: 20px;
-}
-
 .message-info .sender {
     font-weight: 800;
-    margin-right: 10px;
+    margin: 0 8px 0 8px;
 }
 
 .message-info .timestamp {
@@ -92,4 +104,34 @@
 .message-info[data-message-type="advancement"] {
     background-color: rgba(255, 200, 0, 0.1);
     border-color: rgba(255, 200, 0, 0.1);
+}
+
+.material-symbols-rounded {
+    font-size: 20px;
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 20
+}
+
+@media (max-width: 950px) {
+    .message-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .message-info {
+        width: 100%;
+        max-height: 30px;
+    }
+
+    .message-info .timestamp {
+        margin-left: auto;
+    }
+
+    .message-text {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
 }

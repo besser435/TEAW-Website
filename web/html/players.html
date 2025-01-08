@@ -2,26 +2,31 @@
 {% block title %}Players - TEAW{% endblock %}
 {% block content %}
 
-
-
 <div class="header">
     <h1>Players</h1>
-    <div class="separator"></div>
-    
-    <h3>Sort by:</h3>
-    <button type="button" onclick="sortByOnline()" class="header-button">Last Online</button>
-    <button type="button" onclick="sortByUsername()" class="header-button">Username</button>
 
-    <input class="search" type="text" id="chat-search" autocomplete="off" spellcheck="false" placeholder="Search">
+    <div class="separator"></div>
+    <h2>Sort by:</h2>
+    <select id="sort-select">
+        <option value="last_online">Last Online</option>
+        <option value="username">Username</option>
+    </select>
+
+    <input class="search" type="text" id="player-search" autocomplete="off" spellcheck="false" placeholder="Search">
 </div>
 
-<div class="players-grid"></div>
+<div class="container-grid">
+    <div class="search-not-found-msg" id="no-players-found" style="display: none;">Your search did not match any players</div>
+</div>
 
 <div class="info-bubble-container">
-    <div class="info-bubble"><b><span id="active-count">0</span></b> Active players</div>
-    <div class="info-bubble"><b><span id="total-count">0</span></b> Total players</div>
+    <div class="info-bubble"><b><span id="active-count">00</span></b> Active players</div>
+    <div class="info-bubble"><b><span id="total-count">00</span></b> Total players</div>
+    <div class="info-bubble"><b><span id="total-money">$000,000</span></b> Total money</div>
 </div>
 
+<link rel="stylesheet" type="text/css" href="/css/players-towns_common.css">
+<link rel="stylesheet" type="text/css" href="/css/players.css">
 <script src="/js/players.js"></script>
 
 {% endblock %}

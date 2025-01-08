@@ -135,7 +135,7 @@ def update_chat_table() -> None:
                 timestamp = chat_entry.get("timestamp")
                 message_type = chat_entry.get("type")
 
-                if message == "playerlist": continue
+                if message.lower() == "playerlist": continue
 
                 
                 if timestamp > last_timestamp:
@@ -168,8 +168,22 @@ def update_towns_table() -> None:
             data = response.json()
             towns = data.get("towns", {})
 
+
+            # Purge towns that no longer exist
+            api_town_uuids = set(towns.keys())
+
+            cursor.execute("SELECT uuid FROM towns")
+            db_town_uuids = {row[0] for row in cursor.fetchall()}
+
+            towns_to_delete = db_town_uuids - api_town_uuids
+            if towns_to_delete:
+                cursor.executemany("DELETE FROM towns WHERE uuid = ?", [(uuid,) for uuid in towns_to_delete])
+                log.info(f"Removed {len(towns_to_delete)} towns no longer present in the API")
+
+
+            # Update/insert town data
             for town_uuid, town_data in towns.items():
-                resident_tax_percent = town_data.get("resident_tax_percent", 0.0)
+                resident_tax_percent = town_data.get("resident_tax", 0.0)
                 is_active = town_data.get("is_active", False)
                 balance = town_data.get("balance", 0.0)
                 nation = town_data.get("nation")
@@ -179,11 +193,12 @@ def update_towns_table() -> None:
                 name = town_data.get("name")
                 founded = town_data.get("founded")
                 claimed_chunks = town_data.get("claimed_chunks", 0)
-                color_hex = town_data.get("color_hex", "000000")
+                color_hex = town_data.get("color_hex")
                 tag = town_data.get("tag")
                 board = town_data.get("board")
 
-
+                # Legacy note: TAPI now returns the tax as "resident_tax", but we still store it as "resident_tax_percent".
+                # Will rename the column later :tm:
                 cursor.execute("""
                     INSERT INTO towns (
                         uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
@@ -196,6 +211,7 @@ def update_towns_table() -> None:
                         founder=excluded.founder,
                         balance=excluded.balance,
                         nation=excluded.nation,
+                        nation_name=excluded.nation_name,
                         founded=excluded.founded,
                         resident_tax_percent=excluded.resident_tax_percent,
                         is_active=excluded.is_active,
@@ -227,6 +243,20 @@ def update_nations_table() -> None:
             data = response.json()
             nations = data.get("nations", {})
 
+
+            # Purge nations that no longer exist
+            api_nation_uuids = set(nations.keys())
+
+            cursor.execute("SELECT uuid FROM nations")
+            db_nation_uuids = {row[0] for row in cursor.fetchall()}
+
+            nations_to_delete = db_nation_uuids - api_nation_uuids
+            if nations_to_delete:
+                cursor.executemany("DELETE FROM nations WHERE uuid = ?", [(uuid,) for uuid in nations_to_delete])
+                log.info(f"Removed {len(nations_to_delete)} nations no longer present in the API")
+
+
+            # Update/insert nation data
             for nation_id, nation_data in nations.items():
                 leader = nation_data.get("leader")
                 capitol_town = nation_data.get("capitol_town")
@@ -365,20 +395,23 @@ if __name__ == "__main__":
             update_nations_table()
             update_server_info_table()
 
-            update_skin_dir("body")
-            update_skin_dir("face")
+            try:
+                update_skin_dir("body")
+                update_skin_dir("face")
+            except Exception as e:  # Not super critical, sometimes the APIs go down
+                log.warning(f"Failed to update skins: {e}")
 
             end_time = time.time()
 
             print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Total time taken was {round((end_time - start_time) * 1000, 2)}ms")
 
             time.sleep(2)
-    except requests.exceptions.ConnectTimeout as e:
+    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect.
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting.
 
-        log.info(f"Connection timed out. {e}")
+        log.info(f"Connection timed out.")
 
         time.sleep(30)
 

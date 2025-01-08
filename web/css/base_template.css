@@ -40,15 +40,15 @@ p {
 
 /* Body and background Image */
 body {
-    background-image: url("/imgs/background_embedded.png");
     background-color: #0D150C;  /* Prevent flashbang before the actual background image loads */
+    background-image: url("/imgs/background_embedded.png");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
     height: 100vh;
     position: relative;
-    overflow: hidden;
-    overflow-y: scroll; /* BUG: shitfuck  */
+    /* overflow: hidden;
+    overflow-y: scroll; BUG: messes up scrollbars  */
 
     font-family: Arial, sans-serif; /* Default/fallback */
 
@@ -63,17 +63,18 @@ body::before {
     z-index: -5;
 }
 
-
 /* Navbar */
 nav {
     padding: 1em 1em 0.5em 1em;
     display: flex;
+    height: 50px;
     justify-content: flex-start;
     align-items: center;
     position: sticky;
     top: 0;
     z-index: 20;
     background-image: linear-gradient(#000000ff, #00000077 75%, #00000000);
+    flex-wrap: nowrap;
 }
 
 nav::before {
@@ -89,8 +90,7 @@ nav::before {
     background-color: rgba(25, 25, 25, 0.3);
 }
 
-
-nav a:not(.nav-logo), .header-button {
+nav a:not(.nav-logo), .header-button, select {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(0, 0, 0, 0.2);
     font-family: "Inter", sans-serif;
@@ -110,7 +110,7 @@ nav a:not(.nav-logo), .header-button {
     outline: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-button.header-button {
+button.header-button, select {
     border: none;
 }
 
@@ -119,9 +119,17 @@ nav a.active, .header-button.active {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-nav a:hover, .header-button:hover {
+nav a:hover, .header-button:hover, select:hover {
     background-color: rgba(255, 255, 255, 0.2);
     outline: 2px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}
+
+select option {
+    background-color: #000;
+    font-family: "Inter", sans-serif;
+    font-size: 1.2em;
+    text-align: left;
 }
 
 nav a.nav-logo {
@@ -130,6 +138,41 @@ nav a.nav-logo {
     outline: none;
     background: none;
     margin-right: 20px;
+}
+
+@media (max-width: 950px) {
+    nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        position: static;
+        gap: 0.6em;
+    }
+
+    nav a:not(.nav-logo), .header-button {
+        margin-inline: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    select {
+        margin-inline: 0px;
+    }
+
+    .online-players {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    nav a.nav-logo {
+        margin: 0px;
+        scale: 0.8;
+    }
+
+    nav::before {
+        height: 48px;
+    }
 }
 
 
@@ -153,27 +196,68 @@ nav a.nav-logo {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-left: 0.5em;
 }
 
 .header h1 {
     font-weight: 800;
 }
 
+.header h2 {
+    font-size: 1.8em;
+    padding-right: 8px;
+}
+
+.header h3 {
+    margin-right: 4px;
+}
+
 .separator {
     width: 4px;
-    height: 40px;
+    min-width: 4px;
+    height: 60%;
     background-color: rgba(255, 255, 255, 0.2);
     border-radius: 2rem;
     margin-inline: 20px;
 }
 
+@media (max-width: 950px) {
+    .header h1 {
+        font-size: 1.6em;
+    }
+
+    .header h2 {
+        /* Hacky way to remove the "Sort by:" text on mobile, but it works */
+        display: none;
+    }
+
+    .header h3 {
+        font-size: 1.0em;
+    }
+
+    .separator {
+        margin-inline: 14px;
+        width: 3px;
+        min-width: 3px;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+    }
+
+    nav { 
+        height: fit-content;
+    }
+}
+
 
 /* Main Content */
+/* BUG: messes up scrollbars  */
 .main-content {
-    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
     padding-inline: 1em;
-    overflow-y: scroll;
+    margin-bottom: auto;
 }
 
 
@@ -200,13 +284,35 @@ footer p {
     color: #676767;
 }
 
+.footer-links {
+    margin-top: 2px;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 150px;
+}
+
+.footer-links a {
+    color: #ffffff;
+    opacity: 50%;
+}
+
+.footer-links a:hover {
+    opacity: 100%;
+}
+
+.material-symbols-outlined {
+    font-size: 26px !important;
+}
+
 
 /* Scroll bars */
 /* Firefox */
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
-        scrollbar-width: thin;
+        scrollbar-width: 10px;
     }
 }
 
@@ -216,12 +322,14 @@ footer p {
 }
 
 *::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0);
 }
 
 *::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.2); 
-    border-radius: 10em;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    background-clip: content-box;
 }
 
 *::-webkit-scrollbar-thumb:hover {

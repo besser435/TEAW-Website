@@ -142,6 +142,52 @@ def get_stat(player_uuid, category, stat_key):
 
         result = cursor.fetchone()
         return result[0] if result else None
+    
+
+def colon_three_leaderboard():
+    with sqlite3.connect(TEAW_DB_FILE) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT 
+                sender_uuid,
+                SUM(
+                    (LENGTH(message) - 
+                    LENGTH(REPLACE(LOWER(message), ':3', ''))) / 2
+                ) as total_count
+            FROM chat
+            WHERE sender_uuid IS NOT NULL
+            GROUP BY sender_uuid
+            HAVING total_count > 0
+            ORDER BY total_count DESC
+        """)
+
+        result = cursor.fetchall()
+        return result
+
+def insert_player(
+    uuid, name, online_duration=0, afk_duration=0, balance=0.0, 
+    title=None, town=None, town_name=None, nation=None, 
+    nation_name=None, last_online=None, db_file=TEAW_DB_FILE
+):
+    
+    with sqlite3.connect(db_file) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT OR REPLACE INTO players (
+                uuid, name, online_duration, afk_duration, balance, title, 
+                town, town_name, nation, nation_name, last_online
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            uuid, name, online_duration, afk_duration, balance, title, 
+            town, town_name, nation, nation_name, last_online
+        ))
+        
+        conn.commit()
+
+    print(f"Inserted or updated player: {name} ({uuid})")
 
 
 # DB performance might get slow once we get in the hundreds of thousands range, as we often
@@ -154,5 +200,10 @@ def archive_chat_table(db_file=TEAW_DB_FILE):
 
 
 if __name__ == "__main__":
-    create_teaw_tables()
+    #create_teaw_tables()
+
+
+    # pretty print the colon three leaderboard
+    for i, (uuid, count) in enumerate(colon_three_leaderboard()):
+        print(f"{i + 1}. {uuid} - {count}")
 
