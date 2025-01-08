@@ -20,18 +20,18 @@ let currentSearchTerm = "";
 
 
 
-// function sortPlayers(players) {
-//     if (currentSortMethod === "username") {
-//         return players.sort((a, b) => a.name.localeCompare(b.name));
-//     } else {
-//         return players.sort((a, b) => {
-//             if (a.status === "online" && b.status !== "online") return -1;
-//             if (a.status !== "online" && b.status === "online") return 1;
+function sortTowns(towns) {
+    if (currentSortMethod === "town") {
+        return towns;
+    // } else {
+    //     return towns.sort((a, b) => {
+    //         if (a.status === "online" && b.status !== "online") return -1;
+    //         if (a.status !== "online" && b.status === "online") return 1;
             
-//             return b.last_online - a.last_online;
-//         });
-//     }
-// }
+    //         return b.last_online - a.last_online;
+    //     });
+    }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const sortSelect = document.getElementById('sort-select');
@@ -55,8 +55,8 @@ class Town {
     constructor(
         uuid, name, town_color, 
         nation_name, nation_color, 
-        mayor_name, founded, 
-        num_residents, is_active
+        mayor, founded, 
+        is_active
 
     ) {
         this.uuid = uuid;
@@ -64,18 +64,27 @@ class Town {
         this.town_color = town_color;
         this.nation_name = (nation_name.replace(/_/g, " ")) || null;
         this.nation_color = nation_color || null;
-        this.mayor_name = mayor_name;
+        this.mayor = mayor;
         this.founded = formatDate(founded);
-        this.num_residents = num_residents;
         this.is_active = Boolean(is_active);
     }
 }
 
 function onLoadAddFakeCards() {   // Takes a while to populate the cards, so add some placeholders on page load
     const containerGrid = document.querySelector(".container-grid");
+
+    // Card container
     const fakeCard = document.createElement("div");
     fakeCard.className = "card-container";
 
+    // Color pill
+    const colorPill = document.createElement("div");
+    colorPill.className = "color-pill";
+    colorPill.style.backgroundColor = "rgb(69, 69, 69)";
+    colorPill.style.borderColor = "rgb(46, 46, 46)";
+    fakeCard.appendChild(colorPill);
+
+    // Status light
     const statusLight = document.createElement("div");
     statusLight.className = "status-light";
     statusLight.setAttribute("data-state", "off");
@@ -87,28 +96,55 @@ function onLoadAddFakeCards() {   // Takes a while to populate the cards, so add
 }
 onLoadAddFakeCards();
 
-function addPlayerCard(townObj) {
+function addTownCard(townObj) {
     // Main card
     const card = document.createElement("div");
     card.className = "card-container";
     card.id = townObj.uuid;
 
     // Color pill
+    // const colorPill = document.createElement("div");
+    // colorPill.className = "color-pill";
+    // colorPill.style.backgroundColor = `#${townObj.town_color}`;
+    // colorPill.style.borderColor = townObj.nation_color ? `#${townObj.nation_color}` : `#${townObj.town_color}`;
+    // card.appendChild(colorPill);
+
+    // The result above doesn't look great, this should help to fix that
     const colorPill = document.createElement("div");
     colorPill.className = "color-pill";
-    colorPill.style.backgroundColor = townObj.town_color;
-    colorPill.style.borderColor = townObj.nation_color || townObj.town_color;
-    card.appendChild(colorPill);
+
+    const formatColor = (hexColor) => {
+        const r = parseInt(hexColor.slice(0, 2), 16);
+        const g = parseInt(hexColor.slice(2, 4), 16);
+        const b = parseInt(hexColor.slice(4, 6), 16);
+        
+        // Darken
+        const darkenAmount = 0.9;
+        const darkened = {
+            r: Math.floor(r * darkenAmount),
+            g: Math.floor(g * darkenAmount),
+            b: Math.floor(b * darkenAmount)
+        };
+        
+        // Opacity
+        return `rgba(${darkened.r}, ${darkened.g}, ${darkened.b}, 0.7)`;
+    };
+
+colorPill.style.backgroundColor = formatColor(townObj.town_color);
+colorPill.style.borderColor = townObj.nation_color ? 
+    formatColor(townObj.nation_color) : 
+    formatColor(townObj.town_color);
+card.appendChild(colorPill);
+
+    // Town details
+    const townDetails = document.createElement("div");
+    townDetails.className = "card-details";
 
     // Town name
     const name = document.createElement("h2");
     name.textContent = townObj.name;
     name.className = "town-name";
     townDetails.appendChild(name);
-
-    // Town details
-    const townDetails = document.createElement("div");
-    townDetails.className = "card-details";
 
     // Nation name
     const nation = document.createElement("p");
@@ -118,21 +154,22 @@ function addPlayerCard(townObj) {
 
     // Mayor name
     const mayor = document.createElement("p");
-    mayor.textContent = townObj.mayor_name;
+    mayor.textContent = townObj.mayor;
     mayor.className = "mayor-name";
     townDetails.appendChild(mayor);
 
     // Founding date
     const foundingDate = document.createElement("p");
-    foundingDate.textContent = townObj.founding_date;
+    foundingDate.textContent = townObj.founded;
     foundingDate.className = "founding-date";
     townDetails.appendChild(foundingDate);
 
     // Number of residents
-    const numResidents = document.createElement("p");
-    numResidents.textContent = townObj.num_residents;
-    numResidents.className = "num-residents";
-    townDetails.appendChild(numResidents);
+    // Need to add this to the db_updater script
+    // const numResidents = document.createElement("p");
+    // numResidents.textContent = townObj.num_residents;
+    // numResidents.className = "num-residents";
+    // townDetails.appendChild(numResidents);
 
     // Nation and town (doing it this way prevents HTML injection)
     // Probably can just clean it in the API to avoid this (is it even possible to inject HTML from Towny?)
@@ -156,7 +193,7 @@ function addPlayerCard(townObj) {
     // Status light
     const statusLight = document.createElement("div");
     statusLight.className = "status-light";
-    switch (townObj.status) {
+    switch (townObj.is_active) {
         case true:
             statusLight.setAttribute("data-state", "green");
             break;
@@ -185,9 +222,8 @@ async function getTowns() {
         data.forEach(town => {
             const townObj = new Town(
                 town.uuid, town.name, town.town_color, town.nation_name,
-                town.nation_color, town.mayor_name, town.founding_date,
-                town.num_residents, town.is_active
-
+                town.nation_color, town.mayor, town.founded,
+                town.is_active
             );
             towns.push(townObj);
         });
@@ -199,33 +235,33 @@ async function getTowns() {
 }
 
 async function updateTowns() {
-    const players = await getTowns();
+    const towns = await getTowns();
 
-    // Prevent clearing the player grid if the call fails
-    if (players.length === 0) {
+    // Prevent clearing the grid if the call fails
+    if (towns.length === 0) {
         return;
     }
 
     // Removes the old stuff, while keeping the "No messages found" message
-    const playerGrid = document.querySelector(".container-grid");
-    playerGrid.querySelectorAll(".card-container").forEach(el => el.remove());
+    const containerGrid = document.querySelector(".container-grid");
+    containerGrid.querySelectorAll(".card-container").forEach(el => el.remove());
 
-    const sortedPlayers = sortPlayers(players);
+    const sortedTowns = sortTowns(towns);
 
-    sortedPlayers.forEach(player => {
-        const card = addPlayerCard(player);
+    sortedTowns.forEach(town => {
+        const card = addTownCard(town);
 
         // If there's an active search, only show matching players
         if (currentSearchTerm !== "") {
-            const username = player.name.toLowerCase();
+            const townName = town.name.toLowerCase();
 
-            if (!username.includes(currentSearchTerm.toLowerCase())) {
+            if (!townName.includes(currentSearchTerm.toLowerCase())) {
                 card.style.display = "none";
             } else {
-                highlightText(card.querySelector(".player-name"), currentSearchTerm);
+                highlightText(card.querySelector(".town-name"), currentSearchTerm);
             }
         }
-        playerGrid.appendChild(card);
+        containerGrid.appendChild(card);
     });
 }
 updateTowns();
@@ -262,35 +298,35 @@ setInterval(updateInfoBubbles, updateRate);
 
 // --- SEARCH ---
 function setupSearch() {
-    const searchInput = document.getElementById("player-search");
-    const noPlayersFound = document.getElementById("no-players-found");
+    const searchInput = document.getElementById("town-search");
+    const noTownsFound = document.getElementById("no-towns-found");
 
     searchInput.addEventListener("input", () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const players = document.querySelectorAll(".card-container");
+        const towns = document.querySelectorAll(".card-container");
 
         let found = false;
 
-        players.forEach((player) => {
-            const playerName = player.querySelector(".player-name");
-            const username = playerName.textContent.toLowerCase();
+        towns.forEach((town) => {
+            const townName = town.querySelector(".town-name");
+            const townNameLower = townName.textContent.toLowerCase();
 
             if (!searchTerm) {
                 // Clear highlights when search is empty
-                playerName.textContent = playerName.textContent;
-                player.style.display = "flex";
+                townName.textContent = townName.textContent;
+                town.style.display = "flex";
                 found = true;
-            } else if (username.includes(searchTerm)) {
-                highlightText(playerName, searchTerm);
-                player.style.display = "flex";
+            } else if (townNameLower.includes(searchTerm)) {
+                highlightText(townName, searchTerm);
+                town.style.display = "flex";
                 found = true;
             } else {
-                player.style.display = "none";
+                town.style.display = "none";
             }
         });
         currentSearchTerm = searchTerm;
 
-        noPlayersFound.style.display = found ? "none" : "block";
+        noTownsFound.style.display = found ? "none" : "block";
     });
 }
 

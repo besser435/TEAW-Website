@@ -128,7 +128,7 @@ function onLoadAddFakeCards() {   // Takes a while to populate the cards, so add
 }
 onLoadAddFakeCards();
 
-function addPlayerCard(playerObj) {
+function addTownCard(playerObj) {
     // Main card
     const card = document.createElement("div");
     card.className = "card-container";
@@ -238,7 +238,7 @@ async function updatePlayers() {
     const sortedPlayers = sortPlayers(players);
 
     sortedPlayers.forEach(player => {
-        const card = addPlayerCard(player);
+        const card = addTownCard(player);
 
         // If there's an active search, only show matching players
         if (currentSearchTerm !== "") {
