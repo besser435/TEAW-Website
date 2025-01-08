@@ -183,7 +183,7 @@ def update_towns_table() -> None:
 
             # Update/insert town data
             for town_uuid, town_data in towns.items():
-                resident_tax_percent = town_data.get("resident_tax_percent", 0.0)
+                resident_tax_percent = town_data.get("resident_tax", 0.0)
                 is_active = town_data.get("is_active", False)
                 balance = town_data.get("balance", 0.0)
                 nation = town_data.get("nation")
@@ -193,11 +193,12 @@ def update_towns_table() -> None:
                 name = town_data.get("name")
                 founded = town_data.get("founded")
                 claimed_chunks = town_data.get("claimed_chunks", 0)
-                color_hex = town_data.get("color_hex", "000000")
+                color_hex = town_data.get("color_hex")
                 tag = town_data.get("tag")
                 board = town_data.get("board")
 
-
+                # Legacy note: TAPI now returns the tax as "resident_tax", but we still store it as "resident_tax_percent".
+                # Will rename the column later :tm:
                 cursor.execute("""
                     INSERT INTO towns (
                         uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
@@ -210,6 +211,7 @@ def update_towns_table() -> None:
                         founder=excluded.founder,
                         balance=excluded.balance,
                         nation=excluded.nation,
+                        nation_name=excluded.nation_name,
                         founded=excluded.founded,
                         resident_tax_percent=excluded.resident_tax_percent,
                         is_active=excluded.is_active,
