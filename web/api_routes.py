@@ -166,7 +166,11 @@ def get_all_towns():
         with sqlite3.connect(TEAW_DB_FILE) as conn:
             conn.row_factory = sqlite3.Row
             cursor = conn.cursor()
-            # count how many residents each town has
+
+            # TODO: sort by:
+            # A-Z nation > A-Z town name within the nation group > A-Z town name outside of a nation/
+            # Activity status will not matter for now.
+
             cursor.execute("""
                 SELECT 
                     t.uuid, 
@@ -180,8 +184,12 @@ def get_all_towns():
                 FROM towns t
                 LEFT JOIN nations n ON t.nation_name = n.name
                 ORDER BY 
-                    t.is_active DESC,   -- Active towns first
-                    t.name ASC          -- Alphabetical order by name
+                    CASE 
+                        WHEN t.nation = '' THEN 2    -- Towns without nations come later
+                        ELSE 1                       -- Towns with nations come first
+                    END,
+                    t.nation_name ASC,  -- Sort by nation name (alphabetical)
+                    t.name ASC          -- Sort by town name within the group
             """)
 
             towns = [dict(row) for row in cursor.fetchall()]

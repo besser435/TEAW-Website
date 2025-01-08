@@ -130,11 +130,11 @@ function addTownCard(townObj) {
         return `rgba(${darkened.r}, ${darkened.g}, ${darkened.b}, 0.7)`;
     };
 
-colorPill.style.backgroundColor = formatColor(townObj.town_color);
-colorPill.style.borderColor = townObj.nation_color ? 
-    formatColor(townObj.nation_color) : 
-    formatColor(townObj.town_color);
-card.appendChild(colorPill);
+    colorPill.style.backgroundColor = formatColor(townObj.town_color);
+    colorPill.style.borderColor = townObj.nation_color ? 
+        formatColor(townObj.nation_color) : 
+        formatColor(townObj.town_color);
+    card.appendChild(colorPill);
 
     // Town details
     const townDetails = document.createElement("div");
@@ -148,8 +148,14 @@ card.appendChild(colorPill);
 
     // Nation name
     const nation = document.createElement("p");
-    nation.textContent = townObj.nation_name;
     nation.className = "nation-name";
+    
+    const nationLabel = document.createElement("b");
+    nationLabel.textContent = "Nation: ";
+    const nationText = document.createTextNode(townObj.nation_name);
+
+    nation.appendChild(nationLabel);
+    nation.appendChild(nationText);
     townDetails.appendChild(nation);
 
     // Mayor name
