@@ -1,9 +1,36 @@
 {% extends "base.html" %}
-{% block title %}Towns - TEAW{% endblock %}
+{% block title %}Players - TEAW{% endblock %}
 {% block content %}
 
 <div class="header">
-    <h1>usa richest nation, even banned</h1>
+    <h1>Towns</h1>
+
+    <div class="separator"></div>
+    <h2>Sort by:</h2>
+    <select id="sort-select">
+        <option value="town">Town</option>
+        <option value="nation">Nation</option>
+    </select>
+
+    <input class="search" type="text" id="tonw-search" autocomplete="off" spellcheck="false" placeholder="Search">
 </div>
+
+<div class="container-grid">
+    <div class="search-not-found-msg" id="no-towns-found" style="display: none;">Your search did not match any towns</div>
+</div>
+
+<div class="info-bubble-container">
+    <div class="info-bubble"><b><span id="active-towns">00</span></b> Active towns</div>
+    <div class="info-bubble"><b><span id="total-towns">00</span></b> Total towns</div>
+
+    <div class="info-bubble"><b><span id="active-nations">00</span></b> Active nations</div>
+    <div class="info-bubble"><b><span id="total-nations">00</span></b> Total nations</div>
+
+    <div class="info-bubble"><b><span id="total-money">$000,000</span></b> Total money</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/css/players-towns_common.css">
+<link rel="stylesheet" type="text/css" href="/css/towns.css">
+<script src="/js/towns.js"></script>
 
 {% endblock %}

@@ -15,11 +15,7 @@ Then just update the data on the cards.
 
 // --- HELPER FUNCTIONS --- 
 let currentSortMethod = "last_online";
-
-
-
 let currentSearchTerm = "";
-
 
 
 function sortPlayers(players) {
@@ -40,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     sortSelect.addEventListener('change', (e) => {
         currentSortMethod = e.target.value;
-        updatePlayers();    // bad, but it works.
+        updateTowns();    // bad, but it works.
     });
 });
 
@@ -116,33 +112,33 @@ class Player {
     }
 }
 
-function onLoadAddFakePlayers() {   // Takes a while to populate the player cards, so add some placeholders on page load
-    const playerGrid = document.querySelector(".player-grid");  // Main player container
-    const fakePlayer = document.createElement("div");
-    fakePlayer.className = "player-card";
+function onLoadAddFakeCards() {   // Takes a while to populate the cards, so add some placeholders on page load
+    const containerGrid = document.querySelector(".container-grid");
+    const fakeCard = document.createElement("div");
+    fakeCard.className = "card-container";
 
     const statusLight = document.createElement("div");
     statusLight.className = "status-light";
     statusLight.setAttribute("data-state", "off");
-    fakePlayer.appendChild(statusLight);
+    fakeCard.appendChild(statusLight);
 
     for (let i = 0; i < 50; i++) {
-        playerGrid.appendChild(fakePlayer.cloneNode(true));
+        containerGrid.appendChild(fakeCard.cloneNode(true));
     }
 }
-onLoadAddFakePlayers();
+onLoadAddFakeCards();
 
 function addPlayerCard(playerObj) {
     // Main card
     const card = document.createElement("div");
-    card.className = "player-card";
+    card.className = "card-container";
     card.id = playerObj.uuid;
 
     // Player skin
     card.appendChild(playerObj.playerSkin);
 
     const playerDetails = document.createElement("div");
-    playerDetails.className = "player-details";
+    playerDetails.className = "card-details";
 
     // Username
     const name = document.createElement("h2");
@@ -236,8 +232,8 @@ async function updatePlayers() {
     }
 
     // Removes the old stuff, while keeping the "No messages found" message
-    const playerGrid = document.querySelector(".player-grid");
-    playerGrid.querySelectorAll(".player-card").forEach(el => el.remove());
+    const playerGrid = document.querySelector(".container-grid");
+    playerGrid.querySelectorAll(".card-container").forEach(el => el.remove());
 
     const sortedPlayers = sortPlayers(players);
 
@@ -264,14 +260,14 @@ setInterval(updatePlayers, updateRate);
 
 // --- MISC. UPDATES ---
 function updateInfoBubbles() {
-    const activePlayersBubble = document.getElementById("active-count");
+    const activeCountBubble = document.getElementById("active-count");
     const totalPlayersBubble = document.getElementById("total-count");
-    const totalMoneyBubble = document.getElementById("total-player-money");
+    const totalMoneyBubble = document.getElementById("total-money");
 
     fetch("/api/players_misc")
         .then(response => response.json())
         .then(data => {
-            activePlayersBubble.innerHTML = data.active_players.toLocaleString();
+            activeCountBubble.innerHTML = data.active_players.toLocaleString();
             totalPlayersBubble.innerHTML = data.total_players.toLocaleString();
             totalMoneyBubble.innerHTML = `$${data.total_money.toLocaleString()}`;
         });
@@ -288,7 +284,7 @@ function setupSearch() {
 
     searchInput.addEventListener("input", () => {
         const searchTerm = searchInput.value.toLowerCase();
-        const players = document.querySelectorAll(".player-card");
+        const players = document.querySelectorAll(".card-container");
 
         let found = false;
 

@@ -163,9 +163,83 @@ def get_players_misc():
 @api_routes.route("/api/towns")
 def get_all_towns():
     try:
-        return "ok", 200
+        with sqlite3.connect(TEAW_DB_FILE) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            # count how many residents each town has
+            cursor.execute("""
+                SELECT 
+                    t.uuid, 
+                    t.name, 
+                    t.mayor, 
+                    t.nation_name, 
+                    t.founded, 
+                    t.is_active, 
+                    t.color_hex AS town_color,
+                    n.color_hex AS nation_color
+                FROM towns t
+                LEFT JOIN nations n ON t.nation_name = n.name
+                ORDER BY 
+                    t.is_active DESC,   -- Active towns first
+                    t.name ASC          -- Alphabetical order by name
+            """)
+
+            towns = [dict(row) for row in cursor.fetchall()]
+
+        return jsonify(towns), 200
     except Exception:
         log.error(f"Internal error getting `towns`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+
+@api_routes.route("/api/towns_misc")
+def get_towns_misc():
+    try:
+        with sqlite3.connect(TEAW_DB_FILE) as conn:
+            cursor = conn.cursor()
+
+            # Towns count
+            cursor.execute("SELECT COUNT(*) FROM towns")
+            total_towns = cursor.fetchone()[0]
+
+            # Active towns count
+            cursor.execute("""
+                SELECT COUNT(*)
+                FROM towns
+                WHERE is_active == 1
+            """)
+            active_towns = cursor.fetchone()[0]
+
+            # Money total
+            cursor.execute("""
+                SELECT 
+                    (SELECT COALESCE(SUM(balance), 0) FROM towns) +
+                    (SELECT COALESCE(SUM(balance), 0) FROM nations)
+                AS total_balance
+            """)
+            total_money = int(cursor.fetchone()[0])
+
+            # Nations count
+            cursor.execute("SELECT COUNT(*) FROM nations")
+            total_nations = cursor.fetchone()[0]
+
+            # Active nations (at least one active town)
+            cursor.execute("""
+                SELECT COUNT(DISTINCT n.uuid)
+                FROM nations n
+                INNER JOIN towns t ON t.nation_name = n.name
+                WHERE t.is_active = 1
+            """)
+            active_nations = cursor.fetchone()[0]
+
+        return {
+            "total_towns": total_towns,
+            "active_towns": active_towns,
+            "total_nations": total_nations,
+            "active_nations": active_nations,
+            "total_money": total_money
+        }, 200
+    except Exception:
+        log.error(f"Internal error getting `towns_misc`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
 

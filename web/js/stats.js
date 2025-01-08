@@ -98,6 +98,8 @@ function renderLeaderboard(data, unit, currentSort) {
     });
 }
 
+
+
 async function initializeLeaderboard() {
     const statSelect = document.getElementById("stat-select");
     const sortSelect = document.getElementById("sort-select");
@@ -113,10 +115,10 @@ async function initializeLeaderboard() {
     if (statParam) {
         statSelect.value = statParam;
     }
+
     if (sortParam && ['high-to-low', 'low-to-high', 'username'].includes(sortParam)) {
         sortSelect.value = sortParam;
     }
-
 
     let currentSort = sortSelect.value;
     let searchQuery = "";
@@ -141,6 +143,7 @@ async function initializeLeaderboard() {
     sortSelect.addEventListener("change", () => {
         currentSort = sortSelect.value;
         if (currentData) renderLeaderboard(currentData.entries, currentData.units, currentSort);
+        updateUrlParams();
     });
 
     // Selected stat changes
