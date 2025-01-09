@@ -15,9 +15,7 @@ Then just update the data on the cards.
 
 // --- HELPER FUNCTIONS --- 
 let currentSortMethod = "town";
-
 let currentSearchTerm = "";
-
 
 
 function sortTowns(towns) {
@@ -41,7 +39,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTowns();    // bad, but it works.
     });
 });
-
 
 function formatDate(epoch) {
     const date = new Date(epoch);
@@ -147,28 +144,31 @@ function addTownCard(townObj) {
     townDetails.appendChild(name);
 
     // Nation name
-    const nation = document.createElement("p");
-    nation.className = "nation-name";
-    
+    const nationName = document.createElement("p");
     const nationLabel = document.createElement("b");
     nationLabel.textContent = "Nation: ";
-    const nationText = document.createTextNode(townObj.nation_name);
-
-    nation.appendChild(nationLabel);
-    nation.appendChild(nationText);
-    townDetails.appendChild(nation);
+    nationName.className = "nation-name";
+    nationName.appendChild(nationLabel);
+    nationName.appendChild(document.createTextNode(townObj.nation_name));
+    townObj.nation_name ? townDetails.appendChild(nationName) : null;
 
     // Mayor name
-    const mayor = document.createElement("p");
-    mayor.textContent = townObj.mayor;
-    mayor.className = "mayor-name";
-    townDetails.appendChild(mayor);
+    const mayorName = document.createElement("p");
+    const mayorLabel = document.createElement("b");
+    mayorLabel.textContent = "Mayor: ";
+    mayorName.className = "mayor-name";
+    mayorName.appendChild(mayorLabel);
+    mayorName.appendChild(document.createTextNode(townObj.mayor));
+    townObj.mayor ? townDetails.appendChild(mayorName) : null;
 
     // Founding date
     const foundingDate = document.createElement("p");
-    foundingDate.textContent = townObj.founded;
+    const foundingDateLabel = document.createElement("b");
+    foundingDateLabel.textContent = "Founded: ";
     foundingDate.className = "founding-date";
-    townDetails.appendChild(foundingDate);
+    foundingDate.appendChild(foundingDateLabel);
+    foundingDate.appendChild(document.createTextNode(townObj.founded));
+    townObj.founded ? townDetails.appendChild(foundingDate) : null;
 
     // Number of residents
     // Need to add this to the db_updater script
@@ -176,25 +176,6 @@ function addTownCard(townObj) {
     // numResidents.textContent = townObj.num_residents;
     // numResidents.className = "num-residents";
     // townDetails.appendChild(numResidents);
-
-    // Nation and town (doing it this way prevents HTML injection)
-    // Probably can just clean it in the API to avoid this (is it even possible to inject HTML from Towny?)
-    // const nationName = document.createElement("p");
-    // const nationLabel = document.createElement("b");
-    // nationLabel.textContent = "Nation: ";
-    // nationName.className = "nation-name";
-    // nationName.appendChild(nationLabel);
-    // nationName.appendChild(document.createTextNode(townObj.nation_name));
-    // townObj.nation_name ? townDetails.appendChild(nationName) : null;   // Only add if the player is in a nation
-    
-    // const townName = document.createElement("p");
-    // const townLabel = document.createElement("b");
-    // townLabel.textContent = "Town: ";
-    // townName.className = "town-name";
-    // townName.appendChild(townLabel);
-    // townName.appendChild(document.createTextNode(townObj.town_name));
-    // townObj.town_name ? townDetails.appendChild(townName) : null;   // Only add if the player is in a town
-    
 
     // Status light
     const statusLight = document.createElement("div");
@@ -300,6 +281,9 @@ function updateInfoBubbles() {
 updateInfoBubbles();
 setInterval(updateInfoBubbles, updateRate);
 
+
+
+// TODO: add the ability to search nations and mayors
 
 
 // --- SEARCH ---

@@ -125,10 +125,11 @@ nav a:hover, .header-button:hover, select:hover {
     cursor: pointer;
 }
 
-select option {
+select option, optgroup {
     background-color: #000;
     font-family: "Inter", sans-serif;
     font-size: 1.2em;
+    font-weight: 500;
     text-align: left;
 }
 

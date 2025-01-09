@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     sortSelect.addEventListener('change', (e) => {
         currentSortMethod = e.target.value;
-        updateTowns();    // bad, but it works.
+        updatePlayers();    // bad, but it works.
     });
 });
 

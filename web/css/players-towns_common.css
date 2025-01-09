@@ -3,7 +3,6 @@
 .container-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(345px, 1fr));
-    /* grid-gap: 12px; */
     gap: 12px;
 
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -13,7 +12,7 @@
     margin-bottom: 10px;
 
     overflow-y: scroll;
-    height: calc(100vh - 276px);
+    height: calc(100vh - 278px);
 
     align-content: start;
 }
@@ -53,4 +52,15 @@
     margin: 2px 0;
     font-size: 14px;
     color: #c5c6c7;
+}
+
+@media (max-width: 950px) {
+    .container-grid {
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .card-container h2 {
+        font-size: 1.2em;
+    }
 }
