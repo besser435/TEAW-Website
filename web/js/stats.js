@@ -91,7 +91,7 @@ function renderLeaderboard(data, unit, currentSort) {
             <h3 class="player-rank">#${entry.rank}</h3>
             <img class="player-face" src="/api/player_face/${entry.uuid}">
             <h3 class="player-name">${entry.username}</h3>
-            <h3 class="player-stat-value">${entry.value.toLocaleString()}</h3>
+            <h3 class="player-stat-value mono-font">${entry.value.toLocaleString()}</h3>
         `;
         
         statsContainer.appendChild(entryDiv);

@@ -82,6 +82,11 @@
     flex-wrap: wrap;
 }
 
+.info-bubble-container .separator {
+    margin-inline: 5px;
+    height: 21px;
+}
+
 .info-bubble {
     color: #FFFFFF;
 
@@ -91,7 +96,7 @@
 
     max-width: 200px;
     padding: 3px 5px;
-    margin-right: 0.5em;
+    margin-inline: 0.25em;
     border-radius: 10px;
     margin-block: 3px;
 
@@ -147,4 +152,8 @@
     .search {
         width: 25%;
     }
+}
+
+.mono-font {
+    font-family: "Geist Mono", monospace;
 }
