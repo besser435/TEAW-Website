@@ -197,6 +197,7 @@ nav a.nav-logo {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .header h1 {
@@ -228,14 +229,20 @@ nav a.nav-logo {
 
     .header h2 {
         /* Hacky way to remove the "Sort by:" text on mobile, but it works */
-        display: none;
+        font-size: 1.1em;
     }
 
     .header h3 {
         font-size: 1.0em;
     }
 
+    .header .separator {
+        width: 1000px;
+        height: 0;
+    }
+
     .separator {
+        display: flex;
         margin-inline: 14px;
         width: 3px;
         min-width: 3px;

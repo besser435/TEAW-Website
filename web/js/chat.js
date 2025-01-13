@@ -278,14 +278,6 @@ function addMessage(messageObj) {
     messageInfo.className = "message-info";
     messageInfo.setAttribute("data-message-type", messageObj.type);
 
-    // Add timestamp
-    let timestamp = document.createElement("div");
-    timestamp.className = "timestamp";
-    timestamp.innerHTML = messageObj.formatted_timestamp;
-    timestamp.title = new Date(messageObj.epoch_timestamp).toLocaleString();
-    messageInfo.appendChild(timestamp);
-    timestamp.setAttribute("data-epoch-timestamp", messageObj.epoch_timestamp); // For updating timestamps later
-
     // Add sender name, or message type
     const sender = document.createElement("div");
     sender.className = "sender";
@@ -322,6 +314,13 @@ function addMessage(messageObj) {
     messageContainer.appendChild(messageInfo);
     messageContainer.appendChild(messageText);
 
+    // Add timestamp
+    let timestamp = document.createElement("div");
+    timestamp.className = "timestamp";
+    timestamp.innerHTML = messageObj.formatted_timestamp;
+    timestamp.title = new Date(messageObj.epoch_timestamp).toLocaleString();
+    messageContainer.appendChild(timestamp);
+    timestamp.setAttribute("data-epoch-timestamp", messageObj.epoch_timestamp); // For updating timestamps later
 
     // NOTE: if we add the ability to fetch older messages, we can't just append to the top
     chatFeed[0].appendChild(messageContainer);

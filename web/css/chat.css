@@ -2,18 +2,20 @@
 
 .chat-feed {
     height: calc(100vh - 280px);
+    min-height: 500px;
     overflow-y: scroll;
     margin-bottom: 10px;
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 16px;
     padding: 10px;
+    padding-top: 0px;
 }
 
 .message-container {
     display: grid;
     grid-template-columns: 290px 1fr;
     gap: 0.5em;
-    align-items: stretch;
+    align-items: center;
     font-family: "Inter", sans-serif;
     margin-top: 10px;
     color: #FFFFFF;
@@ -22,8 +24,9 @@
 .message-info {
     display: flex;
     align-items: center;
-    min-width: 290px;
-    padding: 3px 5px 3px 3px;
+    justify-content: end;
+    min-width: 200px;
+    padding: 3px;
     border-radius: 10px;
     background-color: rgba(255, 255, 255, 0.1);
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -32,7 +35,6 @@
 
 .message-text {
     margin-block: auto;
-    word-break: break-all;
 }
 
 #scroll-to-bottom {
@@ -70,10 +72,10 @@
     margin: 0 8px 0 8px;
 }
 
-.message-info .timestamp {
-    margin-right: auto;
+.message-container .timestamp {
     font-weight: 700;
     color: rgba(255, 255, 255, 0.3);
+    margin-left: auto;
 }
 
 .message-info[data-message-type="status"] {
@@ -116,22 +118,39 @@
 }
 
 @media (max-width: 950px) {
+    .chat-feed {
+        border-radius: 25px;
+        padding-top: 5px;
+    }
+
     .message-container {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: wrap;
         align-items: flex-start;
+
+        border-radius: 15px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        padding: 5px;
+        margin-top: 5px;
     }
 
     .message-info {
-        width: 100%;
+        min-width: fit-content;
         max-height: 30px;
+        flex-direction: row-reverse;
+        order: 1;
     }
 
-    .message-info .timestamp {
-        margin-left: auto;
+    .message-container .timestamp {
+        order: 2;
+        margin: 5px 5px 0px auto
     }
 
     .message-text {
         padding-left: 4px;
         padding-right: 4px;
+        order: 3;
+        width: 100%
     }
 }
