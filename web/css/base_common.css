@@ -104,6 +104,11 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
+@media (max-width: 950px) {
+    .info-bubble-container .separator {
+        display: none;
+    }
+}
 
 /* Search Boxes */
 .search {

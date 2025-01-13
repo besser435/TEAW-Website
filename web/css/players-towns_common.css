@@ -12,7 +12,7 @@
     margin-bottom: 10px;
 
     overflow-y: scroll;
-    height: calc(100vh - 278px);
+    height: calc(100vh - 280px);
 
     align-content: start;
 }

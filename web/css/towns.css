@@ -1,9 +1,9 @@
 /* Styles for the Towns page */
 .color-pill {
     display: inline-block;
-    width: 1.4em;
-    height: 90%;
-    margin: 3px;
+    width: 1.2em;
+    height: 80%;
+    margin: 12px;
     margin-right: 15px;
     border-radius: 2rem;
     opacity: 60%;
@@ -17,9 +17,7 @@
 
 @media (max-width: 950px) {
     .color-pill {
-        display: inline-block;
-        width: 1em;
-        height: 80%;
-        margin: 12px;
+        width: 0.8em;
+        margin-right: 10px;
     }
 }
