@@ -80,6 +80,7 @@
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
+    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
 }
 
 .info-bubble-container .separator {

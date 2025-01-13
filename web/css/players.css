@@ -10,6 +10,8 @@
 
     margin-left: 10px;
     margin-right: 15px;
+
+    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s flash; /* If the flashes are annoying remove this line */
 }
 
 @media (max-width: 950px) {

@@ -9,6 +9,8 @@
     border-radius: 16px;
     padding: 10px;
     padding-top: 0px;
+
+    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s grow;
 }
 
 .message-container {

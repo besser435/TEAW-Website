@@ -1,0 +1,41 @@
+@keyframes slide-up {
+    from {
+        transform: translateY(10px);
+        opacity: 50%
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 100%;
+    }
+}
+
+@keyframes slide-down {
+    from {
+        transform: translateY(-10px);
+        opacity: 50%
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 100%;
+    }
+}
+
+@keyframes flash {
+    from {
+        filter: brightness(1.2)
+    }
+    to {
+        filter: brightness(1)
+    }
+}
+
+@keyframes grow {
+    from {
+        transform: scale(0.95);
+        opacity: 10%;
+    }
+    to {
+        transform: scale(1);
+        opacity: 100%;
+    }
+}
