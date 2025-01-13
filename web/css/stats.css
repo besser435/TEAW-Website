@@ -76,3 +76,10 @@
 .player-stat-value {
     margin-left: auto;
 }
+
+@media (max-width: 950px) {
+    .leaderboard {
+        width: auto; 
+        margin-inline: unset;
+    }
+}
