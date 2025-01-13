@@ -268,13 +268,23 @@ function addMessage(messageObj) {
     const chatFeed = document.getElementsByClassName("chat-feed");  // Main message container
 
 
+    // NOTE:
+    // This new timestamp and username setup breaks on mobile, but looks better on desktop.
+    // Add JS to use the old setup on mobile.
+
+
     // Create the message info div (the part before the message)
     let messageInfo = document.createElement("div");
     messageInfo.className = "message-info";
+    messageInfo.setAttribute("data-message-type", messageObj.type);
 
-    // PFP
-    const profilePic = messageObj.profilePicObj;
-    messageInfo.appendChild(profilePic);
+    // Add timestamp
+    let timestamp = document.createElement("div");
+    timestamp.className = "timestamp";
+    timestamp.innerHTML = messageObj.formatted_timestamp;
+    timestamp.title = new Date(messageObj.epoch_timestamp).toLocaleString();
+    messageInfo.appendChild(timestamp);
+    timestamp.setAttribute("data-epoch-timestamp", messageObj.epoch_timestamp); // For updating timestamps later
 
     // Add sender name, or message type
     const sender = document.createElement("div");
@@ -288,14 +298,9 @@ function addMessage(messageObj) {
 
     messageInfo.appendChild(sender);
 
-    // Add timestamp
-    let timestamp = document.createElement("div");
-    timestamp.className = "timestamp";
-    timestamp.innerHTML = messageObj.formatted_timestamp;
-    messageInfo.appendChild(timestamp);
-    timestamp.setAttribute("data-epoch-timestamp", messageObj.epoch_timestamp); // For updating timestamps later
-
-    messageInfo.setAttribute("data-message-type", messageObj.type);
+    // PFP
+    const profilePic = messageObj.profilePicObj;
+    messageInfo.appendChild(profilePic);
 
     // Message text
     const messageText = document.createElement("div");

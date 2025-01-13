@@ -128,7 +128,7 @@ function onLoadAddFakeCards() {   // Takes a while to populate the cards, so add
 }
 onLoadAddFakeCards();
 
-function addTownCard(playerObj) {
+function addPlayerCard(playerObj) {
     // Main card
     const card = document.createElement("div");
     card.className = "card-container";
@@ -149,6 +149,7 @@ function addTownCard(playerObj) {
     // Status text
     const textStatus = document.createElement("p");
     textStatus.textContent = playerObj.text_status;
+    textStatus.title = new Date(playerObj.last_online).toLocaleString();
     playerDetails.appendChild(textStatus);
 
     // Nation and town (doing it this way prevents HTML injection)
@@ -238,7 +239,7 @@ async function updatePlayers() {
     const sortedPlayers = sortPlayers(players);
 
     sortedPlayers.forEach(player => {
-        const card = addTownCard(player);
+        const card = addPlayerCard(player);
 
         // If there's an active search, only show matching players
         if (currentSearchTerm !== "") {

@@ -71,7 +71,7 @@
 }
 
 .message-info .timestamp {
-    margin-left: auto;
+    margin-right: auto;
     font-weight: 700;
     color: rgba(255, 255, 255, 0.3);
 }
