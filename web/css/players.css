@@ -15,8 +15,10 @@
 @media (max-width: 950px) {
     .card-container .player-skin {
         width: 30px;
-        position: unset;
+        margin-right: 10px;
         top: 20px;
+
+        position: unset;
         align-self: unset;
     }
 }

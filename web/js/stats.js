@@ -7,8 +7,7 @@ Ensure constant amount of numbers after decimal point (add trialing zeros)
 */
 
 
-
-const updateRate = 10_000;   // TODO: up to 10s after debugging
+const updateRate = 10_000;
 
 class StatEntry {
     constructor(rank, uuid, username, value) {
@@ -69,6 +68,27 @@ function sortLeaderboard(data, sortMethod) {
     }
 }
 
+function onLoadAddFakeStats() {    // Takes a while to populate the cards, so add some placeholders on page load
+    const statsContainer = document.querySelector(".stats-container");
+
+    for (let i = 0; i < 30; i++) {
+        const entryDiv = document.createElement("div");
+        entryDiv.className = "stat-entry";
+
+        fakeProfilePic = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='grey'/%3E%3C/svg%3E";
+        entryDiv.innerHTML = `
+            <h3 class="player-rank">⠀⠀⠀</h3>
+            <img class="player-face" src="${fakeProfilePic}">
+            <h3 class="player-name">⠀⠀⠀</h3>
+            <h3 class="player-stat-value mono-font">⠀⠀⠀</h3>
+        `;
+        
+        statsContainer.appendChild(entryDiv);
+    }
+
+}
+onLoadAddFakeStats();
+
 function renderLeaderboard(data, unit, currentSort) {
     // Clears the current entries but not the search error message
     const statsContainerSelector = document.querySelector(".stats-container");
@@ -91,13 +111,12 @@ function renderLeaderboard(data, unit, currentSort) {
             <h3 class="player-rank">#${entry.rank}</h3>
             <img class="player-face" src="/api/player_face/${entry.uuid}">
             <h3 class="player-name">${entry.username}</h3>
-            <h3 class="player-stat-value">${entry.value.toLocaleString()}</h3>
+            <h3 class="player-stat-value mono-font">${entry.value.toLocaleString()}</h3>
         `;
         
         statsContainer.appendChild(entryDiv);
     });
 }
-
 
 
 async function initializeLeaderboard() {

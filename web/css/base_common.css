@@ -1,10 +1,5 @@
 /* Common styles used on many pages */
 
-
-
-/* Option button */
-
-
 /* Status Lights */
 /* TODO: Use variables so the same RGB value isn't present in 30 different places */
 .status-light {
@@ -80,6 +75,12 @@
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
+    animation: 700ms cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
+}
+
+.info-bubble-container .separator {
+    margin-inline: 5px;
+    height: 21px;
 }
 
 .info-bubble {
@@ -91,7 +92,7 @@
 
     max-width: 200px;
     padding: 3px 5px;
-    margin-right: 0.5em;
+    margin-inline: 0.25em;
     border-radius: 10px;
     margin-block: 3px;
 
@@ -99,6 +100,11 @@
     border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
+@media (max-width: 950px) {
+    .info-bubble-container .separator {
+        display: none;
+    }
+}
 
 /* Search Boxes */
 .search {
@@ -146,5 +152,10 @@
 @media (max-width: 950px) {
     .search {
         width: 25%;
+        margin-bottom: 10px;
     }
+}
+
+.mono-font {
+    font-family: "Geist Mono", monospace;
 }

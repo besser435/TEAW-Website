@@ -6,6 +6,12 @@
     width: 500px;
     margin-inline: auto;
     overflow: hidden;
+
+    animation: 700ms cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
+}
+
+.stats-container {
+    min-height: 100px;
 }
 
 .stat-entry {
@@ -75,4 +81,11 @@
 
 .player-stat-value {
     margin-left: auto;
+}
+
+@media (max-width: 950px) {
+    .leaderboard {
+        width: auto; 
+        margin-inline: unset;
+    }
 }

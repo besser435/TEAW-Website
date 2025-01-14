@@ -59,6 +59,13 @@ body {
     flex-direction: column;
 }
 
+/* Fix layout shift during initial animations */
+@media (min-width: 950px) {
+    body {
+        animation: 2s linear 0s no-scroll;
+    }
+}
+
 body::before {
     z-index: -5;
 }
@@ -125,10 +132,11 @@ nav a:hover, .header-button:hover, select:hover {
     cursor: pointer;
 }
 
-select option {
+select option, optgroup {
     background-color: #000;
     font-family: "Inter", sans-serif;
     font-size: 1.2em;
+    font-weight: 500;
     text-align: left;
 }
 
@@ -139,6 +147,15 @@ nav a.nav-logo {
     background: none;
     margin-right: 20px;
 }
+
+nav a.nav-logo img {
+    transition: transform 100ms linear;
+}
+
+nav a.nav-logo:hover img {
+    transform: scale(1.1);
+}
+
 
 @media (max-width: 950px) {
     nav {
@@ -196,6 +213,7 @@ nav a.nav-logo {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .header h1 {
@@ -211,6 +229,15 @@ nav a.nav-logo {
     margin-right: 4px;
 }
 
+/* Hackily apply the slide up animation to all changing header elements, except the search bar.
+The search bar is constant among all pages, so it doesn't need an animation. */
+.header .header-button, 
+.header select, 
+.header h1, .header h2, .header h3, 
+.header .separator {
+    animation: 700ms cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
+}
+
 .separator {
     width: 4px;
     min-width: 4px;
@@ -221,20 +248,29 @@ nav a.nav-logo {
 }
 
 @media (max-width: 950px) {
+    .header {
+        margin-bottom: 8px;
+    }
     .header h1 {
         font-size: 1.6em;
     }
 
     .header h2 {
         /* Hacky way to remove the "Sort by:" text on mobile, but it works */
-        display: none;
+        font-size: 1.1em;
     }
 
     .header h3 {
         font-size: 1.0em;
     }
 
+    .header .separator {
+        width: 1000px;
+        height: 0;
+    }
+
     .separator {
+        display: flex;
         margin-inline: 14px;
         width: 3px;
         min-width: 3px;
@@ -296,10 +332,12 @@ footer p {
 .footer-links a {
     color: #ffffff;
     opacity: 50%;
+    transition: 700ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .footer-links a:hover {
     opacity: 100%;
+    transform: scale(1.05);
 }
 
 .material-symbols-outlined {

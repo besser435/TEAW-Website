@@ -3,33 +3,29 @@ Please for the love of god update this at some point to just update the data
 on the cards, not destroy and recreate them like the USAI page. 
 Recreating each card on each update caused so many problems.
 
-Create the cards on page load. Add new players if present. 
+Create the cards on page load. Add new cards if present. 
 Then update each card with the new data.
 
 There should be a function that only creates cards. It will be called
-on page load and when a new player is seen.
+on page load and when a new town is seen.
 
 Then just update the data on the cards.
 
 */
 
 // --- HELPER FUNCTIONS --- 
-let currentSortMethod = "town";
-
+let currentSortMethod = "a-z-grouped";
 let currentSearchTerm = "";
 
 
-
 function sortTowns(towns) {
-    if (currentSortMethod === "town") {
+    if (currentSortMethod === "a-z-grouped") {
         return towns;
-    // } else {
-    //     return towns.sort((a, b) => {
-    //         if (a.status === "online" && b.status !== "online") return -1;
-    //         if (a.status !== "online" && b.status === "online") return 1;
-            
-    //         return b.last_online - a.last_online;
-    //     });
+    } else {
+        // sort towns from oldest to newest
+        return towns.sort((a, b) => {
+            return new Date(a.founded) - new Date(b.founded);
+        });
     }
 }
 
@@ -41,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTowns();    // bad, but it works.
     });
 });
-
 
 function formatDate(epoch) {
     const date = new Date(epoch);
@@ -57,7 +52,6 @@ class Town {
         nation_name, nation_color, 
         mayor, founded, 
         is_active
-
     ) {
         this.uuid = uuid;
         this.name = (name.replace(/_/g, " "));
@@ -103,13 +97,6 @@ function addTownCard(townObj) {
     card.id = townObj.uuid;
 
     // Color pill
-    // const colorPill = document.createElement("div");
-    // colorPill.className = "color-pill";
-    // colorPill.style.backgroundColor = `#${townObj.town_color}`;
-    // colorPill.style.borderColor = townObj.nation_color ? `#${townObj.nation_color}` : `#${townObj.town_color}`;
-    // card.appendChild(colorPill);
-
-    // The result above doesn't look great, this should help to fix that
     const colorPill = document.createElement("div");
     colorPill.className = "color-pill";
 
@@ -147,28 +134,31 @@ function addTownCard(townObj) {
     townDetails.appendChild(name);
 
     // Nation name
-    const nation = document.createElement("p");
-    nation.className = "nation-name";
-    
+    const nationName = document.createElement("p");
     const nationLabel = document.createElement("b");
     nationLabel.textContent = "Nation: ";
-    const nationText = document.createTextNode(townObj.nation_name);
-
-    nation.appendChild(nationLabel);
-    nation.appendChild(nationText);
-    townDetails.appendChild(nation);
+    nationName.className = "nation-name";
+    nationName.appendChild(nationLabel);
+    nationName.appendChild(document.createTextNode(townObj.nation_name));
+    townObj.nation_name ? townDetails.appendChild(nationName) : null;
 
     // Mayor name
-    const mayor = document.createElement("p");
-    mayor.textContent = townObj.mayor;
-    mayor.className = "mayor-name";
-    townDetails.appendChild(mayor);
+    const mayorName = document.createElement("p");
+    const mayorLabel = document.createElement("b");
+    mayorLabel.textContent = "Mayor: ";
+    mayorName.className = "mayor-name";
+    mayorName.appendChild(mayorLabel);
+    mayorName.appendChild(document.createTextNode(townObj.mayor));
+    townObj.mayor ? townDetails.appendChild(mayorName) : null;
 
     // Founding date
     const foundingDate = document.createElement("p");
-    foundingDate.textContent = townObj.founded;
+    const foundingDateLabel = document.createElement("b");
+    foundingDateLabel.textContent = "Founded: ";
     foundingDate.className = "founding-date";
-    townDetails.appendChild(foundingDate);
+    foundingDate.appendChild(foundingDateLabel);
+    foundingDate.appendChild(document.createTextNode(townObj.founded));
+    townObj.founded ? townDetails.appendChild(foundingDate) : null;
 
     // Number of residents
     // Need to add this to the db_updater script
@@ -176,25 +166,6 @@ function addTownCard(townObj) {
     // numResidents.textContent = townObj.num_residents;
     // numResidents.className = "num-residents";
     // townDetails.appendChild(numResidents);
-
-    // Nation and town (doing it this way prevents HTML injection)
-    // Probably can just clean it in the API to avoid this (is it even possible to inject HTML from Towny?)
-    // const nationName = document.createElement("p");
-    // const nationLabel = document.createElement("b");
-    // nationLabel.textContent = "Nation: ";
-    // nationName.className = "nation-name";
-    // nationName.appendChild(nationLabel);
-    // nationName.appendChild(document.createTextNode(townObj.nation_name));
-    // townObj.nation_name ? townDetails.appendChild(nationName) : null;   // Only add if the player is in a nation
-    
-    // const townName = document.createElement("p");
-    // const townLabel = document.createElement("b");
-    // townLabel.textContent = "Town: ";
-    // townName.className = "town-name";
-    // townName.appendChild(townLabel);
-    // townName.appendChild(document.createTextNode(townObj.town_name));
-    // townObj.town_name ? townDetails.appendChild(townName) : null;   // Only add if the player is in a town
-    
 
     // Status light
     const statusLight = document.createElement("div");
@@ -217,7 +188,7 @@ function addTownCard(townObj) {
 
 
 // --- TOWN UPDATES --- 
-const updateRate = 10_000;
+const updateRate = 3_000;
 
 async function getTowns() {
     const towns = [];
@@ -248,7 +219,7 @@ async function updateTowns() {
         return;
     }
 
-    // Removes the old stuff, while keeping the "No messages found" message
+    // Removes the old stuff, while keeping the "No towns found" message
     const containerGrid = document.querySelector(".container-grid");
     containerGrid.querySelectorAll(".card-container").forEach(el => el.remove());
 
@@ -257,7 +228,7 @@ async function updateTowns() {
     sortedTowns.forEach(town => {
         const card = addTownCard(town);
 
-        // If there's an active search, only show matching players
+        // If there's an active search, only show matching towns
         if (currentSearchTerm !== "") {
             const townName = town.name.toLowerCase();
 
@@ -300,6 +271,9 @@ function updateInfoBubbles() {
 updateInfoBubbles();
 setInterval(updateInfoBubbles, updateRate);
 
+
+
+// TODO: add the ability to search nations and mayors
 
 
 // --- SEARCH ---

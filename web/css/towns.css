@@ -1,29 +1,23 @@
 /* Styles for the Towns page */
 .color-pill {
     display: inline-block;
-    width: 1.4em;
+    width: 1.2em;
     height: 80%;
     margin: 12px;
-    border-radius: 10em;
+    margin-right: 15px;
+    border-radius: 2rem;
+    opacity: 60%;
 
-    border: 0.2em solid;  /* Larger for testing, prod will be 2px */
+    border: 0.2em solid;
+}
 
-    /* Red and green for testing, will be #000 before being updated by the JS */
-    border-color: #00FF00;
-    background-color: #FF1100;
+.card-container {
+    height: 125px;
 }
 
 @media (max-width: 950px) {
     .color-pill {
-        display: inline-block;
-        width: 1.6em;
-        height: 80%;
-        margin: 16px;
-        border-radius: 10em;
-    }
-
-    .placeholder-color-pill {
-        width: 16px;
-        margin: 10px;
+        width: 0.8em;
+        margin-right: 10px;
     }
 }

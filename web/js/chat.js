@@ -213,7 +213,7 @@ function formatEpochTime(epochTime) {
     return date.toISOString().split("T")[0];
 }
 
-function onLoadAddFakeMessages() {   // Takes a while to populate the player cards, so add some placeholders on page load
+function onLoadAddFakeMessages() {   // Takes a while to populate the cards, so add some placeholders on page load
     const messageFeed = document.querySelector(".chat-feed");
 
     // Message container
@@ -227,24 +227,18 @@ function onLoadAddFakeMessages() {   // Takes a while to populate the player car
     fakeMessageInfo.setAttribute("data-message-type", "chat");
     fakeMessage.appendChild(fakeMessageInfo);
 
+    // Sender
+    const fakeSender = document.createElement("div");
+    fakeSender.className = "sender";
+    fakeSender.innerHTML = "⠀⠀⠀⠀⠀⠀";
+    fakeMessageInfo.appendChild(fakeSender);
+
     // PFP
     const fakeProfilePic = document.createElement("img");
     fakeProfilePic.className = "profile-pic";
 
     fakeProfilePic.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='grey'/%3E%3C/svg%3E";
     fakeMessageInfo.appendChild(fakeProfilePic);
-
-    // Sender
-    const fakeSender = document.createElement("div");
-    fakeSender.className = "sender";
-    fakeSender.innerHTML = "";
-    fakeMessageInfo.appendChild(fakeSender);
-
-    // Timestamp
-    const fakeTimestamp = document.createElement("div");
-    fakeTimestamp.className = "timestamp";
-    fakeTimestamp.innerHTML = "";
-    fakeMessageInfo.appendChild(fakeTimestamp);
 
     // Message text
     const fakeMessageText = document.createElement("div");
@@ -267,14 +261,10 @@ onLoadAddFakeMessages();
 function addMessage(messageObj) {
     const chatFeed = document.getElementsByClassName("chat-feed");  // Main message container
 
-
     // Create the message info div (the part before the message)
     let messageInfo = document.createElement("div");
     messageInfo.className = "message-info";
-
-    // PFP
-    const profilePic = messageObj.profilePicObj;
-    messageInfo.appendChild(profilePic);
+    messageInfo.setAttribute("data-message-type", messageObj.type);
 
     // Add sender name, or message type
     const sender = document.createElement("div");
@@ -288,14 +278,9 @@ function addMessage(messageObj) {
 
     messageInfo.appendChild(sender);
 
-    // Add timestamp
-    let timestamp = document.createElement("div");
-    timestamp.className = "timestamp";
-    timestamp.innerHTML = messageObj.formatted_timestamp;
-    messageInfo.appendChild(timestamp);
-    timestamp.setAttribute("data-epoch-timestamp", messageObj.epoch_timestamp); // For updating timestamps later
-
-    messageInfo.setAttribute("data-message-type", messageObj.type);
+    // PFP
+    const profilePic = messageObj.profilePicObj;
+    messageInfo.appendChild(profilePic);
 
     // Message text
     const messageText = document.createElement("div");
@@ -317,6 +302,13 @@ function addMessage(messageObj) {
     messageContainer.appendChild(messageInfo);
     messageContainer.appendChild(messageText);
 
+    // Add timestamp
+    let timestamp = document.createElement("div");
+    timestamp.className = "timestamp";
+    timestamp.innerHTML = messageObj.formatted_timestamp;
+    timestamp.title = new Date(messageObj.epoch_timestamp).toLocaleString();
+    messageContainer.appendChild(timestamp);
+    timestamp.setAttribute("data-epoch-timestamp", messageObj.epoch_timestamp); // For updating timestamps later
 
     // NOTE: if we add the ability to fetch older messages, we can't just append to the top
     chatFeed[0].appendChild(messageContainer);
