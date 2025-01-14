@@ -1,8 +1,8 @@
 /* Styles for the Chat page */
 
 .chat-feed {
-    height: calc(100vh - 280px);
-    min-height: 500px;
+    height: calc(100vh - 270px);
+    min-height: 200px;
     overflow-y: scroll;
     margin-bottom: 10px;
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -10,7 +10,7 @@
     padding: 10px;
     padding-top: 0px;
 
-    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s grow;
+    animation: 700ms cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
 }
 
 .message-container {

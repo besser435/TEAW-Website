@@ -213,7 +213,7 @@ function formatEpochTime(epochTime) {
     return date.toISOString().split("T")[0];
 }
 
-function onLoadAddFakeMessages() {   // Takes a while to populate the player cards, so add some placeholders on page load
+function onLoadAddFakeMessages() {   // Takes a while to populate the cards, so add some placeholders on page load
     const messageFeed = document.querySelector(".chat-feed");
 
     // Message container
@@ -227,24 +227,18 @@ function onLoadAddFakeMessages() {   // Takes a while to populate the player car
     fakeMessageInfo.setAttribute("data-message-type", "chat");
     fakeMessage.appendChild(fakeMessageInfo);
 
+    // Sender
+    const fakeSender = document.createElement("div");
+    fakeSender.className = "sender";
+    fakeSender.innerHTML = "⠀⠀⠀⠀⠀⠀";
+    fakeMessageInfo.appendChild(fakeSender);
+
     // PFP
     const fakeProfilePic = document.createElement("img");
     fakeProfilePic.className = "profile-pic";
 
     fakeProfilePic.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='grey'/%3E%3C/svg%3E";
     fakeMessageInfo.appendChild(fakeProfilePic);
-
-    // Sender
-    const fakeSender = document.createElement("div");
-    fakeSender.className = "sender";
-    fakeSender.innerHTML = "";
-    fakeMessageInfo.appendChild(fakeSender);
-
-    // Timestamp
-    const fakeTimestamp = document.createElement("div");
-    fakeTimestamp.className = "timestamp";
-    fakeTimestamp.innerHTML = "";
-    fakeMessageInfo.appendChild(fakeTimestamp);
 
     // Message text
     const fakeMessageText = document.createElement("div");
@@ -266,12 +260,6 @@ onLoadAddFakeMessages();
 // --- MESSAGE UPDATES ---
 function addMessage(messageObj) {
     const chatFeed = document.getElementsByClassName("chat-feed");  // Main message container
-
-
-    // NOTE:
-    // This new timestamp and username setup breaks on mobile, but looks better on desktop.
-    // Add JS to use the old setup on mobile.
-
 
     // Create the message info div (the part before the message)
     let messageInfo = document.createElement("div");

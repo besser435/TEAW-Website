@@ -82,8 +82,6 @@ nav {
     z-index: 20;
     background-image: linear-gradient(#000000ff, #00000077 75%, #00000000);
     flex-wrap: nowrap;
-
-    animation: 2s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-down;
 }
 
 nav::before {
@@ -148,12 +146,16 @@ nav a.nav-logo {
     outline: none;
     background: none;
     margin-right: 20px;
-    transition: 700ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
-nav a.nav-logo:hover {
-    transform: scale(1.05);
+nav a.nav-logo img {
+    transition: transform 100ms linear;
 }
+
+nav a.nav-logo:hover img {
+    transform: scale(1.1);
+}
+
 
 @media (max-width: 950px) {
     nav {
@@ -212,8 +214,6 @@ nav a.nav-logo:hover {
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
-
-    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-down;
 }
 
 .header h1 {
@@ -229,6 +229,15 @@ nav a.nav-logo:hover {
     margin-right: 4px;
 }
 
+/* Hackily apply the slide up animation to all changing header elements, except the search bar.
+The search bar is constant among all pages, so it doesn't need an animation. */
+.header .header-button, 
+.header select, 
+.header h1, .header h2, .header h3, 
+.header .separator {
+    animation: 700ms cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
+}
+
 .separator {
     width: 4px;
     min-width: 4px;
@@ -239,6 +248,9 @@ nav a.nav-logo:hover {
 }
 
 @media (max-width: 950px) {
+    .header {
+        margin-bottom: 8px;
+    }
     .header h1 {
         font-size: 1.6em;
     }
@@ -301,8 +313,6 @@ footer {
     background-image: linear-gradient(0deg, #00000055, #00000000);
 
     color: #676767;
-
-    animation: 2s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
 }
 
 footer p {

@@ -1,3 +1,10 @@
+@media (prefers-reduced-motion) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
+}
+
 @keyframes slide-up {
     from {
         transform: translateY(10px);
@@ -29,6 +36,8 @@
     }
 }
 
+/* 
+Scaling elements isn't great for accessibility, or ensuring the animation is smooth.
 @keyframes grow {
     from {
         transform: scale(0.95);
@@ -38,7 +47,7 @@
         transform: scale(1);
         opacity: 100%;
     }
-}
+} */
 
 @keyframes no-scroll {
     from {
