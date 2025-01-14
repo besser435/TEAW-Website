@@ -39,3 +39,12 @@
         opacity: 100%;
     }
 }
+
+@keyframes no-scroll {
+    from {
+        overflow-y: hidden;
+    }
+    to {
+        overflow-y: auto;
+    }
+}

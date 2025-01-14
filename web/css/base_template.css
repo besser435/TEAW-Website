@@ -59,6 +59,13 @@ body {
     flex-direction: column;
 }
 
+/* Fix layout shift during initial animations */
+@media (min-width: 950px) {
+    body {
+        animation: 2s linear 0s no-scroll;
+    }
+}
+
 body::before {
     z-index: -5;
 }
