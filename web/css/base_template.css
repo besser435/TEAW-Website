@@ -47,8 +47,6 @@ body {
     background-attachment: fixed;
     height: 100vh;
     position: relative;
-    /* overflow: hidden;
-    overflow-y: scroll; BUG: messes up scrollbars  */
 
     font-family: Arial, sans-serif; /* Default/fallback */
 
@@ -207,11 +205,8 @@ nav a.nav-logo:hover img {
 
 /* Hackily apply the slide up animation to all changing header elements, except the search bar.
 The search bar is constant among all pages, so it doesn't need an animation. */
-.header .header-button, 
-.header select, 
-.header h1, .header h2, .header h3, 
-.header .separator {
-    animation: 700ms cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
+.header :is(.header-button, select, h1, h2, h3, .separator) {
+    animation: slide-up 700ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .separator {
@@ -313,7 +308,6 @@ The search bar is constant among all pages, so it doesn't need an animation. */
 
 
 /* Main Content */
-/* BUG: messes up scrollbars  */
 .main-content {
     display: flex;
     flex-direction: column;
@@ -375,7 +369,7 @@ footer p {
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
-        scrollbar-width: 10px;
+        scrollbar-width: thin;
     }
 }
 
