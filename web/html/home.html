@@ -2,20 +2,41 @@
 {% block title %}Home - TEAW{% endblock %}
 {% block content %}
 
-<div>
+<div class="greeting">
+    <img src="/imgs/teaw_logo.svg" alt="TEAW logo">
     <h1>ToEndAllWars</h1>
     <p>Will you participate in the war to end all wars?</p>
 </div>
 
-<div>
-    TEAW is uhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh
+<div class="container">
+    <h3>About Us</h3>
+    <p>TEAW is a modded, Earth-based, factions server focused in the 1800s.</p>
 </div>
 
-<div>
+<div class="container">
     <h3>Info & Resources</h3>
-    <p>Modpack: <a href="https://www.curseforge.com/minecraft/modpacks/toendallwars">Curseforge</a></p>
+    <p><a href="https://discord.com/invite/aNMhxynFS2">Discord Community</a></p>
+    <p><a href="https://www.curseforge.com/minecraft/modpacks/toendallwars">Curseforge Modpack</a></p>
     <p>IP: <b>play.toendallwars.org</b></p>
-    <p>Discord: <a href="https://discord.com/invite/aNMhxynFS2">discord.com/invite/aNMhxynFS2</a></p>
 </div>
+
+
+<style>
+    .greeting {
+        text-align: center;
+        margin: 1em;
+    }
+
+    .greeting img {
+        width: 8em;
+    }
+
+    .container {
+        margin: 1em;
+        padding: 1em;
+        background-color: grey;
+        border-radius: 24px;
+    }
+</style>
 
 {% endblock %}
