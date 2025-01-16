@@ -86,3 +86,13 @@ function updateStatus() {
 }
 updateStatus();
 setInterval(updateStatus, 2000);
+
+// Hamburger Nav
+function hamburgerNav() {
+    var x = document.getElementById("navbar");
+    if (x.className === "navbar") {
+        x.className += " nav-open";
+    } else {
+        x.className = "navbar";
+    }
+}
