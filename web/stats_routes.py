@@ -13,9 +13,7 @@ from config import log, TEAW_DB_FILE, STATS_DB_FILE, PLAYER_FACE_SKIN_DIR
 stats_routes = Blueprint("stats_blueprint", __name__)
 
 
-# Minecraft stores stat values that are machine readable, but not human readable.
-# We need to translate things like ticks to hours. These functions will do that.
-# Result translations
+# Helper functions
 def count(count):
     return int(count), "quantity"
 
@@ -25,10 +23,22 @@ def ticks_to_hours(ticks):
 def cm_to_km(cm):
     return f"{cm / 100_000:.3f}", "kilometers"
 
+def get_name(uuid):
+    with sqlite3.connect(TEAW_DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""SELECT name FROM players WHERE uuid = ?""", (uuid,))
+        name = cursor.fetchone()
+        name = name[0] if name else "Unknown"
 
+    return name
+
+
+
+# General stats
 # This lists queryable stats, and what translation to use for the result. The comments are what appears in game.
 # Note that this is kind of goofy. You will call for a stat key, but the result will be translated into different units.
 AVAILABLE_GENERAL_STATS = {
+    # Key, (stat translation function)
     "DEATHS": count,                        # Number of deaths
     "TIME_SINCE_DEATH": ticks_to_hours,     # Time since last death
     "PLAYER_KILLS": count,                  # Player kills
@@ -38,28 +48,11 @@ AVAILABLE_GENERAL_STATS = {
     "CAKE_SLICES_EATEN": count,             # Cake slices eaten
     "CRAFTING_TABLE_INTERACTION": count,    # Interactions with crafting table
     "TRADED_WITH_VILLAGER": count,          # Traded with villagers
-    "SLEEP_IN_BED": count                   # Times slept in a bed
+    "SLEEP_IN_BED": count,                  # Times slept in a bed
+    "FISH_CAUGHT": count                    # Fish caught
 }
 
-# AVAILABLE_CUSTOM_STATS = {
-#     "PLAYTIME_DEATH_RATIO": count,
-#     "TOTAL_BLOCKS_BROKEN": count
-# }
 
-
-# Helper functions
-def get_name_and_skin(uuid):
-    with sqlite3.connect(TEAW_DB_FILE) as conn:
-        cursor = conn.cursor()
-        cursor.execute("""SELECT name FROM players WHERE uuid = ?""", (uuid,))
-        name = cursor.fetchone()
-        name = name[0] if name else "Unknown"
-
-    skin = 0
-    return name, skin
-
-
-# General stats
 @stats_routes.route("/api/get_general_leaderboard/<stat>")
 def get_stats_leaderboard(stat):
     try:
@@ -111,32 +104,85 @@ def get_stats_leaderboard(stat):
         return {"error": "internal error"}, 500
 
 
+
 # Custom stats
-# def get_playtime_death_ratio():
-#     return 0
+def get_playtime_death_ratio():
+    try:
+        with sqlite3.connect(STATS_DB_FILE) as stats_conn, sqlite3.connect(TEAW_DB_FILE) as teaw_conn:
+            stats_cursor = stats_conn.cursor()
+            teaw_cursor = teaw_conn.cursor()
+            
+            stats_cursor.execute("""
+                SELECT p1.player_uuid, 
+                       CAST(p1.stat_value AS FLOAT) as playtime, 
+                       CAST(COALESCE(p2.stat_value, 0) AS FLOAT) as deaths
+                FROM player_statistics p1
+                LEFT JOIN player_statistics p2 
+                    ON p1.player_uuid = p2.player_uuid 
+                    AND p2.category = 'general' 
+                    AND p2.stat_key = 'DEATHS'
+                WHERE p1.category = 'general' 
+                AND p1.stat_key = 'TOTAL_WORLD_TIME'
+            """)
+            
+            player_stats = []
+            for row in stats_cursor.fetchall():
+                player_uuid, playtime, deaths = row
+                
+                # Convert ticks to hours
+                hours = playtime / 20 / 60 / 60
+                
+                # If no deaths, ratio is just their playtime
+                if deaths == 0:
+                    ratio = hours  
+                else:
+                    ratio = hours / deaths
+                
+                # Get player name
+                teaw_cursor.execute("""
+                    SELECT name FROM players WHERE uuid = ?
+                """, (player_uuid,))
+                player_name = teaw_cursor.fetchone()
+                player_name = player_name[0] if player_name else "Unknown"
+                
+                player_stats.append({
+                    "uuid": player_uuid,
+                    "name": player_name,
+                    "value": f"{ratio:.1f}"
+                })
+            
+            player_stats.sort(key=lambda x: float(x["value"]), reverse=True)
+            
+            return player_stats
+    except Exception:
+        log.error(f"Error calculating playtime/death ratio: {traceback.format_exc()}")
+        return []
 
-# def get_total_blocks_broken():
-#     return 0
 
+AVAILABLE_CUSTOM_STATS = {
+    "PLAYTIME_DEATH_RATIO": (get_playtime_death_ratio, " Avg. hours per death")
+}
 
-# @stats_routes.route("/api/get_custom_stat/<stat>")
-# def handle_custom_stat(stat):
-#     try:
-#         stat = stat.upper()
-#         if stat not in AVAILABLE_CUSTOM_STATS:
-#             return {"error": "invalid stat key"}, 400
+@stats_routes.route("/api/get_custom_stat/<stat>")
+def handle_custom_stat(stat):
+    try:
+        stat = stat.upper()
+        if stat not in AVAILABLE_CUSTOM_STATS:
+            return {"error": "invalid stat key"}, 400
+
+        stat_function, units = AVAILABLE_CUSTOM_STATS[stat]
         
-#         if stat == "PLAYTIME_DEATH_RATIO":
-#             value = get_playtime_death_ratio()
-#         elif stat == "TOTAL_BLOCKS_BROKEN":
-#             value = get_total_blocks_broken()
+        leaderboard = stat_function()
 
-#         return jsonify({"value": value}), 200
+        return jsonify({
+            "units": units,
+            "leaderboard": leaderboard
+        }), 200
 
-#     except Exception:
-#         log.error(f"Internal error handling custom_stat for stat '{stat}': {traceback.format_exc()}")
-#         return {"error": "internal error"}, 500
-       
+    except Exception:
+        log.error(f"Internal error handling custom_stat for stat '{stat}': {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+
 
 
 # Fishing (Hosted on USAI.net)
@@ -159,4 +205,3 @@ def get_fishing_leaderboard():
     except Exception:
         log.error(f"Internal error getting `fishing_leaderboard`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
-
