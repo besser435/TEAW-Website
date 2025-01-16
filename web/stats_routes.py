@@ -160,7 +160,7 @@ def get_playtime_death_ratio():
 
 
 AVAILABLE_CUSTOM_STATS = {
-    "PLAYTIME_DEATH_RATIO": (get_playtime_death_ratio, " Avg. hours per death")
+    "PLAYTIME_DEATH_RATIO": (get_playtime_death_ratio, "avg. hours per death")
 }
 
 @stats_routes.route("/api/get_custom_stat/<stat>")
