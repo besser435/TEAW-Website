@@ -41,6 +41,21 @@
         <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">        
         <!-- Google Icons -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=menu,menu_book" />
+
+        <!-- PWA Setup -->
+        <link rel="manifest" href="/manifest.json">
+        <script>
+            // this was from some example on GitHub, can't find it though :(
+            if ("serviceWorker" in navigator) {
+                navigator.serviceWorker
+                    .register("/js/sw.js")
+                    .then(function (registration) {
+                    })
+                    .catch(function (err) {
+                    console.log("ServiceWorker registration failed: ", err);
+                    });
+            }
+        </script>
     </head>
 
     <body>
