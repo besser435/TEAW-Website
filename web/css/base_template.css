@@ -58,7 +58,7 @@ body {
 }
 
 /* Fix layout shift during initial animations */
-@media (min-width: 950px) {
+@media (min-width: 900px) {
     body {
         animation: 2s linear 0s no-scroll;
     }
