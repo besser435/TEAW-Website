@@ -185,7 +185,7 @@ def handle_custom_stat(stat):
 
 
 
-# Fishing (Hosted on USAI.net)
+# Fishing (Hosted on a different website)
 @stats_routes.route("/api/fishing_leaderboard")
 def get_fishing_leaderboard():
     try:

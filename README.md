@@ -9,6 +9,8 @@ We gladly welcome community contributions, we just ask that you test them first.
 - [ ] Figure out a better proxy for the Bluemap
 - [ ] Put the project in a venv
 - [ ] Add a TEAW Times archive page
+- [ ] Add website credits and about page
+- [ ] Add animation to burger menu on small screens 🍔
 
 ## Git guidelines
 There are two branches, `prod` and `dev`. The default is `dev`, and where any changes should be made. 

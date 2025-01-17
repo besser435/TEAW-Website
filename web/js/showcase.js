@@ -52,6 +52,5 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .catch(error => {
             console.error("Failed to fetch showcase data:", error);
-            showcaseGrid.innerHTML = `<p class="error-message">Unable to load showcase data. Please try again later.</p>`;
         });
 });

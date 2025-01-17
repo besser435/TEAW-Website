@@ -1,56 +1,19 @@
 // Highlight the current page in navbar
-window.addEventListener("load", () => {
-    const currentPath = window.location.pathname;
-    switch (currentPath) {  // TODO: redo, kind of long
-        case "/players":
-            const playersLink = document.getElementById("players-link");
-            playersLink.classList.add("active");
-            break;
-        case "/chat":
-            const chatLink = document.getElementById("chat-link");
-            chatLink.classList.add("active");
-            break;
-        case "/towns":
-            const townsLink = document.getElementById("towns-link");
-            townsLink.classList.add("active");
-            break;
-        case "/stats":
-            const statsLink = document.getElementById("stats-link");
-            statsLink.classList.add("active");
-            break;
-        case "/map":
-            const mapLink = document.getElementById("map-link");
-            mapLink.classList.add("active");
-            break;
-        case "/showcase":
-            const showcaseLink = document.getElementById("showcase-link");
-            showcaseLink.classList.add("active");
-            break;
-        case "/showcase/submit":
-            const showcaseSubmitLink = document.getElementById("showcase-link");
-            showcaseSubmitLink.classList.add("active");
-            break;
-    }
-});
+const currentPath = window.location.pathname;
+const pageMappings = {
+    '/players': 'players-link',
+    '/chat': 'chat-link', 
+    '/towns': 'towns-link',
+    '/stats': 'stats-link',
+    '/map': 'map-link',
+    '/showcase': 'showcase-link',
+    '/showcase/submit': 'showcase-link'
+};
 
-// cleaned version of the above code. However, the above code doesnt work. Get that working before using this.
-// It broke after we added the hamburger nav
-// const currentPath = window.location.pathname;
-// const pageMappings = {
-//     '/players': 'players-link',
-//     '/chat': 'chat-link', 
-//     '/towns': 'towns-link',
-//     '/stats': 'stats-link',
-//     '/map': 'map-link',
-//     '/showcase': 'showcase-link',
-//     '/showcase/submit': 'showcase-link'
-// };
-
-// const linkId = pageMappings[currentPath];
-// if (linkId) {
-//     document.getElementById(linkId).classList.add('active');
-// }
-
+const linkId = pageMappings[currentPath];
+if (linkId) {
+    document.getElementById(linkId).classList.add('active');
+}
 
 
 // Trolling
@@ -86,7 +49,6 @@ function updateStatus() {
                 onlineCount.textContent = `${data.online_players} player${data.online_players === 1 ? '' : 's'} online`;
                 failureCount = 0;
             } else {
-                // Update the status
                 statusLight.dataset.state = "red";
                 const offlineMinutes = Math.max(data.last_players_update_age, data.last_chat_update_age);
                 lastUpdateMinsAgo = offlineMinutes
@@ -102,14 +64,13 @@ function updateStatus() {
                 statusLight.dataset.state = "red";
                 
                 const onlineCount = document.getElementById("online-count");
-                const minutesSinceUpdate = Math.floor((Date.now() - lastSuccessfulUpdate) / 60000);
+                const minutesSinceUpdate = Math.floor((Date.now() - lastSuccessfulUpdate) / 60_000);
                 onlineCount.textContent = `Offline for ${minutesSinceUpdate}m`;
             }
         });
 }
 updateStatus();
 setInterval(updateStatus, 2000);
-
 
 // Add an alert() to the status div (mainly used on mobile when there is no status text)
 document.getElementById("nav-online-players").addEventListener("click", () => {
@@ -133,17 +94,6 @@ document.getElementById("nav-online-players").addEventListener("click", () => {
 
 // Hamburger Nav
 function hamburgerNav() {
-    let x = document.getElementById("navbar");
-    if (x.className === "navbar") {
-        x.className += " nav-open";
-    } else {
-        x.className = "navbar";
-    }
+    const navbar = document.getElementById("navbar");
+    navbar.classList.toggle("nav-open");
 }
-
-// Is the above breaking the highlight current page code?
-// I tried this, but its still broken.
-// function hamburgerNav() {
-//     const navbar = document.getElementById("navbar");
-//     navbar.classList.toggle("nav-open");
-// }
