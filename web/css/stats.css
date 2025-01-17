@@ -63,7 +63,7 @@
 }
 
 .player-rank {
-    min-width: 70px;
+    width: 70px;
     color: rgba(255, 255, 255, 0.85)
 }
 
@@ -87,5 +87,31 @@
     .leaderboard {
         width: auto; 
         margin-inline: unset;
+    }
+}
+
+@media (max-width: 550px) {
+    #unit-label {
+        font-size: 0.8em;
+        min-width: fit-content;
+        margin-left: auto;
+    }
+
+    #stat-select {
+        width: 200px;
+        margin-right: 10px;
+    }
+
+    .player-rank {
+        width: 50px;
+    }
+
+    .player-face {
+        width: 28px;
+        height: 28px;
+    }
+
+    .stat-entry {
+        font-size: 0.9em;
     }
 }
