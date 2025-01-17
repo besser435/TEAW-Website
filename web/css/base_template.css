@@ -47,8 +47,6 @@ body {
     background-attachment: fixed;
     height: 100vh;
     position: relative;
-    /* overflow: hidden;
-    overflow-y: scroll; BUG: messes up scrollbars  */
 
     font-family: Arial, sans-serif; /* Default/fallback */
 
@@ -60,7 +58,7 @@ body {
 }
 
 /* Fix layout shift during initial animations */
-@media (min-width: 950px) {
+@media (min-width: 900px) {
     body {
         animation: 2s linear 0s no-scroll;
     }
@@ -97,7 +95,7 @@ nav::before {
     background-color: rgba(25, 25, 25, 0.3);
 }
 
-nav a:not(.nav-logo), .header-button, select {
+nav a:not(.nav-logo):not(.menu-button), .header-button, select {
     color: rgba(255, 255, 255, 0.75);
     background-color: rgba(0, 0, 0, 0.2);
     font-family: "Inter", sans-serif;
@@ -121,12 +119,12 @@ button.header-button, select {
     border: none;
 }
 
-nav a.active, .header-button.active { 
+nav a.active:not(.nav-logo):not(.menu-button), .header-button.active { 
     color: #fff;
     background-color: rgba(255, 255, 255, 0.1);
 }
 
-nav a:hover, .header-button:hover, select:hover {
+nav a:not(.nav-logo):not(.menu-button):hover, .header-button:hover, select:hover {
     background-color: rgba(255, 255, 255, 0.2);
     outline: 2px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
@@ -156,40 +154,11 @@ nav a.nav-logo:hover img {
     transform: scale(1.1);
 }
 
-
-@media (max-width: 950px) {
-    nav {
-        flex-wrap: wrap;
-        justify-content: center;
-        position: static;
-        gap: 0.6em;
-    }
-
-    nav a:not(.nav-logo), .header-button {
-        margin-inline: 0;
-        width: 100%;
-        text-align: center;
-    }
-
-    select {
-        margin-inline: 0px;
-    }
-
-    .online-players {
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    nav a.nav-logo {
-        margin: 0px;
-        scale: 0.8;
-    }
-
-    nav::before {
-        height: 48px;
-    }
+.menu-button {
+    color: white;
+    display: none;
+    position: absolute;
+    top: 20px;
 }
 
 
@@ -202,11 +171,16 @@ nav a.nav-logo:hover img {
 }
 
 .online-players h3 {
-    font-size: 1.2em;
+    font-size: 1em;
     margin-left: 12px;
-    color: rgba(255, 255, 255, 0.75)
+    color: rgba(255, 255, 255, 0.6)
 }
 
+@media (max-width: 1028px) {
+    .online-players h3 {
+        display: none;
+    }
+}
 
 /* Header */
 .header {
@@ -231,11 +205,8 @@ nav a.nav-logo:hover img {
 
 /* Hackily apply the slide up animation to all changing header elements, except the search bar.
 The search bar is constant among all pages, so it doesn't need an animation. */
-.header .header-button, 
-.header select, 
-.header h1, .header h2, .header h3, 
-.header .separator {
-    animation: 700ms cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
+.header :is(.header-button, select, h1, h2, h3, .separator) {
+    animation: slide-up 700ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .separator {
@@ -247,7 +218,7 @@ The search bar is constant among all pages, so it doesn't need an animation. */
     margin-inline: 20px;
 }
 
-@media (max-width: 950px) {
+@media (max-width: 900px) {
     .header {
         margin-bottom: 8px;
     }
@@ -281,14 +252,62 @@ The search bar is constant among all pages, so it doesn't need an animation. */
         flex-direction: column;
     }
 
-    nav { 
+    nav {
         height: fit-content;
+        flex-wrap: wrap;
+        justify-content: center;
+        position: static;
+        gap: 0.6em;
+    }
+
+    nav a:not(.nav-logo):not(.menu-button), .header-button {
+        margin-inline: 0;
+        width: 100%;
+        text-align: center;
+    }
+
+    select {
+        margin-inline: 0px;
+    }
+
+    .online-players {
+        display: flex;
+        order: -1;
+        margin-right: 30px;
+        margin-left: auto;
+    }
+
+    nav a.nav-logo {
+        margin: 0px;
+        scale: 0.8;
+        order: -2
+    }
+
+    nav::before {
+        height: 48px;
+    }
+
+    .menu-button {
+        display: block;
+        position: inherit;
+        margin-right: auto;
+        margin-left: 5px;
+        padding: 10px;
+        order: -3;
+    }
+
+    nav a:nth-child(n+3) {
+        display: none;
+    }
+
+    nav.nav-open a:nth-child(n+3) {
+        display: block;
+        animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-down;
     }
 }
 
 
 /* Main Content */
-/* BUG: messes up scrollbars  */
 .main-content {
     display: flex;
     flex-direction: column;
@@ -350,7 +369,7 @@ footer p {
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
-        scrollbar-width: 10px;
+        scrollbar-width: thin;
     }
 }
 

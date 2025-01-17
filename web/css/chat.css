@@ -17,7 +17,7 @@
     display: grid;
     grid-template-columns: 290px 1fr;
     gap: 0.5em;
-    align-items: center;
+    align-items: stretch;
     font-family: "Inter", sans-serif;
     margin-top: 10px;
     color: #FFFFFF;
@@ -37,29 +37,7 @@
 
 .message-text {
     margin-block: auto;
-}
-
-#scroll-to-bottom {
-    color: white;
-    background-color: rgb(0, 76, 255);
-    text-align: center;
-
-
-    font-family: "Inter", sans-serif;
-    font-weight: 700;
-    text-decoration: none;
-    border: none ;
-    padding: 0.4em 0.8em;
-    border-radius: 10em;
-
-    cursor: pointer;
-    
-    transition: background-color 0.3s, outline 0.3s;
-    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
-}
-
-#scroll-to-bottom:hover {
-    background-color: #0056b3;
+    word-break: break-all;
 }
 
 .message-info .profile-pic {
@@ -79,6 +57,9 @@
     color: rgba(255, 255, 255, 0.3);
     margin-left: auto;
     min-width: fit-content;
+
+    display: flex;
+    align-items: center;
 }
 
 .message-info[data-message-type="status"] {
@@ -109,6 +90,30 @@
 .message-info[data-message-type="advancement"] {
     background-color: rgba(255, 200, 0, 0.1);
     border-color: rgba(255, 200, 0, 0.1);
+}
+
+#scroll-to-bottom {
+    color: white;
+    background-color: rgb(0, 76, 255);
+    text-align: center;
+
+    margin-inline: 0.25em;
+
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+    border: none ;
+    padding: 0.4em 0.8em;
+    border-radius: 10em;
+
+    cursor: pointer;
+    
+    transition: background-color 0.3s, outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#scroll-to-bottom:hover {
+    background-color: #0056b3;
 }
 
 .material-symbols-rounded {
@@ -148,6 +153,10 @@
     .message-container .timestamp {
         order: 2;
         margin: 5px 5px 0px auto
+    }
+
+    .message-info .sender {
+        margin-right: 2px;
     }
 
     .message-text {

@@ -40,6 +40,7 @@ function setupSearch() {
         scrollToBottom();
     });
 }
+window.addEventListener("load", setupSearch);
 
 function highlightText(element, searchTerm) {
     const originalText = element.textContent;
@@ -48,8 +49,6 @@ function highlightText(element, searchTerm) {
 
     element.innerHTML = highlightedHTML;
 }
-
-window.addEventListener("load", setupSearch);
 
 
 
@@ -96,7 +95,7 @@ window.addEventListener("load", () => {
 
 
 // --- MESSAGE HELPERS ---
-const updateRate = 2_000;
+const updateRate = 3_000;
 
 class Message {
     /**

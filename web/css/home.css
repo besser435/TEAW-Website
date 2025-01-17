@@ -1,1 +1,62 @@
 /* Styles for the Home page */
+
+.greeting {
+    text-align: center;
+    margin: 1em;
+}
+
+.greeting img {
+    width: 8em;
+    margin-top: 2em;
+}
+
+.container {
+    margin: 1em;
+    padding: 1em;
+    background-color: rgba(69, 69, 69, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+
+    width: 800px;
+    margin-inline: auto;
+}
+
+.link-button {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+
+    border-radius: 10px;
+    padding: 5px 10px;
+    margin: 5px 0px;
+    max-width: fit-content;
+    transition: 300ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.link-button a {
+    color: white;
+    text-decoration: none;
+}
+
+.link-button a img {
+    margin-right: 5px;
+}
+
+.link-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 900px) {
+    .container {
+        width: auto;
+        margin-inline: 10px;
+    }
+
+    .nav-logo {
+        display: none;
+    }
+
+    nav.nav-open .nav-logo {
+        display: block;
+    }
+}

@@ -4,16 +4,9 @@
     "start_url": "/",
     "icons": [
         {
-            "src": "/static/imgs/manifest-icon-192x192.png",
+            "src": "/imgs/manifest-192x192.png",
             "sizes": "192x192",
-            "type": "image/png",
-            "purpose": "maskable any"
-        },
-        {
-            "src": "/static/imgs/manifest-icon-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png",
-            "purpose": "maskable any"
+            "type": "image/png"
         }
     ],
     "theme_color": "#555",

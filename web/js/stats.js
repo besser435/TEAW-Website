@@ -1,9 +1,5 @@
 /* TODO:
-Format numbers with toLocaleString()
-Debung URL params and bring that to other pages
 Add search functionality
-Ensure constant amount of numbers after decimal point (add trialing zeros)
-
 */
 
 
@@ -85,12 +81,11 @@ function onLoadAddFakeStats() {    // Takes a while to populate the cards, so ad
         
         statsContainer.appendChild(entryDiv);
     }
-
 }
 onLoadAddFakeStats();
 
 function renderLeaderboard(data, unit, currentSort) {
-    // Clears the current entries but not the search error message
+    // Clears the current entries, but not the search error message
     const statsContainerSelector = document.querySelector(".stats-container");
     statsContainerSelector.querySelectorAll(".stat-entry").forEach(el => el.remove());
 
@@ -106,7 +101,6 @@ function renderLeaderboard(data, unit, currentSort) {
         const entryDiv = document.createElement("div");
         entryDiv.className = "stat-entry";
 
-
         entryDiv.innerHTML = `
             <h3 class="player-rank">#${entry.rank}</h3>
             <img class="player-face" src="/api/player_face/${entry.uuid}">
@@ -118,11 +112,10 @@ function renderLeaderboard(data, unit, currentSort) {
     });
 }
 
-
 async function initializeLeaderboard() {
     const statSelect = document.getElementById("stat-select");
     const sortSelect = document.getElementById("sort-select");
-    const search = document.getElementById("search");
+    //const search = document.getElementById("search");
 
 
     // Read initial values from URL parameters
@@ -140,7 +133,7 @@ async function initializeLeaderboard() {
     }
 
     let currentSort = sortSelect.value;
-    let searchQuery = "";
+    //let searchQuery = "";
     let currentData = null;
 
     function updateUrlParams() {
