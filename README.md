@@ -1,14 +1,14 @@
 # [TEAW-Website](https://toendallwars.org/)
+Welcome to the Git repo for the ToEndAllWars website! Here is the place to find source code, post issues, and submit pull requests. 
+We gladly welcome community contributions, we just ask that you test them first. 
+
 
 
 ## TODO:
-- [ ] Figure out how to not erase db dir on push to prod. Dir outside of the git repo?
 - [ ] Improve tmux script
 - [ ] Figure out a better proxy for the Bluemap
-- [ ] Finish SW stuff for PWA compatibility (just needs an image I think)
-- [ ] Add image to base.html for embed
-- [ ] Remove towns and nations that no longer exist in db_updater.py
 - [ ] Put the project in a venv
+- [ ] Add a TEAW Times archive page
 
 ## Git guidelines
 There are two branches, `prod` and `dev`. The default is `dev`, and where any changes should be made. 
@@ -17,6 +17,7 @@ In the future, changes will be deployed by bringing changes over from dev (or so
 Only once approved, will the PR be merged, and the new changes deployed using a GH webhook. 
 
 Before submitting a PR, run the VS Code task to generate the requirements.txt file for pip.
+
 
 
 ## Starting a development server
@@ -34,7 +35,7 @@ but thats not needed for development.
 
 ## Starting a production server
 Before we start, we need to set up the proxy to the Bluemap. TEAW's map is using HTTP, so when we
-use it in an iframe we run into issues where the browser prevent the connection, as the website is using HTTPS.
+use it in an iframe we run into issues where the browser prevent the connection. This is because this website is using HTTPS.
 To fix this, we use an nginx proxy. This allows us to use a Cloudflare tunnel to point to the proxy on the server, which then
 points to the map. This allows the tunnel to use HTTPS, so we don't run into any browser security rules. 
 
