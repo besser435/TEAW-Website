@@ -49,7 +49,7 @@ function formatDate(epoch) {
 class Town {
     constructor(
         uuid, name, town_color, 
-        nation_name, nation_color, 
+        nation_name, nation_color, spawn_x, spawn_z, spawn_y, 
         mayor, founded, 
         is_active
     ) {
@@ -58,6 +58,9 @@ class Town {
         this.town_color = town_color;
         this.nation_name = (nation_name.replace(/_/g, " ")) || null;
         this.nation_color = nation_color || null;
+        this.spawn_x = spawn_x;
+        this.spawn_z = spawn_z;
+        this.spawn_y = spawn_y;
         this.mayor = mayor;
         this.founded = formatDate(founded);
         this.is_active = Boolean(is_active);
@@ -160,13 +163,6 @@ function addTownCard(townObj) {
     foundingDate.appendChild(document.createTextNode(townObj.founded));
     townObj.founded ? townDetails.appendChild(foundingDate) : null;
 
-    // Number of residents
-    // Need to add this to the db_updater script
-    // const numResidents = document.createElement("p");
-    // numResidents.textContent = townObj.num_residents;
-    // numResidents.className = "num-residents";
-    // townDetails.appendChild(numResidents);
-
     // Status light
     const statusLight = document.createElement("div");
     statusLight.className = "status-light";
@@ -179,6 +175,19 @@ function addTownCard(townObj) {
             break;
     }
 
+    // Bluemap link
+    // See this message in the Bluemap Discord for docs:
+    // https://discord.com/channels/665868367416131594/1155554866077376653/1155555842511360091
+    const distance = 400;
+    card.addEventListener("click", () => {
+        window.open(
+            `https://map.toendallwars.org/#teaw_v4:${townObj.spawn_x}:${townObj.spawn_y}:${townObj.spawn_z}:` +
+            `${distance}:0:0:0:0:perspective`, 
+            "_blank"
+        );
+    });
+
+
     card.appendChild(townDetails);
     card.appendChild(statusLight);
 
@@ -188,7 +197,7 @@ function addTownCard(townObj) {
 
 
 // --- TOWN UPDATES --- 
-const updateRate = 3_000;
+const updateRate = 30_000;
 
 async function getTowns() {
     const towns = [];
@@ -199,7 +208,7 @@ async function getTowns() {
         data.forEach(town => {
             const townObj = new Town(
                 town.uuid, town.name, town.town_color, town.nation_name,
-                town.nation_color, town.mayor, town.founded,
+                town.nation_color, town.spawn_x, town.spawn_z, town.spawn_y, town.mayor, town.founded,
                 town.is_active
             );
             towns.push(townObj);
@@ -274,8 +283,6 @@ setInterval(updateInfoBubbles, updateRate);
 
 
 // TODO: add the ability to search nations and mayors
-
-
 // --- SEARCH ---
 function setupSearch() {
     const searchInput = document.getElementById("town-search");

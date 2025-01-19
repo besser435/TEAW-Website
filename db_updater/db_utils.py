@@ -57,7 +57,10 @@ def create_teaw_tables(db_file=TEAW_DB_FILE):
                 claimed_chunks INTEGER NOT NULL,
                 color_hex TEXT NOT NULL,
                 tag TEXT,
-                board TEXT
+                board TEXT, 
+                spawn_loc_x INTEGER NOT NULL,
+                spawn_loc_z INTEGER NOT NULL,
+                spawn_loc_y INTEGER NOT NULL
             )
         """)
 

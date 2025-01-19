@@ -205,9 +205,9 @@ nav a.nav-logo:hover img {
 
 /* Hackily apply the slide up animation to all changing header elements, except the search bar.
 The search bar is constant among all pages, so it doesn't need an animation. */
-.header :is(.header-button, select, h1, h2, h3, .separator) {
+/* .header :is(.header-button, select, h1, h2, h3, .separator) {
     animation: slide-up 700ms cubic-bezier(0.19, 1, 0.22, 1);
-}
+} */
 
 .separator {
     width: 4px;
@@ -313,6 +313,7 @@ The search bar is constant among all pages, so it doesn't need an animation. */
     flex-direction: column;
     padding-inline: 1em;
     margin-bottom: auto;
+    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
 }
 
 

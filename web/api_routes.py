@@ -180,6 +180,9 @@ def get_all_towns():
                     t.founded, 
                     t.is_active, 
                     t.color_hex AS town_color,
+                    t.spawn_loc_x AS spawn_x,
+                    t.spawn_loc_z AS spawn_z,
+                    t.spawn_loc_y AS spawn_y,
                     n.color_hex AS nation_color
                 FROM towns t
                 LEFT JOIN nations n ON t.nation_name = n.name

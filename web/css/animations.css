@@ -57,3 +57,14 @@ Scaling elements isn't great for accessibility, or ensuring the animation is smo
         overflow-y: auto;
     }
 }
+
+@keyframes exclude-animation {
+    from {
+        transform: translateY(-10px);
+        opacity: 200%
+    }
+    to {
+        transform: translateY(0px);
+        opacity: 100%;
+    }
+}

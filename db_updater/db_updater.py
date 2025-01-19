@@ -196,15 +196,18 @@ def update_towns_table() -> None:
                 color_hex = town_data.get("color_hex")
                 tag = town_data.get("tag")
                 board = town_data.get("board")
+                spawn_loc_x = town_data.get("spawn_loc_x", 0)
+                spawn_loc_z = town_data.get("spawn_loc_z", 0)
+                spawn_loc_y = town_data.get("spawn_loc_y", 0)
 
                 # Legacy note: TAPI now returns the tax as "resident_tax", but we still store it as "resident_tax_percent".
                 # Will rename the column later :tm:
                 cursor.execute("""
                     INSERT INTO towns (
                         uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
-                        is_active, claimed_chunks, color_hex, tag, board
+                        is_active, claimed_chunks, color_hex, tag, board, spawn_loc_x, spawn_loc_z, spawn_loc_y
                     )
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT(uuid) DO UPDATE SET
                         name=excluded.name,
                         mayor=excluded.mayor,
@@ -218,9 +221,12 @@ def update_towns_table() -> None:
                         claimed_chunks=excluded.claimed_chunks,
                         color_hex=excluded.color_hex,
                         tag=excluded.tag,
-                        board=excluded.board
+                        board=excluded.board,
+                        spawn_loc_x=excluded.spawn_loc_x,
+                        spawn_loc_z=excluded.spawn_loc_z,
+                        spawn_loc_y=excluded.spawn_loc_y
                 """, (town_uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
-                    is_active, claimed_chunks, color_hex, tag, board))
+                    is_active, claimed_chunks, color_hex, tag, board, spawn_loc_x, spawn_loc_z, spawn_loc_y))
 
             conn.commit()
             upsert_variable("last_towns_update", int(time.time() * 1000))
