@@ -20,6 +20,7 @@
 .card-container:hover {
     box-shadow: 0 0 12px rgba(0, 123, 255, 0.6);
     border-color: #007BFF;
+    cursor: pointer;
 }
 
 @media (max-width: 950px) {
