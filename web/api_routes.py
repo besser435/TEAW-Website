@@ -370,6 +370,7 @@ def get_player_face(uuid):
 
 
 # Showcase
+# TODO: compress images before saving them, and maybe convert them to webp
 @api_routes.route("/api/submit_photo", methods=["POST"])
 def submit_build():
     try:
@@ -411,9 +412,10 @@ def submit_build():
             "photo_title": photo_title,
             "photo_date": photo_date,
             "photographer": photographer,
-            "img_src": f"imgs/showcase_imgs/{file_name}"
+            "img_src": f"{file_name}"
         }
-        with open(os.path.join(folder_path, "data.json"), "w") as json_file:
+        
+        with open(os.path.join(folder_path, f"{image_metadata.get('photo_title', 'untitled')}-data.json"), "w") as json_file:
             json.dump(image_metadata, json_file, indent=4)
 
         photo_file_path = os.path.join(folder_path, file_name)

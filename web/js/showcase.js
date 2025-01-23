@@ -11,6 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(data => {
             showcaseGrid.innerHTML = "";
 
+            // In the image manifest, we might not sort the images by date, so we need to sort them here.
+            // Sorts by date in descending order
+            data.sort((a, b) => {
+                return new Date(b.photo_date) - new Date(a.photo_date);
+            });
+
             data.forEach(item => {
                 // Create a photo card for each item
                 const photoCard = document.createElement("div");
