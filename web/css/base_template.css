@@ -320,7 +320,7 @@ The search bar is constant among all pages, so it doesn't need an animation. */
     }
 
     #showcase-link {
-        margin-bottom: 800px;
+        margin-bottom: 2000px;
     }
 
     .main-content {
@@ -392,7 +392,7 @@ footer p {
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
-        scrollbar-width: thin;
+        scrollbar-width: auto;
     }
 }
 
@@ -406,10 +406,9 @@ footer p {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2); 
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
+    background: rgba(255, 255, 255, 0.2);
     background-clip: content-box;
+    border-radius: 2em;
 }
 
 *::-webkit-scrollbar-thumb:hover {
