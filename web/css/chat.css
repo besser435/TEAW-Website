@@ -1,7 +1,7 @@
 /* Styles for the Chat page */
 
 .chat-feed {
-    height: calc(100vh - 270px);
+    height: calc(100vh - 300px);
     min-height: 200px;
     overflow-y: scroll;
     margin-bottom: 10px;
