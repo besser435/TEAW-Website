@@ -59,9 +59,11 @@ Scaling elements isn't great for accessibility, or ensuring the animation is smo
 }
 
 @keyframes exclude-animation {
+    /* This cancels the slide-down animation by doing the opposite of what 
+    it does. Kind of janky, but it mostly works. Opacity isn't fully canceled. */
     from {
         transform: translateY(-10px);
-        opacity: 200%
+        opacity: 100%
     }
     to {
         transform: translateY(0px);

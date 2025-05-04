@@ -1,7 +1,7 @@
 /* Styles for the Chat page */
 
 .chat-feed {
-    height: calc(100vh - 270px);
+    height: calc(100vh - 300px);
     min-height: 200px;
     overflow-y: scroll;
     margin-bottom: 10px;
@@ -35,7 +35,7 @@
 
 .message-text {
     margin-block: auto;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .message-info .profile-pic {
@@ -161,6 +161,7 @@
         padding-left: 4px;
         padding-right: 4px;
         order: 3;
-        width: 100%
+        width: 100%;
+        word-break: break-word;
     }
 }

@@ -203,12 +203,6 @@ nav a.nav-logo:hover img {
     margin-right: 4px;
 }
 
-/* Hackily apply the slide up animation to all changing header elements, except the search bar.
-The search bar is constant among all pages, so it doesn't need an animation. */
-/* .header :is(.header-button, select, h1, h2, h3, .separator) {
-    animation: slide-up 700ms cubic-bezier(0.19, 1, 0.22, 1);
-} */
-
 .separator {
     width: 4px;
     min-width: 4px;
@@ -256,14 +250,26 @@ The search bar is constant among all pages, so it doesn't need an animation. */
         height: fit-content;
         flex-wrap: wrap;
         justify-content: center;
-        position: static;
+        flex-grow: 0;
+        position: fixed;
+        width: calc(100vw - 32px);
+        height: 50px;
+        overflow-y: hidden;
+        box-sizing: content-box;
         gap: 0.6em;
+        transition: height 0.7s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     nav a:not(.nav-logo):not(.menu-button), .header-button {
         margin-inline: 0;
         width: 100%;
         text-align: center;
+    }
+
+    nav a:not(.nav-logo):not(.menu-button) {
+        opacity: 0%;
+        transform: translateY(-20px);
+        transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
     select {
@@ -289,20 +295,30 @@ The search bar is constant among all pages, so it doesn't need an animation. */
 
     .menu-button {
         display: block;
-        position: inherit;
+        position: static;
         margin-right: auto;
         margin-left: 5px;
         padding: 10px;
         order: -3;
     }
 
-    nav a:nth-child(n+3) {
-        display: none;
+    nav.nav-open {
+        background-image: linear-gradient(#000000aa, #000000aa);
+        height: 100%;
+        backdrop-filter: blur(10px);
     }
 
     nav.nav-open a:nth-child(n+3) {
-        display: block;
-        animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-down;
+        opacity: 100%;
+        transform: translateY(0px);
+    }
+
+    #showcase-link {
+        margin-bottom: 2000px;
+    }
+
+    .main-content {
+        margin-top: 74px;
     }
 }
 
@@ -370,7 +386,7 @@ footer p {
 @-moz-document url-prefix() {  /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
-        scrollbar-width: thin;
+        scrollbar-width: auto;
     }
 }
 
@@ -384,10 +400,9 @@ footer p {
 }
 
 *::-webkit-scrollbar-thumb {
-    background: rgba(255, 255, 255, 0.2); 
-    border-top: 20px solid transparent;
-    border-bottom: 20px solid transparent;
+    background: rgba(255, 255, 255, 0.2);
     background-clip: content-box;
+    border-radius: 2em;
 }
 
 *::-webkit-scrollbar-thumb:hover {
