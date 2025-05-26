@@ -19,13 +19,21 @@ let currentSearchTerm = "";
 
 
 function sortTowns(towns) {
-    if (currentSortMethod === "a-z-grouped") {
-        return towns;
-    } else {
-        // sort towns from oldest to newest
-        return towns.sort((a, b) => {
-            return new Date(a.founded) - new Date(b.founded);
-        });
+    switch (currentSortMethod) {
+        case "a-z-grouped":
+            return towns;
+
+        case "active-a-z":
+            const active = towns.filter(town => town.is_active).sort((a, b) => a.name.localeCompare(b.name));
+            const inactive = towns.filter(town => !town.is_active).sort((a, b) => a.name.localeCompare(b.name));
+            return [...active, ...inactive];
+
+        case "old-new":
+            return towns.slice().sort((a, b) => new Date(a.founded) - new Date(b.founded));
+
+        default:
+            console.warn("Unknown sort method: ", currentSortMethod);
+            return towns;
     }
 }
 
