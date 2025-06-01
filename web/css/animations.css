@@ -7,7 +7,7 @@
 
 @keyframes slide-up {
     from {
-        transform: translateY(10px);
+        transform: translateY(20px) scale(0.99);
         opacity: 50%
     }
     to {
