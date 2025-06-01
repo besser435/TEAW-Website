@@ -3,7 +3,7 @@
 .container-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 5px 10px;
+    gap: 8px 10px;
 
     border: 2px solid rgba(255, 255, 255, 0.1);
     border-radius: 28px;
@@ -58,7 +58,6 @@
 
 @media (max-width: 950px) {
     .container-grid {
-        gap: 8px;
         padding: 8px;
         padding-right: 11px;
     }

@@ -7,7 +7,18 @@
 
 @keyframes slide-up {
     from {
-        transform: translateY(20px) scale(0.99);
+        transform: translateY(12px) scale(0.99);
+        opacity: 50%
+    }
+    to {
+        transform: translateY(0px) scale(1);
+        opacity: 100%;
+    }
+}
+
+@keyframes slide-up-mobile { /* Disable slow scale animation on mobile */
+    from {
+        transform: translateY(20px);    /* Larger so you can see after burger menu fade */
         opacity: 50%
     }
     to {
@@ -62,11 +73,11 @@ Scaling elements isn't great for accessibility, or ensuring the animation is smo
     /* This cancels the slide-down animation by doing the opposite of what 
     it does. Kind of janky, but it mostly works. Opacity isn't fully canceled. */
     from {
-        transform: translateY(-10px);
+        transform: translateY(-12px) scale(1);
         opacity: 100%
     }
     to {
-        transform: translateY(0px);
+        transform: translateY(0px) scale(1);
         opacity: 100%;
     }
 }
