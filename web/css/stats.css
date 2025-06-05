@@ -1,6 +1,6 @@
 .leaderboard {
     border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 28px;
+    border-radius: 30px;
     padding: 10px;
     padding-bottom: 0px;
     width: 500px;
@@ -18,11 +18,20 @@
     align-items: center;
     padding: 5px 16px;
     background-color: rgba(69, 69, 69, 0.4);
-    margin: 7px 0;
-    border-radius: 2rem;
+    margin: 8px 0;
+    border-radius: 10px;
     border: 2px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.85);
     font-family: "Inter", sans-serif;
+    margin-right: 6px;
+}
+
+.stat-entry:first-child {
+    border-radius: 20px 20px 10px 10px;
+}
+
+.stat-entry:last-child {
+    border-radius: 10px 10px 20px 20px;
 }
 
 .stat-entry h3 {

@@ -26,7 +26,7 @@ h3 {
     font-size: 1.6em;
 }
 
-p {
+p, li {
     color: #cfcfcf;
 
     font-family: "Inter", sans-serif;
@@ -36,7 +36,6 @@ p {
 
     margin: 0.3em 0;
 }
-
 
 /* Body and background Image */
 body {
@@ -212,6 +211,19 @@ nav a.nav-logo:hover img {
     margin-inline: 20px;
 }
 
+
+
+/* Main Content */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    padding-inline: 1em;
+    margin-bottom: auto;
+    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
+}
+
+
+
 @media (max-width: 900px) {
     .header {
         margin-bottom: 8px;
@@ -319,18 +331,10 @@ nav a.nav-logo:hover img {
 
     .main-content {
         margin-top: 74px;
+        animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up-mobile;    /* Disable slow scale animation on mobile */
     }
 }
 
-
-/* Main Content */
-.main-content {
-    display: flex;
-    flex-direction: column;
-    padding-inline: 1em;
-    margin-bottom: auto;
-    animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
-}
 
 
 /* Footer */
