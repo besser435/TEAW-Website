@@ -15,8 +15,13 @@
 
 
 <style>
+    .footer {
+        margin: 0px;
+    }
+
     .placeholder {
-        height: calc(100vh - 220px);
+        width: 100vw;
+        height: calc(100vh - 200px);
         min-height: 200px;
 
         background-color: black;
@@ -24,16 +29,31 @@
         background-position: center;
         background-image: url("/imgs/loading.svg");
 
-        border-radius: 16px;
+        margin-left: -1rem;
     }
 
     iframe {
-        width: 100%;
-        height: calc(100vh - 220px);
+        width: 100vw;
+        height: calc(100vh - 200px);
         min-height: 200px;
 
         border: none;
-        border-radius: 16px;
+        border-radius: 0px;
+    }
+
+    @media (max-width: 900px) {
+        .footer, .header {
+            display: none;
+        }
+
+        .placeholder, iframe {
+            height: calc(100vh - 74px);
+        }
+
+        .main-content {
+            margin-bottom: 0;
+            overflow: hidden;
+        }
     }
 </style>
 

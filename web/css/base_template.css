@@ -314,6 +314,7 @@ nav a.nav-logo:hover img {
         margin-left: 5px;
         padding: 10px;
         order: -3;
+        transition: 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 
     nav.nav-open {
@@ -327,6 +328,10 @@ nav a.nav-logo:hover img {
         transform: translateY(0px);
         pointer-events: auto;
         visibility: visible;
+    }
+
+    nav.nav-open .menu-button {
+        transform: skewX(-20deg) scaleY(1.5);
     }
 
     #showcase-link {
