@@ -29,7 +29,7 @@ function sortTowns(towns) {
             return [...active, ...inactive];
 
         case "old-new":
-            return towns.slice().sort((a, b) => new Date(a.founded) - new Date(b.founded));
+            return towns.slice().sort((a, b) => a.founded - b.founded);
 
         default:
             console.warn("Unknown sort method: ", currentSortMethod);
@@ -45,11 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateTowns();    // bad, but it works.
     });
 });
-
-function formatDate(epoch) {
-    const date = new Date(epoch);
-    return date.toLocaleDateString();
-}
 
 
 
@@ -70,7 +65,8 @@ class Town {
         this.spawn_z = spawn_z;
         this.spawn_y = spawn_y;
         this.mayor = mayor;
-        this.founded = formatDate(founded);
+        this.founded = Number(founded);
+        this.formatted_founded = new Date(this.founded).toLocaleDateString();
         this.is_active = Boolean(is_active);
     }
 }
@@ -168,8 +164,8 @@ function addTownCard(townObj) {
     foundingDateLabel.textContent = "Founded: ";
     foundingDate.className = "founding-date";
     foundingDate.appendChild(foundingDateLabel);
-    foundingDate.appendChild(document.createTextNode(townObj.founded));
-    townObj.founded ? townDetails.appendChild(foundingDate) : null;
+    foundingDate.appendChild(document.createTextNode(townObj.formatted_founded));
+    townObj.formatted_founded ? townDetails.appendChild(foundingDate) : null;
 
     // Status light
     const statusLight = document.createElement("div");
