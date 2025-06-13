@@ -279,9 +279,11 @@ nav a.nav-logo:hover img {
     }
 
     nav a:not(.nav-logo):not(.menu-button) {
-        opacity: 0%;
+        opacity: 0%;    /* Yes this is needed despite visibility: hidden. Its to animate so its smooth */
         transform: translateY(-20px);
         transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1);
+        pointer-events: none;
+        visibility: hidden;
     }
 
     select {
@@ -312,6 +314,7 @@ nav a.nav-logo:hover img {
         margin-left: 5px;
         padding: 10px;
         order: -3;
+        transition: 300ms cubic-bezier(0.075, 0.82, 0.165, 1);
     }
 
     nav.nav-open {
@@ -323,6 +326,12 @@ nav a.nav-logo:hover img {
     nav.nav-open a:nth-child(n+3) {
         opacity: 100%;
         transform: translateY(0px);
+        pointer-events: auto;
+        visibility: visible;
+    }
+
+    nav.nav-open .menu-button {
+        transform: skewX(-20deg) scaleY(1.5);
     }
 
     #showcase-link {
