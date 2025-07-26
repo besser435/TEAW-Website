@@ -18,7 +18,7 @@ from diet_logger import setup_logger
 LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/db_updater.log"
 
-TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
+TAPI_URL = "https://tapi.toendallwars.org/api"
 #TAPI_URL = "http://192.168.0.157:1850/api"
 DB_FILE = "../db/teaw.db"
 
@@ -378,7 +378,9 @@ def update_server_info_table() -> None:
     end_time = time.time()
     log.debug(f"Server info updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
 
-
+# TODO: 
+# Restart the script every 2 hours in case the internet goes out.
+# When the internet comes back, it has a bug where it will stop updating.
 
 if __name__ == "__main__":
     try:
@@ -416,6 +418,9 @@ if __name__ == "__main__":
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect.
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting.
+
+        # TODO: when the server goes offline (say for maintenance) this will not trigger the website to report
+        # an outdated status
 
         log.info(f"Connection timed out.")
 

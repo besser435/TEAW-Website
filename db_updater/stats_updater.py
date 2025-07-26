@@ -17,7 +17,7 @@ from diet_logger import setup_logger
 LOG_LEVEL = logging.INFO
 LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
-TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
+TAPI_URL = "https://tapi.toendallwars.org/api"
     
 
 def get_all_stats(player_uuid):
@@ -57,6 +57,9 @@ def insert_statistics(player_uuid, stats_json):
         conn.commit()
 
 
+# TODO: 
+# Restart the script every 2 hours in case the internet goes out.
+# When the internet comes back, it has a bug where it will stop updating.
 
 if __name__ == "__main__":  # autism
     try:
