@@ -31,6 +31,12 @@ FACE_SKINS_DIR = "../db/player_face_skins"
 
 
 
+class BadGatewayError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 def upsert_variable(variable: str, value: str) -> None:    # the shitfuck
     """
     Upserts a value in the miscellaneous `variables` table.
@@ -106,6 +112,8 @@ def update_players_table() -> None:
 
             conn.commit()
             upsert_variable("last_players_update", int(time.time() * 1000))
+        elif response.status_code == 502:
+            raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
         else:
             log.warning(f"Failed to fetch player data: {response.status_code}")
 
@@ -149,6 +157,8 @@ def update_chat_table() -> None:
 
             conn.commit()
             upsert_variable("last_chat_update", int(time.time() * 1000))
+        elif response.status_code == 502:
+            raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
         else:
             log.warning(f"Failed to fetch chat data: {response.status_code}")
 
@@ -230,6 +240,8 @@ def update_towns_table() -> None:
 
             conn.commit()
             upsert_variable("last_towns_update", int(time.time() * 1000))
+        elif response.status_code == 502:
+            raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
         else:
             log.warning(f"Failed to fetch town data: {response.status_code}")
 
@@ -299,6 +311,8 @@ def update_nations_table() -> None:
 
             conn.commit()
             upsert_variable("last_nations_update", int(time.time() * 1000))
+        elif response.status_code == 502:
+            raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server restarting?")
         else:
             log.warning(f"Failed to fetch nation data: {response.status_code}")
     
@@ -372,6 +386,8 @@ def update_server_info_table() -> None:
         upsert_variable("teaw_system_time", teaw_system_time)
         upsert_variable("tapi_version", tapi_version)
         upsert_variable("tapi_build", tapi_build)
+    elif response.status_code == 502:
+        raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
     else:
         log.warning(f"Failed to fetch server info: {response.status_code}")
 
@@ -392,7 +408,7 @@ if __name__ == "__main__":
             Should be async, so we can have different intervals for different tasks.
             chat should be updated frequently, but towns only needs to be ran every few minutes.
 
-            Should raise an error if an update takes longer than a few hundred milliseconds
+            Should raise an error if an update takes longer than a few hundred mislliseconds
             """
 
             start_time = time.time()
@@ -411,15 +427,20 @@ if __name__ == "__main__":
 
             end_time = time.time()
 
-            print(f"Updated info at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}. Total time taken was {round((end_time - start_time) * 1000, 2)}ms")
+            # Print to not fill log file
+            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} Time to update general DB was {round((end_time - start_time) * 1000, 2)}ms")
 
             time.sleep(2)
-    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
+
+
+    # This generally isn't a thing anymore, as its now behind Cloudflare. CF will return 502 instead of this throwing an error.
+    # This still happens on occasion however, so we still catch it.
+    except (BadGatewayError, requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect.
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting.
 
-        # TODO: when the server goes offline (say for maintenance) this will not trigger the website to report
+            # TODO: when the server goes offline (say for maintenance) this will not trigger the website to report
         # an outdated status
 
         log.info(f"Connection timed out.")

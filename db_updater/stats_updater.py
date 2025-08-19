@@ -6,6 +6,7 @@ import time
 import sys
 import traceback
 import logging
+from datetime import datetime
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -19,6 +20,13 @@ LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
 TAPI_URL = "https://tapi.toendallwars.org/api"
     
+
+
+class BadGatewayError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
 
 def get_all_stats(player_uuid):
     with sqlite3.connect(DB_FILE) as conn:
@@ -86,13 +94,19 @@ if __name__ == "__main__":  # autism
                         log.info(f"Attempted to fetch stats for {uuid} who is now offline. Skipping.")
                     else:
                         log.warning(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
+            elif response.status_code == 502:
+                raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
             else:
                 log.warning(f"Failed to fetch online players. HTTP {response.status_code}")
 
             end_time = time.time()  
-            print(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
+            # Print to not fill log file
+            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} Time to update stats DB was {round((end_time - start_time) * 1000, 3)}ms")
             time.sleep(15)
-    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
+
+    # This generally isn't a thing anymore, as its now behind Cloudflare. CF will return 502 instead of this throwing an error.
+    # This still happens on occasion however, so we still catch it.
+    except (BadGatewayError, requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting
