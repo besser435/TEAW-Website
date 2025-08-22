@@ -54,7 +54,7 @@ def get_status():
         players_update_age = (current_time - last_players_update) // 60000
         chat_update_age = (current_time - last_chat_update) // 60000
 
-        if players_update_age < 15 and chat_update_age < 15:
+        if players_update_age < 5 and chat_update_age < 5:  # NOTE THIS IS IN MINUTES!!!!
             status = "ok"
         else:
             status = "stale"

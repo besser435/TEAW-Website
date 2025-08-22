@@ -15,7 +15,7 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 LOG_FILE = "../logs/db_updater.log"
 
 TAPI_URL = "https://tapi.toendallwars.org/api"
@@ -62,6 +62,7 @@ def update_players_table() -> None:
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         response = requests.get(TAPI_URL + "/online_players")
+        log.debug("Got response from TAPI")
 
         start_time = time.time()
         if response.status_code == 200:
@@ -99,6 +100,7 @@ def update_players_table() -> None:
                         nation_name = excluded.nation_name,
                         last_online = excluded.last_online
                 """, (uuid, name, online_duration, afk_duration, balance, title, town, town_name, nation, nation_name, last_online))
+            log.debug("Executed SQL commands")
 
             # Offline players should have their online_duration reset to 0
             cursor.execute("""
@@ -108,10 +110,14 @@ def update_players_table() -> None:
                     SELECT value FROM json_each(?)
                 )
             """, (json.dumps(list(online_players.keys())),))
-
+            log.debug("Executed SQL commands")
 
             conn.commit()
+            log.debug("Committed SQL commands")
+
             upsert_variable("last_players_update", int(time.time() * 1000))
+            log.debug("Updated last_players_update variable")
+
         elif response.status_code == 502:
             raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
         else:
@@ -127,6 +133,7 @@ def update_chat_table() -> None:
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         response = requests.get(TAPI_URL + "/chat_history")
+        log.debug("Got response from TAPI")
 
         start_time = time.time()
         
@@ -154,8 +161,10 @@ def update_chat_table() -> None:
                         INSERT INTO chat (sender, sender_uuid, message, timestamp, type)
                         VALUES (?, ?, ?, ?, ?)
                     """, (sender, sender_uuid, message, timestamp, message_type))
+            log.debug("Executed SQL commands")
 
             conn.commit()
+            log.debug("Committed SQL commands")
             upsert_variable("last_chat_update", int(time.time() * 1000))
         elif response.status_code == 502:
             raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
@@ -172,6 +181,7 @@ def update_towns_table() -> None:
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         response = requests.get(TAPI_URL + "/towny")
+        log.debug("Got response from TAPI")
 
         start_time = time.time()
         if response.status_code == 200:
@@ -189,7 +199,7 @@ def update_towns_table() -> None:
             if towns_to_delete:
                 cursor.executemany("DELETE FROM towns WHERE uuid = ?", [(uuid,) for uuid in towns_to_delete])
                 log.info(f"Removed {len(towns_to_delete)} towns no longer present in the API")
-
+            log.debug("Executed SQL commands")
 
             # Update/insert town data
             for town_uuid, town_data in towns.items():
@@ -237,8 +247,10 @@ def update_towns_table() -> None:
                         spawn_loc_y=excluded.spawn_loc_y
                 """, (town_uuid, name, mayor, founder, balance, nation, nation_name, founded, resident_tax_percent, 
                     is_active, claimed_chunks, color_hex, tag, board, spawn_loc_x, spawn_loc_z, spawn_loc_y))
+            log.debug("Executed SQL commands")
 
             conn.commit()
+            log.debug("Committed SQL commands")
             upsert_variable("last_towns_update", int(time.time() * 1000))
         elif response.status_code == 502:
             raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
@@ -255,6 +267,7 @@ def update_nations_table() -> None:
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         response = requests.get(TAPI_URL + "/towny")
+        log.debug("Got response from TAPI")
 
         start_time = time.time()
         if response.status_code == 200:
@@ -272,7 +285,7 @@ def update_nations_table() -> None:
             if nations_to_delete:
                 cursor.executemany("DELETE FROM nations WHERE uuid = ?", [(uuid,) for uuid in nations_to_delete])
                 log.info(f"Removed {len(nations_to_delete)} nations no longer present in the API")
-
+            log.debug("Executed SQL commands")
 
             # Update/insert nation data
             for nation_id, nation_data in nations.items():
@@ -308,8 +321,10 @@ def update_nations_table() -> None:
                     nation_id, name, leader, capitol_town, capitol_town_name, balance, 
                     town_tax_dollars, founded, color_hex, tag, board
                 ))
+            log.debug("Executed SQL commands")
 
             conn.commit()
+            log.debug("Committed SQL commands")
             upsert_variable("last_nations_update", int(time.time() * 1000))
         elif response.status_code == 502:
             raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server restarting?")
@@ -366,6 +381,7 @@ def update_server_info_table() -> None:
     log.debug("Updating server info...")
 
     response = requests.get(TAPI_URL + "/server_info")
+    log.debug("Got response from TAPI")
 
     start_time = time.time()
 
@@ -386,6 +402,7 @@ def update_server_info_table() -> None:
         upsert_variable("teaw_system_time", teaw_system_time)
         upsert_variable("tapi_version", tapi_version)
         upsert_variable("tapi_build", tapi_build)
+        log.debug("Updated variables")
     elif response.status_code == 502:
         raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
     else:
@@ -440,14 +457,14 @@ if __name__ == "__main__":
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting.
 
-            # TODO: when the server goes offline (say for maintenance) this will not trigger the website to report
+        # TODO: when the server goes offline (say for maintenance) this will not trigger the website to report
         # an outdated status
 
-        log.info(f"Connection timed out.")
+        log.info(f"Connection timed out. Restarting in 30s")
 
         time.sleep(30)
 
-        log.info("Restarting script...")
+        log.info("Restarting script (timeout)...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except Exception:
@@ -455,7 +472,7 @@ if __name__ == "__main__":
 
         time.sleep(30)
 
-        log.info("Restarting script...")
+        log.info("Restarting script (general exception)...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except KeyboardInterrupt:

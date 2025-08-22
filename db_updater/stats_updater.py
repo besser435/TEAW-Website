@@ -15,7 +15,7 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
 TAPI_URL = "https://tapi.toendallwars.org/api"
@@ -111,18 +111,18 @@ if __name__ == "__main__":  # autism
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting
 
-        log.info(f"Connection timed out.")
+        log.info(f"Connection timed out. Restarting in 30s")
 
         time.sleep(30)
 
-        log.info("Restarting script...")
+        log.info("Restarting script (timeout)...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except Exception:
         log.error(traceback.format_exc())
         time.sleep(30)
 
-        log.info("Restarting script...")
+        log.info("Restarting script (general exception)...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except KeyboardInterrupt:
