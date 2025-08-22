@@ -2,6 +2,7 @@ import discord
 import aiohttp
 import asyncio
 import bot_config
+import datetime
 
 TOKEN = bot_config.TOKEN
 CHANNEL_ID = bot_config.CHANNEL_ID
@@ -34,13 +35,13 @@ async def check_status():
                         players_age = data.get("last_players_update_age", 999999)
                         status = data.get("status", "stale")
 
-                        print(f"Chat age: {chat_age}, Players age: {players_age}, Status: {status}")
+                        print(f"Chat age: {chat_age}, Players age: {players_age}, Status: {status} at {datetime.datetime.now()}")
 
                         # Chat stale
                         if chat_age > 4:
                             if not alerted["chat"]:
                                 await channel.send(
-                                    f"⚠️ Chat updates are stale ({chat_age} minutes old) <@232014294303113216>"
+                                    f"⚠️ Chat updates are stale ({chat_age} minutes old) <@232014294303113216> (restart script, will not self reset)"
                                 )
                                 alerted["chat"] = True
                                 print(f"Chat age alert sent: {chat_age} minutes")
@@ -51,7 +52,7 @@ async def check_status():
                         if players_age > 4:
                             if not alerted["players"]:
                                 await channel.send(
-                                    f"⚠️ Player updates are stale ({players_age} minutes old) <@232014294303113216>"
+                                    f"⚠️ Player updates are stale ({players_age} minutes old) <@232014294303113216> (restart script, will not self reset)"
                                 )
                                 alerted["players"] = True
                                 print(f"Players age alert sent: {players_age} minutes")
@@ -62,7 +63,7 @@ async def check_status():
                         if status != "ok":
                             if not alerted["status"]:
                                 await channel.send(
-                                    f"❌ Status is `{status}`. Stats updater may be down too. <@232014294303113216>"
+                                    f"❌ Status is `{status}`. Stats updater may be down too. <@232014294303113216> (restart script, will not self reset)"
                                 )
                                 alerted["status"] = True
                                 print(f"Status alert sent: {status}")
@@ -75,7 +76,7 @@ async def check_status():
                     elif resp.status != 200:
                         if not alerted["server"]:
                             await channel.send(
-                                f"❗️ API returned HTTP {resp.status}. Is the server down? <@232014294303113216>"
+                                f"❗️ API returned HTTP {resp.status}. Is the server down? <@232014294303113216> (restart script, will not self reset)"
                             )
                             alerted["server"] = True
                             print(f"Server alert sent: HTTP {resp.status}")
@@ -83,7 +84,7 @@ async def check_status():
         except Exception as e:
             print("Error checking status:", e)
 
-        await asyncio.sleep(CHECK_INTERVAL)
+        await asyncio.sleep(CHECK_INTERVAL) # BUG: loop will no repeat. 
 
 
 @client.event
