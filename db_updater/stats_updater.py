@@ -84,7 +84,7 @@ if __name__ == "__main__":  # autism
 
                 for uuid, player_data in online_players.items():
                     stats_url = f"{TAPI_URL}/full_player_stats/{uuid}"
-                    stats_response = requests.get(stats_url)
+                    stats_response = requests.get(stats_url, timeout=20)
 
                     if stats_response.status_code == 200:
                         stats_json = stats_response.json()

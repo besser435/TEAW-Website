@@ -61,7 +61,7 @@ def update_players_table() -> None:
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
-        response = requests.get(TAPI_URL + "/online_players")
+        response = requests.get(TAPI_URL + "/online_players", timeout=20)
         log.debug("Got response from TAPI")
 
         start_time = time.time()
@@ -132,7 +132,7 @@ def update_chat_table() -> None:
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
-        response = requests.get(TAPI_URL + "/chat_history")
+        response = requests.get(TAPI_URL + "/chat_history", timeout=20)
         log.debug("Got response from TAPI")
 
         start_time = time.time()
@@ -180,7 +180,7 @@ def update_towns_table() -> None:
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
-        response = requests.get(TAPI_URL + "/towny")
+        response = requests.get(TAPI_URL + "/towny", timeout=20)
         log.debug("Got response from TAPI")
 
         start_time = time.time()
@@ -266,7 +266,7 @@ def update_nations_table() -> None:
 
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
-        response = requests.get(TAPI_URL + "/towny")
+        response = requests.get(TAPI_URL + "/towny", timeout=20)
         log.debug("Got response from TAPI")
 
         start_time = time.time()
@@ -362,8 +362,8 @@ def update_skin_dir(type) -> None:
             if current_time - last_modified_time < SKIN_TTL_HOURS * 3600:
                 continue    # Skip if skin is still fresh
 
-        if type == "body": response = requests.get(BODY_SKIN_API_URL.format(uuid=uuid), timeout=5)
-        elif type == "face": response = requests.get(FACE_SKIN_API_URL.format(uuid=uuid), timeout=5)
+        if type == "body": response = requests.get(BODY_SKIN_API_URL.format(uuid=uuid), timeout=20)
+        elif type == "face": response = requests.get(FACE_SKIN_API_URL.format(uuid=uuid), timeout=20)
 
         if response.status_code == 200:
             with open(skin_path, "wb") as skin_file:
@@ -380,7 +380,7 @@ def update_skin_dir(type) -> None:
 def update_server_info_table() -> None:
     log.debug("Updating server info...")
 
-    response = requests.get(TAPI_URL + "/server_info")
+    response = requests.get(TAPI_URL + "/server_info", timeout=20)
     log.debug("Got response from TAPI")
 
     start_time = time.time()
@@ -425,7 +425,7 @@ if __name__ == "__main__":
             Should be async, so we can have different intervals for different tasks.
             chat should be updated frequently, but towns only needs to be ran every few minutes.
 
-            Should raise an error if an update takes longer than a few hundred mislliseconds
+            Should raise an error if an update takes longer than a few hundred milliseconds
             """
 
             start_time = time.time()
