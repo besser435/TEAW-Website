@@ -186,7 +186,7 @@ def get_colonthree_usages():
 
 AVAILABLE_CUSTOM_STATS = {
     "PLAYTIME_DEATH_RATIO": (get_playtime_death_ratio, "avg. hours per death"),
-    "COLONTHREE": (get_colonthree_usages, 'quantity' )  # :3 and ;3 usages, counts multiple per message
+    "COLONTHREE_USAGES": (get_colonthree_usages, "quantity")  # :3 and ;3 usages, counts multiple per message
 }
 
 @stats_routes.route("/api/get_custom_stat/<stat>")
