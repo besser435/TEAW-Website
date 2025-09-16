@@ -1,5 +1,4 @@
 from flask import Blueprint, jsonify, send_from_directory, request
-from werkzeug.exceptions import NotFound
 import sqlite3
 import traceback
 import time
@@ -22,15 +21,6 @@ def ticks_to_hours(ticks):
 
 def cm_to_km(cm):
     return f"{cm / 100_000:.3f}", "kilometers"
-
-def get_name(uuid):
-    with sqlite3.connect(TEAW_DB_FILE) as conn:
-        cursor = conn.cursor()
-        cursor.execute("""SELECT name FROM players WHERE uuid = ?""", (uuid,))
-        name = cursor.fetchone()
-        name = name[0] if name else "Unknown"
-
-    return name
 
 
 
@@ -152,15 +142,51 @@ def get_playtime_death_ratio():
                 })
             
             player_stats.sort(key=lambda x: float(x["value"]), reverse=True)
-            
-            return player_stats
     except Exception:
         log.error(f"Error calculating playtime/death ratio: {traceback.format_exc()}")
         return []
 
 
+def get_colonthree_usages():
+    try:
+        with sqlite3.connect(TEAW_DB_FILE) as teaw_conn:
+            teaw_cursor = teaw_conn.cursor()
+            teaw_cursor.execute("""
+                SELECT c.sender_uuid,
+                       SUM(
+                         (LENGTH(c.message) - LENGTH(REPLACE(c.message, ':3', ''))) / 2
+                         +
+                         (LENGTH(c.message) - LENGTH(REPLACE(c.message, ';3', ''))) / 2
+                       ) AS total_usages
+                FROM chat c
+                WHERE c.type = 'chat'
+                GROUP BY c.sender_uuid
+                HAVING total_usages > 0
+                ORDER BY total_usages DESC
+                LIMIT 500
+            """)
+            
+            leaderboard = []
+            for player_uuid, count in teaw_cursor.fetchall():
+                teaw_cursor.execute("SELECT name FROM players WHERE uuid = ?", (player_uuid,))
+                player_name = teaw_cursor.fetchone()
+                player_name = player_name[0] if player_name else "Unknown"
+                
+                leaderboard.append({
+                    "uuid": player_uuid,
+                    "name": player_name,
+                    "value": count
+                })
+            
+            return leaderboard
+    except Exception:
+        log.error(f"Error calculating :3 usages: {traceback.format_exc()}")
+        return []
+
+
 AVAILABLE_CUSTOM_STATS = {
-    "PLAYTIME_DEATH_RATIO": (get_playtime_death_ratio, "avg. hours per death")
+    "PLAYTIME_DEATH_RATIO": (get_playtime_death_ratio, "avg. hours per death"),
+    "COLONTHREE": (get_colonthree_usages, 'quantity' )  # :3 and ;3 usages, counts multiple per message
 }
 
 @stats_routes.route("/api/get_custom_stat/<stat>")

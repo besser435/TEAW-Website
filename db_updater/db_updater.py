@@ -460,7 +460,7 @@ if __name__ == "__main__":
         # TODO: when the server goes offline (say for maintenance) this will not trigger the website to report
         # an outdated status
 
-        log.info(f"Connection timed out. Restarting in 30s")
+        log.info(f"Connection timed out ({e}). Restarting in 30s")
 
         time.sleep(30)
 
