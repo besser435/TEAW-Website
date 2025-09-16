@@ -331,7 +331,7 @@ nav a.nav-logo:hover img {
     }
 
     nav.nav-open .menu-button {
-        transform: skewX(-20deg) scaleY(1.5);
+        transform: skewX(-20deg) scaleY(1.4);
     }
 
     #showcase-link {

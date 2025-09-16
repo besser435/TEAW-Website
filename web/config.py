@@ -8,7 +8,7 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 # Config
-log_level = logging.DEBUG
+log_level = logging.INFO
 
 LOG_FILE = "../logs/webserver.log"
 

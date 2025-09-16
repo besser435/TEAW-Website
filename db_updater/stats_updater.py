@@ -6,6 +6,7 @@ import time
 import sys
 import traceback
 import logging
+from datetime import datetime
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -14,11 +15,18 @@ sys.path.append("../")
 from diet_logger import setup_logger
 
 
-LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.DEBUG
 LOG_FILE = "../logs/stats_updater.log"
 DB_FILE = "../db/stats.db"
-TAPI_URL = "http://playteawbeta.apexmc.co:1850/api"
+TAPI_URL = "https://tapi.toendallwars.org/api"
     
+
+
+class BadGatewayError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
 
 def get_all_stats(player_uuid):
     with sqlite3.connect(DB_FILE) as conn:
@@ -57,6 +65,9 @@ def insert_statistics(player_uuid, stats_json):
         conn.commit()
 
 
+# TODO: 
+# Restart the script every 2 hours in case the internet goes out.
+# When the internet comes back, it has a bug where it will stop updating.
 
 if __name__ == "__main__":  # autism
     try:
@@ -73,7 +84,7 @@ if __name__ == "__main__":  # autism
 
                 for uuid, player_data in online_players.items():
                     stats_url = f"{TAPI_URL}/full_player_stats/{uuid}"
-                    stats_response = requests.get(stats_url)
+                    stats_response = requests.get(stats_url, timeout=20)
 
                     if stats_response.status_code == 200:
                         stats_json = stats_response.json()
@@ -83,29 +94,35 @@ if __name__ == "__main__":  # autism
                         log.info(f"Attempted to fetch stats for {uuid} who is now offline. Skipping.")
                     else:
                         log.warning(f"Failed to fetch stats for {uuid}. HTTP {stats_response.status_code}")
+            elif response.status_code == 502:
+                raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
             else:
                 log.warning(f"Failed to fetch online players. HTTP {response.status_code}")
 
             end_time = time.time()  
-            print(f"Player stats updated in {round((end_time - start_time) * 1000, 3)}ms")
+            # Print to not fill log file
+            print(f"{datetime.now().strftime('%Y-%m-%d %H:%M:%S')} Time to update stats DB was {round((end_time - start_time) * 1000, 3)}ms")
             time.sleep(15)
-    except (requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
+
+    # This generally isn't a thing anymore, as its now behind Cloudflare. CF will return 502 instead of this throwing an error.
+    # This still happens on occasion however, so we still catch it.
+    except (BadGatewayError, requests.exceptions.ConnectionError, requests.exceptions.ConnectTimeout) as e:
         # When TEAW restarts, it can rarely cause requests to not be able to reconnect
         # This should restart the script and fix the issue, hopefully.
         # We dont log the error, as its probably just TEAW restarting
 
-        log.info(f"Connection timed out.")
+        log.info(f"Connection timed out. Restarting in 30s")
 
         time.sleep(30)
 
-        log.info("Restarting script...")
+        log.info("Restarting script (timeout)...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except Exception:
         log.error(traceback.format_exc())
         time.sleep(30)
 
-        log.info("Restarting script...")
+        log.info("Restarting script (general exception)...")
         os.execl(sys.executable, sys.executable, *sys.argv) 
 
     except KeyboardInterrupt:

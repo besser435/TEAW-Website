@@ -24,8 +24,8 @@ def setup_logger(log_file, log_level) -> logging.Logger:
 
     file_handler = RotatingFileHandler(
         log_file, 
-        maxBytes=10 * 1024 * 1024,  # 5 MB
-        backupCount=5,
+        maxBytes=20 * 1024 * 1024,  # 20 MB
+        backupCount=7,
         encoding="utf-8"
     )
     file_handler.setLevel(log_level)
