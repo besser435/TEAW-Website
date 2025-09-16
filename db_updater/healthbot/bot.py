@@ -84,7 +84,7 @@ async def check_status():
         except Exception as e:
             print("Error checking status:", e)
 
-        await asyncio.sleep(CHECK_INTERVAL) # BUG: loop will no repeat. 
+        await asyncio.sleep(CHECK_INTERVAL) # BUG: loop will not repeat. 
 
 
 @client.event
