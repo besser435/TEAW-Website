@@ -312,7 +312,7 @@ def get_chat_messages():
         return jsonify(chat_messages), 200
     except Exception:
         log.error(f"Internal error getting `chat_messages`: {traceback.format_exc()}")
-        return "internal error", 500
+        return jsonify({"error": "internal error"}), 500
 
 @api_routes.route("/api/chat_misc")
 def get_chat_misc():
