@@ -71,13 +71,15 @@ function onLoadAddFakeStats() {    // Takes a while to populate the cards, so ad
         const entryDiv = document.createElement("div");
         entryDiv.className = "stat-entry";
 
-        fakeProfilePic = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='grey'/%3E%3C/svg%3E";
+        fakeProfilePic = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Crect width='20' height='20' fill='rgba(255,255,255,0.1)'/%3E%3C/svg%3E";
         entryDiv.innerHTML = `
-            <h3 class="player-rank">⠀⠀⠀</h3>
+            <h3 class="player-rank">&nbsp;</h3>
             <img class="player-face" src="${fakeProfilePic}">
-            <h3 class="player-name">⠀⠀⠀</h3>
-            <h3 class="player-stat-value mono-font">⠀⠀⠀</h3>
+            <h3 class="player-name">&nbsp;</h3>
+            <h3 class="player-stat-value mono-font" style="height: 25px">&nbsp;</h3> 
         `;
+        // The height style on the stat value is to prevent layout shifts when the text loads in, 
+        // as the monospace font results in a 1px difference in height.
         
         statsContainer.appendChild(entryDiv);
     }
