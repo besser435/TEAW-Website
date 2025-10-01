@@ -33,13 +33,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 form.reset();
             } else {
+                sendingMessage.hidden = true;
+
                 return response.json().then(data => {
-                    throw new Error(data.message || "Failed to submit your photo. Please try again later.");
+                    // Use backend error field if available
+                    const errMsg = data.error || "Failed to submit your photo. Please try again later.";
+                    throw new Error(errMsg);
                 });
             }
         })
         .catch(error => {
-            alert(error.message);
+            alert("Error: " + error.message);
         })
         .finally(() => {
             submitButton.disabled = false;

@@ -370,26 +370,43 @@ def get_player_face(uuid):
 
 
 # Showcase
-# TODO: compress images before saving them, and maybe convert them to webp
 @api_routes.route("/api/submit_photo", methods=["POST"])
 def submit_build():
     try:
         os.makedirs(SHOWCASE_SUBMISSIONS_DIR, exist_ok=True)
 
+        # Stay safe with disk space
+        def _get_dir_size(path):
+            total = 0
+            for dirpath, _, filenames in os.walk(path):
+                for f in filenames:
+                    fp = os.path.join(dirpath, f)
+                    try:
+                        total += os.path.getsize(fp)
+                    except OSError:
+                        pass
+            return total
+
+        max_dir_size = 2 * 1024 * 1024 * 1024  # 2 GB in bytes
+        if _get_dir_size(SHOWCASE_SUBMISSIONS_DIR) >= max_dir_size:
+            log.error("Photo storage full. Rejecting submission.")
+            return jsonify({"error": "Photo storage full. Try again later."}), 507
+        
+        # Get form data
         photo_title = request.form.get("photo-title")
         photo_date = request.form.get("photo-date")
         photographer = request.form.get("photographer")
 
         # Validate form data
         if not photo_title or not photo_date or not photographer:
-            return jsonify({"error": "missing required form data"}), 400
+            return jsonify({"error": "Missing required form field"}), 400
 
         photo_file = request.files.get("photo-file")
         if not photo_file:
-            return jsonify({"error": "no file provided"}), 400
+            return jsonify({"error": "No file provided"}), 400
 
         if len(photo_file.read()) > 10 * 1024 * 1024:  # 10 MB limit
-            return jsonify({"error": "file size exceeds limit"}), 400
+            return jsonify({"error": "File size exceeds limit"}), 413
         photo_file.seek(0)
 
         # Clean the file name
@@ -423,10 +440,10 @@ def submit_build():
 
         log.info(f"Submission saved in folder: {folder_name}")
 
-        return jsonify({"message": "Submission successful"}), 200
+        return jsonify({"message": "Submission successful"}), 201
     except Exception:
         log.error(f"Error processing showcase submission: {traceback.format_exc()}")
-        return jsonify({"error": "internal error"}), 500
+        return jsonify({"error": "Internal error. Try again later."}), 500
     
 @api_routes.route("/api/showcase_manifest")
 def get_showcase_manifest():
