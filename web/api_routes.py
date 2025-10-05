@@ -111,7 +111,7 @@ def get_all_players():
         log.error(f"Internal error getting `players`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
-@api_routes.route("/api/uuid_to_name/<uuid>")
+@api_routes.route("/api/uuid_to_name/<uuid>")   # Only used on USAI fishing page
 def get_name_from_uuid(uuid):
     try:
         with sqlite3.connect(TEAW_DB_FILE) as conn:
@@ -123,7 +123,7 @@ def get_name_from_uuid(uuid):
         if result:
             return result[0], 200
         else:
-            {"error": "player not found"}, 404
+            return {"error": "player not found"}, 404
     except Exception:
         log.error(f"Internal error getting `uuid_to_name`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
