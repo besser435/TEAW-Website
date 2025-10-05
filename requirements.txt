@@ -1,7 +1,8 @@
+aiohttp
 bleach
+discord.py
 Flask
-Flask_Cors
-flask_squeeze
+flask_cors
 Pillow
 Requests
 Werkzeug

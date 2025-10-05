@@ -6,7 +6,7 @@
         {
             "label": "Generate requirements.txt",
             "type": "shell",
-            "command": "pipreqs --mode no-pin --force",
+            "command": "pipreqs . --encoding utf-8 --force --mode no-pin",
             "options": {
                 "cwd": "${workspaceFolder}"
             },

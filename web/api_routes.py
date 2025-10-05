@@ -111,7 +111,7 @@ def get_all_players():
         log.error(f"Internal error getting `players`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
-@api_routes.route("/api/uuid_to_name/<uuid>")
+@api_routes.route("/api/uuid_to_name/<uuid>")   # Only used on USAI fishing page
 def get_name_from_uuid(uuid):
     try:
         with sqlite3.connect(TEAW_DB_FILE) as conn:
@@ -123,7 +123,7 @@ def get_name_from_uuid(uuid):
         if result:
             return result[0], 200
         else:
-            {"error": "player not found"}, 404
+            return {"error": "player not found"}, 404
     except Exception:
         log.error(f"Internal error getting `uuid_to_name`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
@@ -312,7 +312,7 @@ def get_chat_messages():
         return jsonify(chat_messages), 200
     except Exception:
         log.error(f"Internal error getting `chat_messages`: {traceback.format_exc()}")
-        return "internal error", 500
+        return jsonify({"error": "internal error"}), 500
 
 @api_routes.route("/api/chat_misc")
 def get_chat_misc():
@@ -370,26 +370,43 @@ def get_player_face(uuid):
 
 
 # Showcase
-# TODO: compress images before saving them, and maybe convert them to webp
 @api_routes.route("/api/submit_photo", methods=["POST"])
 def submit_build():
     try:
         os.makedirs(SHOWCASE_SUBMISSIONS_DIR, exist_ok=True)
 
+        # Stay safe with disk space
+        def _get_dir_size(path):
+            total = 0
+            for dirpath, _, filenames in os.walk(path):
+                for f in filenames:
+                    fp = os.path.join(dirpath, f)
+                    try:
+                        total += os.path.getsize(fp)
+                    except OSError:
+                        pass
+            return total
+
+        max_dir_size = 2 * 1024 * 1024 * 1024  # 2 GB in bytes
+        if _get_dir_size(SHOWCASE_SUBMISSIONS_DIR) >= max_dir_size:
+            log.error("Photo storage full. Rejecting submission.")
+            return jsonify({"error": "Photo storage full. Try again later."}), 507
+        
+        # Get form data
         photo_title = request.form.get("photo-title")
         photo_date = request.form.get("photo-date")
         photographer = request.form.get("photographer")
 
         # Validate form data
         if not photo_title or not photo_date or not photographer:
-            return jsonify({"error": "missing required form data"}), 400
+            return jsonify({"error": "Missing required form field"}), 400
 
         photo_file = request.files.get("photo-file")
         if not photo_file:
-            return jsonify({"error": "no file provided"}), 400
+            return jsonify({"error": "No file provided"}), 400
 
         if len(photo_file.read()) > 10 * 1024 * 1024:  # 10 MB limit
-            return jsonify({"error": "file size exceeds limit"}), 400
+            return jsonify({"error": "File size exceeds limit"}), 413
         photo_file.seek(0)
 
         # Clean the file name
@@ -423,10 +440,10 @@ def submit_build():
 
         log.info(f"Submission saved in folder: {folder_name}")
 
-        return jsonify({"message": "Submission successful"}), 200
+        return jsonify({"message": "Submission successful"}), 201
     except Exception:
         log.error(f"Error processing showcase submission: {traceback.format_exc()}")
-        return jsonify({"error": "internal error"}), 500
+        return jsonify({"error": "Internal error. Try again later."}), 500
     
 @api_routes.route("/api/showcase_manifest")
 def get_showcase_manifest():
