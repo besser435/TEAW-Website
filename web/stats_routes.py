@@ -142,6 +142,8 @@ def get_playtime_death_ratio():
                 })
             
             player_stats.sort(key=lambda x: float(x["value"]), reverse=True)
+
+            return player_stats
     except Exception:
         log.error(f"Error calculating playtime/death ratio: {traceback.format_exc()}")
         return []
