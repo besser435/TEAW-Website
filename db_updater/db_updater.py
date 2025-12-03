@@ -370,8 +370,10 @@ def update_skin_dir(type) -> None:
                 skin_file.write(response.content)
             log.debug(f"Updated {type} skin for UUID: {uuid}")
         else:
-            log.warning(f"Failed to fetch {type} skin for UUID {uuid}: HTTP {response.status_code}")
+            log.warning(f"Failed to fetch {type} skin for UUID {uuid}: HTTP {response.status_code}. Canceling further skin updates.")
 
+            # Break out of the loop as to not hold up the other updates (causing the data to go stale), as successive attempt will probably fail.
+            break 
 
     end_time = time.time()
     log.debug(f"Player face skins updated in {round((end_time - start_time) * 1000, 3)}ms")   # Includes network request time
