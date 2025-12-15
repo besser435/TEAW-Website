@@ -14,28 +14,28 @@
 }
 
 .status-light[data-state="green"] {
-    background-color:         rgb(65, 222, 99);
+    background-color: rgb(65, 222, 99);
     box-shadow: 0 0 16px 3px rgba(65, 222, 99, 0.5);
 
     border: 0.2em solid rgb(34, 135, 56);
 }
 
 .status-light[data-state="yellow"] {
-    background-color:         rgb(222, 187, 65);
+    background-color: rgb(222, 187, 65);
     box-shadow: 0 0 16px 3px rgba(222, 187, 65, 0.5);
 
     border: 0.2em solid rgb(135, 112, 34);
 }
 
 .status-light[data-state="red"]:not([data-pulse="true"]) {
-    background-color:         rgb(222, 65, 65);
+    background-color: rgb(222, 65, 65);
     box-shadow: 0 0 16px 4px rgba(222, 65, 65, 0.5);
     border: 0.2em solid rgb(135, 34, 34);
 }
 
 .status-light[data-state="red"][data-pulse="true"] {
-    background-color:         rgb(222, 65, 65);
-    box-shadow: 
+    background-color: rgb(222, 65, 65);
+    box-shadow:
         0 0 16px 4px rgba(222, 65, 65, 0.5),
         0 0 0 0 rgba(222, 65, 65, 0.5);
     animation: pulse-red 3s infinite;
@@ -51,22 +51,21 @@
 
 @keyframes pulse-red {
     0% {
-        box-shadow: 
+        box-shadow:
             0 0 16px 4px rgba(222, 65, 65, 0.5),
             0 0 0 0 rgba(222, 65, 65, 0.5);
     }
     70% {
-        box-shadow: 
+        box-shadow:
             0 0 16px 4px rgba(222, 65, 65, 0.5),
             0 0 0 16px rgba(222, 65, 65, 0);
     }
     100% {
-        box-shadow: 
+        box-shadow:
             0 0 16px 4px rgba(222, 65, 65, 0.5),
             0 0 0 0 rgba(222, 65, 65, 0);
     }
 }
-
 
 /* Info bubble */
 /* TODO: switch to em units where appropriate */
@@ -83,13 +82,12 @@
 }
 
 .info-bubble {
-    color: #FFFFFF;
+    color: #ffffff;
 
     font-family: "Inter", sans-serif;
     font-weight: 400;
     font-style: normal;
 
-    max-width: 200px;
     padding: 3px 5px;
     margin-inline: 0.25em;
     border-radius: 10px;
@@ -120,12 +118,14 @@
     padding: 2px 10px;
     margin-left: auto;
 
-    transition: border-color 0.15s, box-shadow 0.15s;
+    transition:
+        border-color 0.15s,
+        box-shadow 0.15s;
     animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s exclude-animation;
 
     &:focus {
         outline: none;
-        border-color: #007BFF;
+        border-color: #007bff;
         box-shadow: 0 0 8px rgba(0, 123, 255, 0.5);
     }
 }
@@ -134,7 +134,6 @@
     font-weight: 400;
     text-align: left;
 }
-
 
 /* Highlight text for searches */
 .highlight {
