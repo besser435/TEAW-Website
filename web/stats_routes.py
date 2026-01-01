@@ -34,6 +34,7 @@ AVAILABLE_GENERAL_STATS = {
     "PLAYER_KILLS": count,                  # Player kills
     "TOTAL_WORLD_TIME": ticks_to_hours,     # Time played
     "PIG_ONE_CM": cm_to_km,                 # Distance by pig
+    "SPRINT_ONE_CM": cm_to_km,              # Distance sprinted
     "ANIMALS_BRED": count,                  # Animals bred
     "CAKE_SLICES_EATEN": count,             # Cake slices eaten
     "CRAFTING_TABLE_INTERACTION": count,    # Interactions with crafting table
