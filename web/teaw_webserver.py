@@ -26,7 +26,7 @@ app.register_blueprint(stats_routes)
 
 
 # Manage Sass
-def start_sass(app: Flask, watch: bool):
+def start_sass(watch: bool):
     if watch:
         cmd = ["sass", "--watch", "--poll", "scss:css"]    # Auto-compile mode and verbose CSS files
     else:
@@ -35,8 +35,10 @@ def start_sass(app: Flask, watch: bool):
     try:
         if watch:
             # Start sass watcher process
+            # NOTE: On Flask debug mode reloads, this will spawn new processes that will only be closed
+            # when the app is stopped.
             log.info("Compiling SCSS and starting watcher...")
-            app.sass_watcher = subprocess.Popen(    # NOTE: Puts sass_watcher on the app object
+            sass_watcher = subprocess.Popen(    # NOTE: Puts sass_watcher on the app object
                 cmd,
                 stdout=sys.stdout,
                 stderr=sys.stderr,
@@ -62,25 +64,7 @@ def start_sass(app: Flask, watch: bool):
         log.error("Sass compilation failed")
         log.error(e.stdout or "")
         log.error(e.stderr or "")
-
-def stop_sass(app: Flask):
-    # Prevents orphaned processes for the sass watcher mode
-    watcher = getattr(app, "sass_watcher", None)
-
-    if watcher and watcher.poll() is None:
-        log.info("Stopping Sass watcher...")
-        try:
-            if os.name == "nt": # Windows
-                watcher.send_signal(signal.CTRL_BREAK_EVENT)
-            else:               # Linux
-                watcher.terminate()
-
-            watcher.wait(timeout=5)
-        except Exception:
-            watcher.kill()
-
-atexit.register(lambda: stop_sass(app))
-start_sass(app, watch=False)
+start_sass(False)
 
 
 if __name__ == "__main__":
@@ -90,7 +74,7 @@ if __name__ == "__main__":
     # Yes this will lead the files being compiled again since we call it above for production, 
     # but thats why modern computers are fast (lazy and stupid programmers) :3 
     if os.environ.get("WERKZEUG_RUN_MAIN") == "true":   # Only run in the child process for Flask's debug mode.
-        start_sass(app, watch=True)
+        start_sass(True)
 
     # So you can access it from other devices on the LAN. Might not always work.
     host_ip = socket.gethostbyname(socket.gethostname())
