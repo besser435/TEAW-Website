@@ -1,15 +1,18 @@
-/* Styles used on every page inheriting from the base template */
+@use "variables" as *;
 
+/* Styles used on every page inheriting from the base template */
 
 /* All text styles */
 /* Do not use h4 or greater */
-h1, h2, h3 {
-    color: #FFFFFF;
+h1,
+h2,
+h3 {
+    color: #ffffff;
 
     font-family: "Inter", sans-serif;
     font-weight: 700;
     font-style: normal;
-    
+
     margin: 0.3em 0;
     padding: 0;
 }
@@ -26,7 +29,8 @@ h3 {
     font-size: 1.6em;
 }
 
-p, li {
+p,
+li {
     color: #cfcfcf;
 
     font-family: "Inter", sans-serif;
@@ -47,7 +51,7 @@ code {
 
 /* Body and background Image */
 body {
-    background-color: #0D150C;  /* Prevent flashbang before the actual background image loads */
+    background-color: #0d150c; /* Prevent flashbang before the actual background image loads */
     background-image: url("/imgs/background_embedded.png");
     background-size: cover;
     background-position: center;
@@ -62,6 +66,10 @@ body {
 
     display: flex;
     flex-direction: column;
+
+    &::before {
+        z-index: -5;
+    }
 }
 
 /* Fix layout shift during initial animations */
@@ -69,10 +77,6 @@ body {
     body {
         animation: 2s linear 0s no-scroll;
     }
-}
-
-body::before {
-    z-index: -5;
 }
 
 /* Navbar */
@@ -87,29 +91,82 @@ nav {
     z-index: 20;
     background-image: linear-gradient(#000000ff, #00000077 75%, #00000000);
     flex-wrap: nowrap;
+
+    &::before {
+        top: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+        content: "";
+        z-index: -1;
+        height: 65px;
+        backdrop-filter: blur(10px);
+        mask: linear-gradient(0deg, transparent, black 50%);
+        background-color: rgba(25, 25, 25, 0.3);
+    }
+
+    a:not(.nav-logo):not(.menu-button) {
+        color: rgba(255, 255, 255, 0.75);
+        background-color: transparent;
+        font-family: "Inter", sans-serif;
+        font-weight: 700;
+        text-decoration: none;
+
+        transition:
+            background-color 0.3s,
+            outline 0.3s;
+        transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+
+        padding: 0.4em 0.8em;
+        border-radius: 10em;
+        margin-inline: 0.5em;
+        min-width: 70px;
+        text-align: center;
+        backdrop-filter: blur(5px);
+
+        outline: $border;
+
+        &.active {
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            outline: 2px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+    }
+
+    button.header-button {
+        border: none;
+    }
+
+    a.nav-logo {
+        padding: 0;
+        border-radius: 0;
+        outline: none;
+        background: none;
+        margin-right: 20px;
+        img {
+            transition: transform 100ms linear;
+        }
+        &:hover img {
+            transform: scale(1.1);
+        }
+    }
 }
 
-nav::before {
-    top: 0;
-    left: 0;
-    right: 0;
-    position: absolute;
-    content: "";
-    z-index: -1;
-    height: 65px;
-    backdrop-filter: blur(10px);
-    mask: linear-gradient(0deg, transparent, black 50%);
-    background-color: rgba(25, 25, 25, 0.3);
-}
-
-nav a:not(.nav-logo):not(.menu-button), .header-button, select {
+.header-button {
     color: rgba(255, 255, 255, 0.75);
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: transparent;
     font-family: "Inter", sans-serif;
     font-weight: 700;
     text-decoration: none;
 
-    transition: background-color 0.3s, outline 0.3s;
+    transition:
+        background-color 0.3s,
+        outline 0.3s;
     transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 
     padding: 0.4em 0.8em;
@@ -119,46 +176,65 @@ nav a:not(.nav-logo):not(.menu-button), .header-button, select {
     text-align: center;
     backdrop-filter: blur(5px);
 
-    outline: 2px solid rgba(255, 255, 255, 0.1);
+    outline: $border;
+
+    &.active {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        outline: 2px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+    }
 }
 
-button.header-button, select {
+button.header-button {
     border: none;
 }
 
-nav a.active:not(.nav-logo):not(.menu-button), .header-button.active { 
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.1);
+select {
+    color: rgba(255, 255, 255, 0.75);
+    background-color: transparent;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    text-decoration: none;
+
+    transition:
+        background-color 0.3s,
+        outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+
+    padding: 0.4em 0.8em;
+    border-radius: 10em;
+    margin-inline: 0.5em;
+    min-width: 70px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+
+    outline: $border;
+    border: none;
+
+    &.active {
+        color: #fff;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        outline: 2px solid rgba(255, 255, 255, 0.2);
+        cursor: pointer;
+    }
 }
 
-nav a:not(.nav-logo):not(.menu-button):hover, .header-button:hover, select:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    outline: 2px solid rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-}
-
-select option, optgroup {
+select option,
+optgroup {
     background-color: #000;
     font-family: "Inter", sans-serif;
     font-size: 1.2em;
     font-weight: 500;
     text-align: left;
-}
-
-nav a.nav-logo {
-    padding: 0;
-    border-radius: 0;
-    outline: none;
-    background: none;
-    margin-right: 20px;
-}
-
-nav a.nav-logo img {
-    transition: transform 100ms linear;
-}
-
-nav a.nav-logo:hover img {
-    transform: scale(1.1);
 }
 
 .menu-button {
@@ -167,7 +243,6 @@ nav a.nav-logo:hover img {
     position: absolute;
     top: 20px;
 }
-
 
 /* Online Players Indicator */
 .online-players {
@@ -180,7 +255,7 @@ nav a.nav-logo:hover img {
 .online-players h3 {
     font-size: 1em;
     margin-left: 12px;
-    color: rgba(255, 255, 255, 0.6)
+    color: rgba(255, 255, 255, 0.6);
 }
 
 @media (max-width: 1028px) {
@@ -195,19 +270,19 @@ nav a.nav-logo:hover img {
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
-}
 
-.header h1 {
-    font-weight: 800;
-}
+    h1 {
+        font-weight: 800;
+    }
 
-.header h2 {
-    font-size: 1.8em;
-    padding-right: 8px;
-}
+    h2 {
+        font-size: 1.8em;
+        padding-right: 8px;
+    }
 
-.header h3 {
-    margin-right: 4px;
+    h3 {
+        margin-right: 4px;
+    }
 }
 
 .separator {
@@ -219,8 +294,6 @@ nav a.nav-logo:hover img {
     margin-inline: 20px;
 }
 
-
-
 /* Main Content */
 .main-content {
     display: flex;
@@ -230,28 +303,26 @@ nav a.nav-logo:hover img {
     animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up;
 }
 
-
-
 @media (max-width: 900px) {
     .header {
         margin-bottom: 8px;
-    }
-    .header h1 {
-        font-size: 1.6em;
-    }
 
-    .header h2 {
-        /* Hacky way to remove the "Sort by:" text on mobile, but it works */
-        font-size: 1.1em;
-    }
+        h1 {
+            font-size: 1.6em;
+        }
 
-    .header h3 {
-        font-size: 1.0em;
-    }
+        h2 {
+            font-size: 1.1em;
+        }
 
-    .header .separator {
-        width: 1000px;
-        height: 0;
+        h3 {
+            font-size: 1em;
+        }
+
+        .separator {
+            width: 1000px;
+            height: 0;
+        }
     }
 
     .separator {
@@ -280,14 +351,15 @@ nav a.nav-logo:hover img {
         transition: height 0.7s cubic-bezier(0.19, 1, 0.22, 1);
     }
 
-    nav a:not(.nav-logo):not(.menu-button), .header-button {
+    nav a:not(.nav-logo):not(.menu-button),
+    .header-button {
         margin-inline: 0;
         width: 100%;
         text-align: center;
     }
 
     nav a:not(.nav-logo):not(.menu-button) {
-        opacity: 0%;    /* Yes this is needed despite visibility: hidden. Its to animate so its smooth */
+        opacity: 0%; /* Yes this is needed despite visibility: hidden. Its to animate so its smooth */
         transform: translateY(-20px);
         transition: 0.7s cubic-bezier(0.19, 1, 0.22, 1);
         pointer-events: none;
@@ -308,7 +380,7 @@ nav a.nav-logo:hover img {
     nav a.nav-logo {
         margin: 0px;
         scale: 0.8;
-        order: -2
+        order: -2;
     }
 
     nav::before {
@@ -331,7 +403,7 @@ nav a.nav-logo:hover img {
         backdrop-filter: blur(10px);
     }
 
-    nav.nav-open a:nth-child(n+3) {
+    nav.nav-open a:nth-child(n + 3) {
         opacity: 100%;
         transform: translateY(0px);
         pointer-events: auto;
@@ -348,11 +420,9 @@ nav a.nav-logo:hover img {
 
     .main-content {
         margin-top: 74px;
-        animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up-mobile;    /* Disable slow scale animation on mobile */
+        animation: 1s cubic-bezier(0.19, 1, 0.22, 1) 0s slide-up-mobile; /* Disable slow scale animation on mobile */
     }
 }
-
-
 
 /* Footer */
 /* Push the footer to the bottom if the page content doesn't fill up the screen */
@@ -361,50 +431,50 @@ footer {
     margin: 10px 0px 0px;
     height: 48px;
     padding-inline: 15px;
-    
+
     display: flex;
     justify-content: flex-start;
     align-items: center;
 
-    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-top: $border;
     background-image: linear-gradient(0deg, #00000055, #00000000);
 
     color: #676767;
-}
 
-footer p {
-    font-size: 1em;
-    color: #676767;
-}
+    p {
+        font-size: 1em;
+        color: #676767;
+    }
 
-.footer-links {
-    margin-top: 2px;
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 150px;
-}
+    .footer-links {
+        margin-top: 2px;
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 150px;
 
-.footer-links a {
-    color: #ffffff;
-    opacity: 50%;
-    transition: 700ms cubic-bezier(0.19, 1, 0.22, 1);
-}
+        a {
+            color: #ffffff;
+            opacity: 50%;
+            transition: 700ms cubic-bezier(0.19, 1, 0.22, 1);
 
-.footer-links a:hover {
-    opacity: 100%;
-    transform: scale(1.05);
+            &:hover {
+                opacity: 100%;
+                transform: scale(1.05);
+            }
+        }
+    }
 }
 
 .material-symbols-outlined {
     font-size: 26px !important;
 }
 
-
 /* Scroll bars */
 /* Firefox */
-@-moz-document url-prefix() {  /* Might not work for forks of Firefox */
+@-moz-document url-prefix() {
+    /* Might not work for forks of Firefox */
     * {
         scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0);
         scrollbar-width: auto;

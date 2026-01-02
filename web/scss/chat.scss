@@ -1,13 +1,15 @@
+@use "variables" as *;
+
 /* Styles for the Chat page */
 
 .chat-feed {
-    height: calc(100vh - 300px);
+    height: calc(100vh - 270px);
     min-height: 200px;
     overflow-y: scroll;
     margin-bottom: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 16px;
-    padding: 10px;
+    border: $border;
+    border-radius: $radius-xl;
+    padding: 8px;
     padding-top: 0px;
 }
 
@@ -17,79 +19,80 @@
     gap: 0.5em;
     align-items: stretch;
     font-family: "Inter", sans-serif;
-    margin-top: 10px;
-    color: #FFFFFF;
+    color: #ffffff;
+
+    padding: 4px;
+    padding-right: 8px;
+
+    .message-info {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        min-width: 200px;
+        padding: 4px;
+        border-radius: $radius-s;
+        background-color: $bg;
+        border: $border;
+        box-sizing: border-box;
+
+        .profile-pic {
+            width: 20px;
+            height: 20px;
+            border-radius: $radius-xs;
+            image-rendering: pixelated;
+        }
+
+        .sender {
+            font-weight: 800;
+            margin: 0 8px 0 8px;
+        }
+
+        &[data-message-type="status"] {
+            background-color: rgba(0, 255, 255, 0.1);
+            border-color: rgba(0, 255, 255, 0.1);
+        }
+
+        &[data-message-type="join"] {
+            background-color: rgba(0, 255, 0, 0.1);
+            border-color: rgba(0, 255, 0, 0.1);
+        }
+
+        &[data-message-type="discord"] {
+            background-color: rgba(114, 137, 218, 0.2);
+            border-color: rgba(114, 137, 218, 0.2);
+        }
+
+        &[data-message-type="quit"] {
+            background-color: rgba(255, 0, 0, 0.1);
+            border-color: rgba(255, 0, 0, 0.1);
+        }
+
+        &[data-message-type="death"] {
+            background-color: rgba(100, 25, 255, 0.2);
+            border-color: rgba(100, 25, 255, 0.2);
+        }
+
+        &[data-message-type="advancement"] {
+            background-color: rgba(255, 200, 0, 0.1);
+            border-color: rgba(255, 200, 0, 0.1);
+        }
+    }
+
+    .message-text {
+        margin-block: auto;
+        word-break: break-word;
+    }
+
+    .timestamp {
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.3);
+        margin-left: auto;
+        min-width: fit-content;
+
+        display: flex;
+        align-items: center;
+    }
 }
-
-.message-info {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    min-width: 200px;
-    padding: 3px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-sizing: border-box;
-}
-
-.message-text {
-    margin-block: auto;
-    word-break: break-word;
-}
-
-.message-info .profile-pic {
-    width: 20px;
-    height: 20px;
-    border-radius: 5px;
-    image-rendering: pixelated;
-}
-
-.message-info .sender {
-    font-weight: 800;
-    margin: 0 8px 0 8px;
-}
-
-.message-container .timestamp {
-    font-weight: 700;
-    color: rgba(255, 255, 255, 0.3);
-    margin-left: auto;
-    min-width: fit-content;
-
-    display: flex;
-    align-items: center;
-}
-
-.message-info[data-message-type="status"] {
-    background-color: rgba(0, 255, 255, 0.1);
-    border-color: rgba(0, 255, 255, 0.1);
-}
-
-.message-info[data-message-type="join"] {
-    background-color: rgba(0, 255, 0, 0.1);
-    border-color: rgba(0, 255, 0, 0.1);
-}
-
-.message-info[data-message-type="discord"] {
-    background-color: rgba(114, 137, 218, 0.2);
-    border-color: rgba(114, 137, 218, 0.2);
-}
-
-.message-info[data-message-type="quit"] {
-    background-color: rgba(255, 0, 0, 0.1);
-    border-color: rgba(255, 0, 0, 0.1);
-}
-
-.message-info[data-message-type="death"] {
-    background-color: rgba(100, 25, 255, 0.2);
-    border-color: rgba(100, 25, 255, 0.2);
-}
-
-.message-info[data-message-type="advancement"] {
-    background-color: rgba(255, 200, 0, 0.1);
-    border-color: rgba(255, 200, 0, 0.1);
-}
-
 #scroll-to-bottom {
     color: white;
     background-color: rgb(0, 76, 255);
@@ -100,13 +103,15 @@
     font-family: "Inter", sans-serif;
     font-weight: 700;
     text-decoration: none;
-    border: none ;
+    border: none;
     padding: 0.4em 0.8em;
     border-radius: 10em;
 
     cursor: pointer;
-    
-    transition: background-color 0.3s, outline 0.3s;
+
+    transition:
+        background-color 0.3s,
+        outline 0.3s;
     transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
 }
 
@@ -117,15 +122,15 @@
 .material-symbols-rounded {
     font-size: 20px;
     font-variation-settings:
-    'FILL' 1,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 20
+        "FILL" 1,
+        "wght" 400,
+        "GRAD" 0,
+        "opsz" 20;
 }
 
 @media (max-width: 950px) {
     .chat-feed {
-        border-radius: 25px;
+        border-radius: $radius-xl;
         padding-top: 5px;
     }
 
@@ -134,34 +139,48 @@
         flex-wrap: wrap;
         align-items: flex-start;
 
-        border-radius: 15px;
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 2px solid rgba(255, 255, 255, 0.1);
-        padding: 5px;
-        margin-top: 5px;
-    }
+        background-color: $bg;
+        border: $border;
+        border-radius: $radius-s;
+        padding: 4px;
+        margin-top: 6px;
 
-    .message-info {
-        min-width: fit-content;
-        max-height: 30px;
-        flex-direction: row-reverse;
-        order: 1;
-    }
+        .message-info {
+            min-width: fit-content;
+            max-height: 30px;
+            flex-direction: row-reverse;
+            order: 1;
+            border-radius: $radius-xs;
 
-    .message-container .timestamp {
-        order: 2;
-        margin: 5px 5px 0px auto
-    }
+            .sender {
+                margin-right: 2px;
+            }
 
-    .message-info .sender {
-        margin-right: 2px;
-    }
+            .profile-pic {
+                border-radius: 4px;
+            }
+        }
 
-    .message-text {
-        padding-left: 4px;
-        padding-right: 4px;
-        order: 3;
-        width: 100%;
-        word-break: break-word;
+        .timestamp {
+            order: 2;
+            margin: 5px 5px 0px auto;
+        }
+
+        .message-text {
+            padding: 4px;
+            order: 3;
+            width: 100%;
+            word-break: break-word;
+        }
+
+        &:first-child {
+            border-top-left-radius: $radius-m;
+            border-top-right-radius: $radius-m;
+        }
+
+        &:last-child {
+            border-bottom-left-radius: $radius-m;
+            border-bottom-right-radius: $radius-m;
+        }
     }
 }

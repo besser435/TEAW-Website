@@ -1,14 +1,14 @@
 @media (prefers-reduced-motion) {
     * {
-      animation: none !important;
-      transition: none !important;
+        animation: none !important;
+        transition: none !important;
     }
 }
 
 @keyframes slide-up {
     from {
         transform: translateY(12px) scale(0.99);
-        opacity: 50%
+        opacity: 50%;
     }
     to {
         transform: translateY(0px) scale(1);
@@ -16,10 +16,13 @@
     }
 }
 
-@keyframes slide-up-mobile { /* Disable slow scale animation on mobile */
+@keyframes slide-up-mobile {
+    /* Disable slow scale animation on mobile */
     from {
-        transform: translateY(20px);    /* Larger so you can see after burger menu fade */
-        opacity: 50%
+        transform: translateY(
+            20px
+        ); /* Larger so you can see after burger menu fade */
+        opacity: 50%;
     }
     to {
         transform: translateY(0px);
@@ -30,7 +33,7 @@
 @keyframes slide-down {
     from {
         transform: translateY(-10px);
-        opacity: 50%
+        opacity: 50%;
     }
     to {
         transform: translateY(0px);
@@ -40,14 +43,14 @@
 
 @keyframes flash {
     from {
-        filter: brightness(1.2)
+        filter: brightness(1.2);
     }
     to {
-        filter: brightness(1)
+        filter: brightness(1);
     }
 }
 
-/* 
+/*
 Scaling elements isn't great for accessibility, or ensuring the animation is smooth.
 @keyframes grow {
     from {
@@ -70,11 +73,11 @@ Scaling elements isn't great for accessibility, or ensuring the animation is smo
 }
 
 @keyframes exclude-animation {
-    /* This cancels the slide-down animation by doing the opposite of what 
+    /* This cancels the slide-down animation by doing the opposite of what
     it does. Kind of janky, but it mostly works. Opacity isn't fully canceled. */
     from {
         transform: translateY(-12px) scale(1);
-        opacity: 100%
+        opacity: 100%;
     }
     to {
         transform: translateY(0px) scale(1);
