@@ -1,57 +1,59 @@
+@use "variables" as *;
+
 /* Styles for the Home page */
 
 .greeting {
     text-align: center;
     margin: 1em;
-}
 
-.greeting img {
-    width: 8em;
-    margin-top: 2em;
+    img {
+        width: 8em;
+        margin-top: 2em;
+    }
 }
 
 .container {
-    margin: 5px;
+    margin: 3px;
     padding: 1em;
-    background-color: rgba(69, 69, 69, 0.4);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background-color: $bg;
+    border: $border;
     border-radius: 12px;
 
     width: 800px;
     margin-inline: auto;
-}
 
-.container:nth-child(2) {
-    border-radius: 24px 24px 12px 12px;
-}
+    &:nth-child(2) {
+        border-radius: 24px 24px 12px 12px;
+    }
 
-.container:last-of-type {
-    border-radius: 12px 12px 24px 24px;
+    &:last-of-type {
+        border-radius: 12px 12px 24px 24px;
+    }
 }
 
 .link-button {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    background-color: $bg;
+    border: $border;
 
     border-radius: 10px;
     padding: 5px 10px;
     margin: 5px 0px;
     max-width: fit-content;
     transition: 300ms cubic-bezier(0.19, 1, 0.22, 1);
-}
 
-.link-button a {
-    color: white;
-    text-decoration: none;
-}
+    a {
+        color: white;
+        text-decoration: none;
 
-.link-button a img {
-    margin-right: 5px;
-}
+        img {
+            margin-right: 5px;
+        }
+    }
 
-.link-button:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.2);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.2);
+    }
 }
 
 @media (max-width: 900px) {

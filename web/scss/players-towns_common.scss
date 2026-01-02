@@ -1,67 +1,66 @@
+@use "variables" as *;
+
 /* Common styles for the Players page and Towns page */
 
 .container-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 8px 10px;
+    gap: 8px;
 
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 28px;
-    padding: 10px;
-    padding-right: 13px;
+    border: $border;
+    border-radius: $radius-xl;
+    box-sizing: border-box;
+    padding: 8px;
+    /* padding-right: 12px; */
 
     margin-bottom: 10px;
 
     overflow-y: scroll;
-    height: calc(100vh - 300px);
+    height: calc(100vh - 260px);
     min-height: 200px;
 
     align-content: start;
-}
 
-.card-container {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    width: 100%;
-    height: 100px;
-    background-color: rgba(69, 69, 69, 0.4);
+    .card-container {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        height: 100px;
+        background-color: $card-bg;
 
-    color: #fff;
+        color: #fff;
 
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 18px;
-    overflow: hidden;
-}
+        border: $card-border;
+        border-radius: $radius-m;
+        overflow: hidden;
+        box-sizing: border-box;
 
-.card-container .status-light{
-    align-self: flex-start;
-    margin: 10px 10px 0 auto;
-}
+        .status-light {
+            align-self: flex-start;
+            margin: 10px 10px 0 auto;
+        }
 
-.card-details {
-    display: flex;
-    flex-direction: column;
-}
+        .card-details {
+            display: flex;
+            flex-direction: column;
+        }
 
-.card-container h2 {
-    margin: 0;
-    font-size: 1.5em;
-    font-weight: bold;
-}
+        h2 {
+            margin: 0;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
 
-.card-container p {
-    margin: 2px 0;
-    font-size: 14px;
-    color: #c5c6c7;
+        p {
+            margin: 2px 0;
+            font-size: 14px;
+            color: #c5c6c7;
+        }
+    }
 }
 
 @media (max-width: 950px) {
-    .container-grid {
-        padding: 8px;
-        padding-right: 11px;
-    }
-
     .card-container h2 {
         font-size: 1.2em;
     }
