@@ -26,7 +26,7 @@
         align-items: center;
         justify-content: flex-start;
         width: 100%;
-        height: 100px;
+        height: 104px;
         background-color: $card-bg;
 
         color: #fff;
@@ -50,6 +50,7 @@
             margin: 0;
             font-size: 1.5em;
             font-weight: bold;
+            // Font size for town name is set in the JS applyNameScale() function
         }
 
         p {
