@@ -11,6 +11,10 @@
     margin-right: 15px;
 }
 
+.card-container h2 {
+    font-size: 1.5em;
+}
+
 @media (max-width: 950px) {
     .card-container .player-skin {
         width: 30px;
@@ -19,5 +23,9 @@
 
         position: unset;
         align-self: unset;
+    }
+
+    .card-container h2 {
+        font-size: 1.2em;
     }
 }

@@ -47,10 +47,9 @@
         }
 
         h2 {
+            // Font sizes are set in players.scss or towns.js. Town font size is dynamic.
             margin: 0;
-            font-size: 1.5em;
             font-weight: bold;
-            // Font size for town name is set in the JS applyNameScale() function
         }
 
         p {
@@ -59,10 +58,10 @@
             color: #c5c6c7;
         }
     }
-}
-
-@media (max-width: 950px) {
-    .card-container h2 {
-        font-size: 1.2em;
+    
+    @media (max-width: 950px) {
+        .card-container {
+            height: 98px;
+        }
     }
 }
