@@ -46,6 +46,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+// Town name font scaling
+const NAME_SCALES_DESKTOP = [   
+    { max: 16, scale: 1.0 },    // 16 is the max char count for MC usernames (same scale as players page)
+    { max: 20, scale: 0.9 },
+    { max: 30, scale: 0.68 },   // Max name size in Towny config
+    { max: Infinity, scale: 0.6 }
+];
+
+// Scales slower because base font size is already smaller
+const NAME_SCALES_MOBILE = [
+    { max: 16, scale: 1.0 },
+    { max: 20, scale: 0.95 },
+    { max: 30, scale: 0.8 },
+    { max: Infinity, scale: 0.65 }
+];
+
+function applyNameScale(element, text) {
+    // NOTE: Font size for the town name is set here.
+    const BASE_FONT_SIZE_DESKTOP_EM = 1.5;
+    const BASE_FONT_SIZE_MOBILE_EM = 1.2;
+
+    const isSmallScreen = window.matchMedia("(max-width: 950px)").matches;
+
+    const baseFontSize = isSmallScreen
+        ? BASE_FONT_SIZE_MOBILE_EM
+        : BASE_FONT_SIZE_DESKTOP_EM;
+
+    const scales = isSmallScreen
+        ? NAME_SCALES_MOBILE
+        : NAME_SCALES_DESKTOP;
+
+    const length = text.length;
+    const rule = scales.find(r => length <= r.max);
+    if (!rule) return;
+
+    element.style.fontSize = `${baseFontSize * rule.scale}em`;
+}
+
+let lastIsSmallScreen = null;
+window.addEventListener("resize", () => {
+    const isSmallScreen = window.matchMedia("(max-width: 950px)").matches;
+    if (isSmallScreen === lastIsSmallScreen) return;    // Exit fast to save CPU on slow devices
+
+    lastIsSmallScreen = isSmallScreen;
+
+    document.querySelectorAll(".town-name").forEach(el => {
+        applyNameScale(el, el.textContent);
+    });
+});
+
 
 
 // --- OBJECTS --- 
@@ -101,7 +151,6 @@ function addTownCard(townObj) {
     // Main card
     const card = document.createElement("div");
     card.className = "card-container";
-    card.id = townObj.uuid;
 
     // Color pill
     const colorPill = document.createElement("div");
@@ -138,6 +187,7 @@ function addTownCard(townObj) {
     const name = document.createElement("h2");
     name.textContent = townObj.name;
     name.className = "town-name";
+    applyNameScale(name, townObj.name);
     townDetails.appendChild(name);
 
     // Nation name

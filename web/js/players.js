@@ -132,7 +132,6 @@ function addPlayerCard(playerObj) {
     // Main card
     const card = document.createElement("div");
     card.className = "card-container";
-    card.id = playerObj.uuid;
 
     // Player skin
     card.appendChild(playerObj.playerSkin);
