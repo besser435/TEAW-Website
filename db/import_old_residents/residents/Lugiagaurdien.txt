@@ -1,0 +1,14 @@
+uuid=76e03613-42e0-43f7-9748-11926556456a
+lastOnline=1770669060429
+registered=1770668887494
+joinedTownAt=1770979600071
+isNPC=false
+title=
+surname=
+town=USA_Industries
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

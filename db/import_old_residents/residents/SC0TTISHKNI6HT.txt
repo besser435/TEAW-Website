@@ -1,0 +1,14 @@
+uuid=cb920cfc-0c49-49f0-9ad0-f86c4eaa556e
+lastOnline=1771476418638
+registered=1705208113672
+joinedTownAt=1735025592542
+isNPC=false
+title=
+surname=
+town=Knight_Industries
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

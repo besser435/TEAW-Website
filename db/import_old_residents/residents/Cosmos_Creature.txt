@@ -1,0 +1,15 @@
+uuid=82d688f5-0342-4f6c-86fd-16dc0716cf7f
+lastOnline=1746210894108
+registered=1663978234645
+joinedTownAt=1744838193495
+isNPC=false
+title=Mayor
+surname=
+about=I am the Blackfyre
+town=Stratholme
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

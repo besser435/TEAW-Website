@@ -1,0 +1,14 @@
+uuid=fbcf3b1d-6f65-4dc0-811c-c689844dcb1b
+lastOnline=1769954994772
+registered=1719754534450
+joinedTownAt=1770718812691
+isNPC=false
+title=
+surname=
+town=Deltanesien
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

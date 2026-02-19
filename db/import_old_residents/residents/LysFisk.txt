@@ -1,0 +1,14 @@
+uuid=ae0e4cc6-ede2-40c1-af08-1c22c040f00e
+lastOnline=1771192480161
+registered=1701282938104
+joinedTownAt=1701289870832
+isNPC=false
+title=Patriarch
+surname=
+town=Jerusalem
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

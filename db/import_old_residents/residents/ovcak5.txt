@@ -1,0 +1,14 @@
+uuid=c6ca0e58-a21d-41a0-8091-78df3f8db47b
+lastOnline=1759521878269
+registered=1706038293034
+joinedTownAt=1706188565586
+isNPC=false
+title=God
+surname=
+town=Kingdom_of_Sardinia
+town-ranks=sheriff
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

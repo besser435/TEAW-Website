@@ -1,0 +1,14 @@
+uuid=94f7fbdb-0da6-4913-99f5-bdd22a3b00f6
+lastOnline=1771532964586
+registered=1735814785684
+joinedTownAt=1771315983884
+isNPC=false
+title=(Axie)
+surname=
+town=Greater_Ohio
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

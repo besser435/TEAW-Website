@@ -1,0 +1,14 @@
+uuid=3dcbfad2-2aab-41a8-bfd4-0122ef01bcc3
+lastOnline=1770918312727
+registered=1701284634943
+joinedTownAt=1701289258585
+isNPC=false
+title=Suzerain
+surname=
+town=Gyptios
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

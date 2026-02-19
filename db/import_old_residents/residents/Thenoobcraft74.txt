@@ -1,0 +1,14 @@
+uuid=b7bafa10-766a-4bbb-90b8-35ca9dc1d7a0
+lastOnline=1770137973605
+registered=1661465903362
+joinedTownAt=1753482276849
+isNPC=false
+title=Lich_King
+surname=
+town=Icecrown
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

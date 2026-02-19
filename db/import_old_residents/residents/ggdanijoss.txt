@@ -1,0 +1,14 @@
+uuid=f1da972d-8f95-4e18-8d8c-1179d79e11cd
+lastOnline=1722636170822
+registered=1722425764893
+joinedTownAt=1722438270179
+isNPC=false
+title=
+surname=
+town=MERCADONIAN
+town-ranks=
+nation-ranks=assistant
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

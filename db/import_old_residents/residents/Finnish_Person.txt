@@ -1,0 +1,14 @@
+uuid=5164e30e-e33e-49da-899c-21c5f5fe4989
+lastOnline=1722871635817
+registered=1702974073749
+joinedTownAt=1703102416859
+isNPC=false
+title=
+surname=
+town=Venezia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

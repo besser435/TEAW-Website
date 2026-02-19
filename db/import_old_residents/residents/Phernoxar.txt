@@ -1,0 +1,15 @@
+uuid=b6690f49-a07b-4e5c-b734-ed8b80e645db
+lastOnline=1770979704949
+registered=1707005008386
+joinedTownAt=1765279807322
+isNPC=false
+title=
+surname=
+about=The fucking best player on TEAW
+town=Danzig
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

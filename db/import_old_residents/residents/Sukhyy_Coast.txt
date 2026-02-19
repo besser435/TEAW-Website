@@ -1,0 +1,14 @@
+uuid=900cef03-e769-4918-a24b-38588de1cfe9
+lastOnline=1770441434268
+registered=1765163142598
+joinedTownAt=1765248056568
+isNPC=false
+title=Shah
+surname=
+town=Tehran
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

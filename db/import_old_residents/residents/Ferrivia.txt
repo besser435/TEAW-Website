@@ -1,0 +1,14 @@
+uuid=00dcbb42-c434-4eab-ae3e-a04e4489df38
+lastOnline=1771529271866
+registered=1662894552701
+joinedTownAt=1708867626161
+isNPC=false
+title=Teto
+surname=
+town=Florida
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

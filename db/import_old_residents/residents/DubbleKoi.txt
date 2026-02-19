@@ -1,0 +1,14 @@
+uuid=637b598f-b504-4d5a-9d18-cb4385673efd
+lastOnline=1707107541352
+registered=1707021893504
+joinedTownAt=1707023018079
+isNPC=false
+title=
+surname=
+town=Ireland
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=45e24c28-9ce4-41a4-94ad-fcb15ae628c0
+lastOnline=1758141664732
+registered=1752278892202
+joinedTownAt=1752388578163
+isNPC=false
+title=
+surname=
+town=Swiss_Piggybank
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

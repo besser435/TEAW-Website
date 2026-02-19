@@ -1,0 +1,14 @@
+uuid=3353081d-e66c-4ce2-bab3-2e92cfc656a9
+lastOnline=1705846094607
+registered=1662839417656
+joinedTownAt=1705237364344
+isNPC=false
+title=
+surname=
+town=the_zodiacs
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

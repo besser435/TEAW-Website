@@ -1,0 +1,14 @@
+uuid=02a7b21a-a64d-4619-aa6a-d88b61fe0f71
+lastOnline=1765594976282
+registered=1765589972351
+joinedTownAt=1765591200691
+isNPC=false
+title=
+surname=
+town=gävle
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

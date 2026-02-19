@@ -1,0 +1,14 @@
+uuid=584a775c-eef8-449c-a386-03ec3d57cf9c
+lastOnline=1770931268220
+registered=1663440275605
+joinedTownAt=1766432977639
+isNPC=false
+title=
+surname=
+town=Bavaria
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

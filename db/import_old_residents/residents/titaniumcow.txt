@@ -1,0 +1,14 @@
+uuid=350344db-d539-4209-9f87-7b9019802bfe
+lastOnline=1769875893396
+registered=1664209239757
+joinedTownAt=1769454976559
+isNPC=false
+title=Admiral
+surname=titaniumco
+town=Port_Alcor
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

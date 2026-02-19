@@ -1,0 +1,14 @@
+uuid=024d23cd-fe5a-48f1-86b1-1501160dfa0e
+lastOnline=1743041898782
+registered=1663030715073
+joinedTownAt=1726620979463
+isNPC=false
+title=Empress
+surname=IV
+town=Ireland
+town-ranks=assistant
+nation-ranks=
+friends=Hatrickexe
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=f2ddebad-2e25-4632-9463-8cf3bbf5d8a3
+lastOnline=1771532754282
+registered=1688196515343
+joinedTownAt=1770347294127
+isNPC=false
+title=Présidente
+surname=Éternelle
+town=Saint-Laurent-Montréal
+town-ranks=
+nation-ranks=
+friends=Guusje__
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

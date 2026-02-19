@@ -1,0 +1,15 @@
+uuid=6c7ab286-3ea3-42b4-af47-55376c963d92
+lastOnline=1770269205880
+registered=1677985778983
+joinedTownAt=1678034458824
+isNPC=false
+title=
+surname=
+about=A wealthy industrialist and arms dealer. Although a proponent of peace, he is not above hawking weaponry to make sure that peace is kept.
+town=Landing_Town
+town-ranks=assistant
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

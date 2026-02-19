@@ -1,0 +1,14 @@
+uuid=46c3039d-8bc1-4968-936e-52d1509ae68c
+lastOnline=1755947329294
+registered=1727860880746
+joinedTownAt=1727862527100
+isNPC=false
+title=
+surname=
+town=petrograd
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=dd12d8c2-a0de-4f6e-9626-7e861eb983d2
+lastOnline=1769997200963
+registered=1765842904567
+joinedTownAt=1768952643194
+isNPC=false
+title=Governer
+surname=
+town=Tokushima
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

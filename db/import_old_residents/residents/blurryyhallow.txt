@@ -1,0 +1,14 @@
+uuid=a700b6d0-1fa9-4793-b730-30dd7ef893da
+lastOnline=1720111757126
+registered=1706383259899
+joinedTownAt=1706386711438
+isNPC=false
+title=
+surname=
+town=Valencia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

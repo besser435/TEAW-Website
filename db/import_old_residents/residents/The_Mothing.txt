@@ -1,0 +1,14 @@
+uuid=1c4aa9b6-b247-4f66-a848-77f8db282adf
+lastOnline=1767505744466
+registered=1748997225080
+joinedTownAt=1749086014942
+isNPC=false
+title=Creature
+surname=
+town=Mothing_Territory
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

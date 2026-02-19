@@ -1,0 +1,14 @@
+uuid=028e9f67-ca45-4726-a316-4dd7db6efc90
+lastOnline=1771368188287
+registered=1771175575679
+joinedTownAt=1771365723377
+isNPC=false
+title=
+surname=
+town=Caracas
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=1a38e1bf-cc13-4da9-aad8-c55c50d3bfbd
+lastOnline=1770128136729
+registered=1770122898534
+joinedTownAt=1770125907779
+isNPC=false
+title=Brick#0
+surname=
+town=Don_Republic
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

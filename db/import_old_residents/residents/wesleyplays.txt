@@ -1,0 +1,14 @@
+uuid=970ef8bc-878f-49af-8b7f-a49fa774bac2
+lastOnline=1770806101111
+registered=1663295723486
+joinedTownAt=1684966416469
+isNPC=false
+title=
+surname=
+town=Weslandia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

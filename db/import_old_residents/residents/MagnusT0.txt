@@ -1,0 +1,14 @@
+uuid=b55194a7-9147-4c12-8e63-a8bc43522010
+lastOnline=1771467464594
+registered=1771346192257
+joinedTownAt=1771349478733
+isNPC=false
+title=
+surname=
+town=Nevada
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

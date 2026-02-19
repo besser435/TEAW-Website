@@ -1,0 +1,14 @@
+uuid=e0a0f60b-c2c9-4704-9334-a597e72579ee
+lastOnline=1714853526709
+registered=1711419295629
+joinedTownAt=1711425169552
+isNPC=false
+title=Lord
+surname=Drewington
+town=Libertas
+town-ranks=assistant,enforcer,helper,sheriff
+nation-ranks=assistant,helper
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

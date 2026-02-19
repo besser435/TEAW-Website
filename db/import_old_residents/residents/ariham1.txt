@@ -1,0 +1,14 @@
+uuid=72e6ab2a-e08d-44c9-b273-89d36cc89796
+lastOnline=1770568322465
+registered=1662822033271
+joinedTownAt=1717668896643
+isNPC=false
+title=General
+surname=
+town=Enclave
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

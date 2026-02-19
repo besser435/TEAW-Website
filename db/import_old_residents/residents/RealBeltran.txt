@@ -1,0 +1,14 @@
+uuid=93646c55-e6ac-4a22-b1e3-0b3692ed11e6
+lastOnline=1770121652977
+registered=1703310661649
+joinedTownAt=1703642476471
+isNPC=false
+title=Leader
+surname=
+town=Geysuria
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

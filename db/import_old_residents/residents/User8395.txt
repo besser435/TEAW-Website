@@ -1,0 +1,14 @@
+uuid=d12575fd-cdaa-45e8-9d31-75f3182c41da
+lastOnline=1770392386853
+registered=1720965406834
+joinedTownAt=1721498321403
+isNPC=false
+title=
+surname=
+town=New_England
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

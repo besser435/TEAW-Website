@@ -1,0 +1,14 @@
+uuid=aec0fd5d-ccbc-4ebe-bfca-234e454d4978
+lastOnline=1760543569634
+registered=1662822002669
+joinedTownAt=1703530683490
+isNPC=false
+title=Archduke
+surname=
+town=Antioch_and_Cillicia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

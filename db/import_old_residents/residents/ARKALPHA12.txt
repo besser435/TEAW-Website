@@ -1,0 +1,14 @@
+uuid=4e550233-0953-4a7d-b7d9-e37bf7c62380
+lastOnline=1771527299518
+registered=1721760149437
+joinedTownAt=1722258493407
+isNPC=false
+title=H.M. King
+surname=el Español
+town=Great_Venezuela
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=d693a524-70d3-48d0-86a9-1398372e44e5
+lastOnline=1708622180043
+registered=1707011627722
+joinedTownAt=1707014680729
+isNPC=false
+title=
+surname=
+town=Landing_Town
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

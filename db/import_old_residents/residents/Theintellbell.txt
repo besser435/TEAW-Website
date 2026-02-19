@@ -1,0 +1,14 @@
+uuid=1b9eca4c-21ec-4fce-a378-9a4da44be9a6
+lastOnline=1743228645215
+registered=1743215271752
+joinedTownAt=1743218192860
+isNPC=false
+title=
+surname=General
+town=Holy_Joman_Empire
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

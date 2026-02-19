@@ -1,0 +1,14 @@
+uuid=57623f3d-40e1-4731-b35f-da670029db98
+lastOnline=1763932776979
+registered=1702579893026
+joinedTownAt=1746904587183
+isNPC=false
+title=
+surname=
+town=Uusi_Etelä-Suomi
+town-ranks=helper
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

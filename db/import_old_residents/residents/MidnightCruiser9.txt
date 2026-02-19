@@ -1,0 +1,14 @@
+uuid=8f0f0721-6d33-47b4-ba62-4751a8b003fe
+lastOnline=1708797409476
+registered=1707615513090
+joinedTownAt=1707665107194
+isNPC=false
+title=
+surname=
+town=METROPOLIS
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

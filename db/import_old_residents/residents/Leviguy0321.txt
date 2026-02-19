@@ -1,0 +1,14 @@
+uuid=ee1118b6-5673-4f83-ba72-c316bdfe427a
+lastOnline=1707422256845
+registered=1707417104514
+joinedTownAt=1707418906176
+isNPC=false
+title=
+surname=
+town=Napoli_e_Sicilia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=e0d190a0-b808-4fdd-9d19-41a250a70cca
+lastOnline=1760378302379
+registered=1760373023340
+joinedTownAt=1760373073586
+isNPC=false
+title=
+surname=
+town=Enclave
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

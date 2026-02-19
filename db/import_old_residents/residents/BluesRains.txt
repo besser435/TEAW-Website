@@ -1,0 +1,14 @@
+uuid=f0a7656e-7f28-4ed0-a174-06beed21ecb5
+lastOnline=1771530012247
+registered=1662823039342
+joinedTownAt=1770918212573
+isNPC=false
+title=&dkittycat
+surname=&dmrow
+town=Greater_Pennsylvania
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=74c56d02-144c-4886-9d63-6105b94758f4
+lastOnline=1722624476631
+registered=1722435859863
+joinedTownAt=1722438306774
+isNPC=false
+title=CO-C.E.O.
+surname=
+town=MERCADONIAN
+town-ranks=
+nation-ranks=assistant
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=9b07ebc7-571a-49a2-9a55-cc6cc84b23db
+lastOnline=1771317281791
+registered=1689146108154
+joinedTownAt=1733091637185
+isNPC=false
+title=
+surname=
+town=debugging
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

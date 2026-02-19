@@ -1,0 +1,14 @@
+uuid=745eeb8a-6638-47f8-b81e-05af7228f4b0
+lastOnline=1771014688097
+registered=1755263963091
+joinedTownAt=1755337446071
+isNPC=false
+title=
+surname=
+town=fecoing_residence
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

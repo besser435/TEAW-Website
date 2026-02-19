@@ -1,0 +1,15 @@
+uuid=ccf57bcf-228c-4906-95c0-a4d43ce02ed3
+lastOnline=1771526144521
+registered=1767272697640
+joinedTownAt=1770126005790
+isNPC=false
+title=HonoredOne
+surname=
+about=for the fun of it
+town=Yaroslavf
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

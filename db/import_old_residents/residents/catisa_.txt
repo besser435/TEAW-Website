@@ -1,0 +1,14 @@
+uuid=853154f0-fe54-4e01-b939-20d305c4dcb0
+lastOnline=1769748182480
+registered=1662926327927
+joinedTownAt=1769742225242
+isNPC=false
+title=Major
+surname=Bird
+town=Port_Alcor
+town-ranks=
+nation-ranks=
+friends=Tangmar
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

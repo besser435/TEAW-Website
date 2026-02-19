@@ -1,0 +1,14 @@
+uuid=dcc7e641-ce46-4012-aa75-8f787edc46eb
+lastOnline=1770660633025
+registered=1705685797260
+joinedTownAt=1744728572762
+isNPC=false
+title=Officer
+surname=Stars
+town=Serene_Republic_of_Taigus
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

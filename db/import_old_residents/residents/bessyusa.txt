@@ -1,0 +1,15 @@
+uuid=75418e9c-34ef-4926-af64-96d98d10954c
+lastOnline=1771532503239
+registered=1661465903362
+joinedTownAt=1770980548755
+isNPC=false
+title=
+surname=
+about=im a cowgirl
+town=Greater_Pennsylvania
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

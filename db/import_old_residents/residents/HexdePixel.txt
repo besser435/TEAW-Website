@@ -1,0 +1,14 @@
+uuid=b4a9e63d-3750-4a4b-89eb-89003b18053d
+lastOnline=1767127709800
+registered=1662483517318
+joinedTownAt=1680812363718
+isNPC=false
+title=Doge
+surname=
+town=Venezia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

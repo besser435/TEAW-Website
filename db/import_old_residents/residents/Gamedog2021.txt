@@ -1,0 +1,14 @@
+uuid=057f0ed4-7278-431b-9db6-a46ad9acce24
+lastOnline=1736110951786
+registered=1705943865113
+joinedTownAt=1705945441752
+isNPC=false
+title=
+surname=
+town=Rivermouth
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

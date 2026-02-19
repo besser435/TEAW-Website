@@ -1,0 +1,14 @@
+uuid=652a6380-fd73-435f-8809-91d065f5f12c
+lastOnline=1743561332661
+registered=1743216126784
+joinedTownAt=1743218772818
+isNPC=false
+title=
+surname=Senate
+town=Holy_Joman_Empire
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=2349d569-b785-43d3-8afe-2ae07d8e9413
+lastOnline=1771470840296
+registered=1764295673376
+joinedTownAt=1764305228801
+isNPC=false
+title=Chairman
+surname=
+town=Noghaan
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

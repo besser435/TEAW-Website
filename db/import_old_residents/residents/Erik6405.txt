@@ -1,0 +1,14 @@
+uuid=e1412c19-cd40-4d94-beba-365da94f0387
+lastOnline=1770811780021
+registered=1731238792492
+joinedTownAt=1731240301026
+isNPC=false
+title=
+surname=
+town=Volgograd
+town-ranks=
+nation-ranks=
+friends=Matei_464
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

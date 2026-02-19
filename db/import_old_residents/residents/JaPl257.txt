@@ -1,0 +1,14 @@
+uuid=faa2cd41-ee08-4cdf-932d-0cab4eb5d784
+lastOnline=1741048924702
+registered=1740867651994
+joinedTownAt=1740870363312
+isNPC=false
+title=
+surname=
+town=Breadville
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

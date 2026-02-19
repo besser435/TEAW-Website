@@ -1,0 +1,14 @@
+uuid=038b3993-4f86-4be6-a10e-808026237f87
+lastOnline=1769468278818
+registered=1662835570425
+joinedTownAt=1705273565399
+isNPC=false
+title=
+surname=
+town=Cordoba
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

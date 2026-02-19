@@ -1,0 +1,14 @@
+uuid=8d5308de-97a2-4215-9978-1d51fa705020
+lastOnline=1749087978182
+registered=1749084632903
+joinedTownAt=1749087348164
+isNPC=false
+title=Cryptid
+surname=
+town=Tennessee
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

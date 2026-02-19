@@ -1,0 +1,14 @@
+uuid=05317e19-031b-4fe1-a6e5-8df5838fa761
+lastOnline=1712610906744
+registered=1705365947567
+joinedTownAt=1708115306301
+isNPC=false
+title=
+surname=
+town=Don_Republic
+town-ranks=sheriff
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

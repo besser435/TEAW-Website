@@ -1,0 +1,14 @@
+uuid=7fc19fb7-2e86-4795-aefa-763641d44915
+lastOnline=1727292387610
+registered=1720093197490
+joinedTownAt=1722119322672
+isNPC=false
+title=
+surname=
+town=Cool_Neighbourhood_of_Croatia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

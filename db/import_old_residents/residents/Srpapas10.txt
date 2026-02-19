@@ -1,0 +1,14 @@
+uuid=2925321f-c776-4dff-a664-c983c83af953
+lastOnline=1767523699131
+registered=1727544601728
+joinedTownAt=1744311679608
+isNPC=false
+title=Counselor
+surname=
+town=Panama
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

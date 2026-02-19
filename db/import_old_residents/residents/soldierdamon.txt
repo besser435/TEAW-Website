@@ -1,0 +1,14 @@
+uuid=f9fefaaa-5e01-4225-bfde-fe844bacf707
+lastOnline=1743222467992
+registered=1743222467991
+joinedTownAt=1743223914130
+isNPC=false
+title=
+surname=Officer
+town=Holy_Joman_Empire
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=d2aa2b18-c256-444c-87fe-c38709dbdf97
+lastOnline=1721161482845
+registered=1706899634561
+joinedTownAt=1706899683303
+isNPC=false
+title=
+surname=
+town=Belgorod
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

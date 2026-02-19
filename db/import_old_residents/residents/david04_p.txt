@@ -1,0 +1,14 @@
+uuid=a793d877-ec2d-4d9f-b450-675082bc1c47
+lastOnline=1770721678732
+registered=1722263349331
+joinedTownAt=1743529220239
+isNPC=false
+title=
+surname=
+town=General_Captaincy_of_Brasil
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

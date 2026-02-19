@@ -1,0 +1,14 @@
+uuid=a176e138-415f-42be-b437-d518464289d1
+lastOnline=1771533119792
+registered=1679864354835
+joinedTownAt=1771288177441
+isNPC=false
+title=&5General
+surname=
+town=Ontario
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

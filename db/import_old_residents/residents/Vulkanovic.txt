@@ -1,0 +1,14 @@
+uuid=0cae8840-2efc-450e-9858-fad01cd43e6f
+lastOnline=1770503760303
+registered=1769718113532
+joinedTownAt=1769722433252
+isNPC=false
+title=
+surname=
+town=Maybole
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

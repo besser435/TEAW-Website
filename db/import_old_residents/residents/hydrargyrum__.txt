@@ -1,0 +1,14 @@
+uuid=d71b5a60-f151-4439-95e4-d8889bea1153
+lastOnline=1721773373661
+registered=1720232604655
+joinedTownAt=1720232692862
+isNPC=false
+title=
+surname=
+town=TEAW_Museum
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

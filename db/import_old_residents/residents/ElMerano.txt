@@ -1,0 +1,14 @@
+uuid=41827a36-9e1c-4519-b1f2-7f5a6cf88702
+lastOnline=1770839950522
+registered=1703770326004
+joinedTownAt=1759257839092
+isNPC=false
+title=Sar Māt
+surname=
+town=Aššur
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

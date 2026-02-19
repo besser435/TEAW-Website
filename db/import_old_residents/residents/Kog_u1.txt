@@ -1,0 +1,14 @@
+uuid=c13021b1-072a-4fc7-9955-fb95a0902f5f
+lastOnline=1764478161868
+registered=1703804615300
+joinedTownAt=1721885977148
+isNPC=false
+title=
+surname=
+town=Province_DAfrique
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

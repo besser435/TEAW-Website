@@ -1,0 +1,14 @@
+uuid=18252743-e6ed-493d-a82b-ecc5577c2f6d
+lastOnline=1766951086918
+registered=1662822010841
+joinedTownAt=1719038386509
+isNPC=false
+title=
+surname=
+town=Mars_in_Exile
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

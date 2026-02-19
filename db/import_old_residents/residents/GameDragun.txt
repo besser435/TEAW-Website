@@ -1,0 +1,14 @@
+uuid=98f4e18d-a821-44b0-b179-8dc9bafcdd6a
+lastOnline=1689363553435
+registered=1661465915157
+joinedTownAt=1678380195848
+isNPC=false
+title=
+surname=
+town=Venezia
+town-ranks=
+nation-ranks=
+friends=Thenoobcraft74
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

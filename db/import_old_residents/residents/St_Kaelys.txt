@@ -1,0 +1,14 @@
+uuid=c4686a20-f1f5-410f-923b-3f574e8d42e0
+lastOnline=1771179838369
+registered=1771177350471
+joinedTownAt=1771178135658
+isNPC=false
+title=
+surname=
+town=Greater_Pennsylvania
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

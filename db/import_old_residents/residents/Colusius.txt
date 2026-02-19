@@ -1,0 +1,15 @@
+uuid=7cfc70e0-0731-49f7-b5f4-6d4d08d7e032
+lastOnline=1770983647238
+registered=1706637571364
+joinedTownAt=1770751893902
+isNPC=false
+title=
+surname=
+about=Highlander
+town=Stavanger
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

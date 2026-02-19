@@ -1,0 +1,14 @@
+uuid=b2c99884-ce6d-414b-87cd-28a62d03797b
+lastOnline=1768082451165
+registered=1765081676446
+joinedTownAt=1765852623866
+isNPC=false
+title=Governor
+surname=
+town=Balochistan
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

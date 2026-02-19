@@ -1,0 +1,14 @@
+uuid=1bdf7cc8-f179-4348-999f-f72950711a2f
+lastOnline=1770114092686
+registered=1708613392219
+joinedTownAt=1708614358577
+isNPC=false
+title=
+surname=
+town=Logtaun
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

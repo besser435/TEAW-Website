@@ -1,0 +1,14 @@
+uuid=4d78f14f-7471-494a-90e2-f3a1bd9a2348
+lastOnline=1713649961452
+registered=1671750644145
+joinedTownAt=1711424783440
+isNPC=false
+title=
+surname=
+town=Libertas
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

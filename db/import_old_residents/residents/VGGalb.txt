@@ -1,0 +1,14 @@
+uuid=534d36ff-defd-45b3-a8d1-3061aa5cedaf
+lastOnline=1766602076116
+registered=1720395983360
+joinedTownAt=1722046702584
+isNPC=false
+title=
+surname=
+town=VGGsCabin
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

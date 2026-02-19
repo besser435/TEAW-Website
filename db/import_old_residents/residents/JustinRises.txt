@@ -1,0 +1,11 @@
+uuid=6c19e857-3362-4c4f-acb3-3397acf62492
+lastOnline=1734819382308
+registered=1734808153291
+joinedTownAt=0
+isNPC=false
+title=
+surname=
+friends=dairypig
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=b147cb6d-c499-4e2d-98ec-c78993fd9b4c
+lastOnline=1702735807554
+registered=1702727606986
+joinedTownAt=1706238235615
+isNPC=false
+title=
+surname=
+town=Athens
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

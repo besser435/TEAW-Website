@@ -1,0 +1,15 @@
+uuid=7de012e3-a3fc-413b-91c4-6346a9c26640
+lastOnline=1771520502458
+registered=1670964412141
+joinedTownAt=1771019245015
+isNPC=false
+title=
+surname=
+about=I saw the face of god and it was weeping
+town=New_York
+town-ranks=
+nation-ranks=
+friends=KalosTheGold
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

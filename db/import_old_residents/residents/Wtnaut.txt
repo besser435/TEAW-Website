@@ -1,0 +1,14 @@
+uuid=814f7814-31a3-4b84-a5e4-6ec5dcf53249
+lastOnline=1721454070580
+registered=1670547967604
+joinedTownAt=1721430816243
+isNPC=false
+title=Senator
+surname=Senator
+town=Libertas
+town-ranks=assistant,enforcer,helper,sheriff
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=f420fe50-8efe-4f1e-b053-77e0b462559c
+lastOnline=1742668004302
+registered=1732197023206
+joinedTownAt=1734958892419
+isNPC=false
+title=
+surname=
+town=Volgograd
+town-ranks=sheriff
+nation-ranks=
+friends=Erik6405
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=7882a9f0-f2b0-477d-b9c8-d9561fa57f5f
+lastOnline=1743636314928
+registered=1743214345676
+joinedTownAt=1743218163789
+isNPC=false
+title=
+surname=Ausgutsus
+town=Holy_Joman_Empire
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

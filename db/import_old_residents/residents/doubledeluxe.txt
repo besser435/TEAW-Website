@@ -1,0 +1,14 @@
+uuid=2bbaf3a7-bea3-4bad-849f-f3296bfc1371
+lastOnline=1729372867748
+registered=1720608762765
+joinedTownAt=1720609316648
+isNPC=false
+title=
+surname=
+town=Balashov
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=5663c72f-18c5-4012-b28c-78784c2ca736
+lastOnline=1768022186765
+registered=1706474404280
+joinedTownAt=1754205390293
+isNPC=false
+title=
+surname=
+town=Oklahomie_Reconquista
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

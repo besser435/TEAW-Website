@@ -1,0 +1,14 @@
+uuid=96df8014-5b5b-4f43-ba6e-2bc7b89a0949
+lastOnline=1704449926169
+registered=1703924271809
+joinedTownAt=1703926284526
+isNPC=false
+title=
+surname=
+town=East_Germany
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,14 @@
+uuid=e00577f7-bef8-45de-9f0e-fec6ef141094
+lastOnline=0
+registered=1771315374705
+joinedTownAt=1771315374705
+isNPC=true
+title=
+surname=
+town=Danmark
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

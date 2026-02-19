@@ -1,0 +1,14 @@
+uuid=ba21e908-80bd-4e8c-93b5-c481cd82e315
+lastOnline=1765766278807
+registered=1765764347567
+joinedTownAt=1765764965008
+isNPC=false
+title=
+surname=
+town=Tehran
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

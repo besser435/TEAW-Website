@@ -1,0 +1,14 @@
+uuid=36a79920-4797-4e79-b5d4-1b1af507b44f
+lastOnline=1771515496461
+registered=1765861419768
+joinedTownAt=1771174058270
+isNPC=false
+title=
+surname=
+town=New_York
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

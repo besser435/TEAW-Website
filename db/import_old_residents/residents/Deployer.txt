@@ -1,0 +1,11 @@
+uuid=9e2faded-cafe-4ec2-c314-dad129ae971d
+lastOnline=1667712130599
+registered=1667710277059
+joinedTownAt=0
+isNPC=false
+title=
+surname=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

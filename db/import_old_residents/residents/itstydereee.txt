@@ -1,0 +1,14 @@
+uuid=664754c6-b2a2-4414-94d1-91de189cb6bc
+lastOnline=1771394896369
+registered=1734592193869
+joinedTownAt=1734605364670
+isNPC=false
+title=Sultan
+surname=
+town=Bordj_Badji_Mokhtar
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

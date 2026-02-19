@@ -1,0 +1,14 @@
+uuid=2a34db9e-b8f6-4c6a-8b7a-9076296b09e7
+lastOnline=1744748914459
+registered=1665468635627
+joinedTownAt=1743211066264
+isNPC=false
+title=
+surname=
+town=Newfoundland
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

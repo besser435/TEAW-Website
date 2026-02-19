@@ -1,0 +1,14 @@
+uuid=64d5afcd-8c2e-4534-b647-a4c99129fd4c
+lastOnline=1720938025081
+registered=1720732181198
+joinedTownAt=1720753639056
+isNPC=false
+title=
+surname=
+town=Panama
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

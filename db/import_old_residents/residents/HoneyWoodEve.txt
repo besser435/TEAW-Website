@@ -1,0 +1,14 @@
+uuid=515d3025-eab0-44a2-b280-d95fe510cbb1
+lastOnline=1754635845480
+registered=1751588550305
+joinedTownAt=1751590241756
+isNPC=false
+title=Friend
+surname=
+town=Mothing_Territory
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

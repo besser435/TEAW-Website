@@ -1,0 +1,14 @@
+uuid=379e5187-34af-468e-98d6-702f0ef06ec5
+lastOnline=1765913634597
+registered=1704823496556
+joinedTownAt=1765910858775
+isNPC=false
+title=šarratum
+surname=
+town=Aššur
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

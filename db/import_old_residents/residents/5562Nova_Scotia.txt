@@ -1,0 +1,14 @@
+uuid=cefe3772-2c03-49c5-be64-174574cf1f20
+lastOnline=1771498999118
+registered=1761958843190
+joinedTownAt=1761981290920
+isNPC=false
+title=President
+surname=
+town=Nova_Scotia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

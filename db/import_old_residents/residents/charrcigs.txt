@@ -1,0 +1,14 @@
+uuid=276e9c3a-15e5-48fb-91de-84e1ae35cc12
+lastOnline=1750448083212
+registered=1750441066481
+joinedTownAt=1750444209798
+isNPC=false
+title=
+surname=
+town=Vancouver
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

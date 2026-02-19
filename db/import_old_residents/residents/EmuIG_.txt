@@ -1,0 +1,14 @@
+uuid=87326c21-38a9-45d3-8d70-84d123046143
+lastOnline=1767545555034
+registered=1662888453238
+joinedTownAt=1748523331181
+isNPC=false
+title=Sir
+surname=
+town=Umberland
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

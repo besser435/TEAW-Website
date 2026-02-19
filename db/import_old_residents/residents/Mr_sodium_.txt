@@ -1,0 +1,14 @@
+uuid=5c4f6104-6842-4728-88cc-220edadeb9d6
+lastOnline=1754551004869
+registered=1705218838739
+joinedTownAt=1719266729522
+isNPC=false
+title=
+surname=
+town=OVERVAULT_MK._2.5
+town-ranks=
+nation-ranks=
+friends=DrunkenDan69,Doctor_Fudge
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

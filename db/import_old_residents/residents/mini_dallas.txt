@@ -1,0 +1,14 @@
+uuid=01f3e5ed-26ca-4db9-a383-30051b232413
+lastOnline=1770568388808
+registered=1688714935443
+joinedTownAt=1718294381143
+isNPC=false
+title=Colonel
+surname=
+town=Enclave
+town-ranks=assistant,helper
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

@@ -1,0 +1,11 @@
+uuid=2a52bf67-600b-4aea-872f-bf9675094d3a
+lastOnline=1706978915255
+registered=1670800488426
+joinedTownAt=0
+isNPC=false
+title=
+surname=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

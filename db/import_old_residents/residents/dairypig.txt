@@ -1,0 +1,14 @@
+uuid=1b410ff4-8ca2-4be1-8a97-b9b3bc9e8907
+lastOnline=1767313427664
+registered=1662822050838
+joinedTownAt=1662831250621
+isNPC=false
+title=doggirl
+surname=the silly
+town=Swiss_Piggybank
+town-ranks=sheriff
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=

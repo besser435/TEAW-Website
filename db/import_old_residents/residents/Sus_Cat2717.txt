@@ -1,0 +1,14 @@
+uuid=ace354b9-daf1-4832-8d25-db107b2732b5
+lastOnline=1761684336275
+registered=1755555740457
+joinedTownAt=1755819688178
+isNPC=false
+title=
+surname=
+town=Calradia
+town-ranks=
+nation-ranks=
+friends=
+
+protectionStatus=residentBuild,residentDestroy,residentSwitch,residentItemUse
+metadata=
