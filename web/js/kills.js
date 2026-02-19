@@ -158,7 +158,7 @@ function getWeaponImgObj(weapon_json) {
     weaponImg.className = "weapon-img";
     
     const weaponData = JSON.parse(weapon_json);
-    const itemImg = `https://assets.mcasset.cloud/1.21.8/assets/minecraft/textures/item/${weaponData.type}.png`;
+    const itemImg = `https://assets.mcasset.cloud/1.21.11/assets/minecraft/textures/item/${weaponData.type}.png`;
 
     const placeholder =     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>';
     const airPlaceholder =  'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1" height="1"></svg>';
