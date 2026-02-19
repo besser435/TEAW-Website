@@ -2,8 +2,9 @@
 const currentPath = window.location.pathname;
 const pageMappings = {
     '/players': 'players-link',
-    '/chat': 'chat-link', 
     '/towns': 'towns-link',
+    '/chat': 'chat-link', 
+    '/kills': 'kills-link', 
     '/stats': 'stats-link',
     '/map': 'map-link',
     '/showcase': 'showcase-link',

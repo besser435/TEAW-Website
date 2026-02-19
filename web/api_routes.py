@@ -345,6 +345,86 @@ def get_chat_misc():
         return {"error": "internal error"}, 500
 
 
+# Kills
+@api_routes.route("/api/kill_history")
+def get_kill_history():
+    try:
+        oldest_kill_id = request.args.get("oldest_kill_id", type=int) # Unused for now
+        newest_kill_id = request.args.get("newest_kill_id", type=int)
+
+        if oldest_kill_id and newest_kill_id:
+            return {"error": "invalid request: multiple args present"}, 400
+
+        with sqlite3.connect(TEAW_DB_FILE) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            
+            if newest_kill_id: # New messages after a certain ID (used for updates)
+                cursor.execute("""
+                    SELECT id, killer_uuid, killer_name, victim_uuid, victim_name, death_message, weapon_json, timestamp
+                    FROM kills
+                    WHERE id > ?
+                    ORDER BY id ASC
+                    LIMIT 50
+                """, (newest_kill_id,))
+            
+            else:   # All of the newest messages (used on page load)
+                cursor.execute("""
+                    SELECT id, killer_uuid, killer_name, victim_uuid, victim_name, death_message, weapon_json, timestamp
+                    FROM kills
+                    ORDER BY id DESC
+                    LIMIT 100
+                """)
+
+            kills = []
+
+            for row in cursor.fetchall():
+                kills.append({
+                    "id": row["id"],
+                    "killer_uuid": row["killer_uuid"],
+                    "killer_name": row["killer_name"],
+
+                    "victim_uuid": row["victim_uuid"],
+                    "victim_name": row["victim_name"],
+
+                    "death_message": row["death_message"],
+                    "weapon_json": row["weapon_json"],
+
+                    "timestamp": row["timestamp"]
+                })
+
+        kills.reverse()
+
+        return jsonify(kills), 200
+    except Exception:
+        log.error(f"Internal error getting `chat_messages`: {traceback.format_exc()}")
+        return jsonify({"error": "internal error"}), 500
+
+@api_routes.route("/api/kills_misc")
+def get_kills_misc():
+    try:
+        with sqlite3.connect(TEAW_DB_FILE) as conn:
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT COUNT(*) FROM kills")
+            total_kills = cursor.fetchone()[0]
+
+            # The WHERE clauses shouldn't be necessary, but just in case.
+            cursor.execute("SELECT COUNT(DISTINCT victim_uuid) FROM kills WHERE victim_uuid IS NOT NULL")   
+            unique_victims = cursor.fetchone()[0]
+
+            cursor.execute("SELECT COUNT(DISTINCT killer_uuid) FROM kills WHERE killer_uuid IS NOT NULL")
+            unique_killers = cursor.fetchone()[0]
+
+        return {
+            "total_kills": total_kills,
+            "unique_victims": unique_victims,
+            "unique_killers": unique_killers
+        }, 200
+    except Exception:
+        log.error(f"Internal error getting `kills_misc`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+
 
 # Skins
 @api_routes.route("/api/player_skin/<uuid>")
@@ -366,7 +446,6 @@ def get_player_face(uuid):
     except Exception:
         log.error(f"Internal error getting `player_face`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
-
 
 
 # Showcase
