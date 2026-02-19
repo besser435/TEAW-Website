@@ -1,3 +1,9 @@
+# FOR TAPI v2:
+It should be a server side mod that updates an SQLite DB directly. This would allow for better data synchronization,
+and would allow us to completely cut out the DB updater scripts. The website would live on the server, and just
+read from the database directly. 
+
+
 # [TEAW-Website](https://toendallwars.org/)
 Welcome to the Git repo for the ToEndAllWars website! Here is the place to find source code, post issues, and submit pull requests. 
 We gladly welcome community contributions, we just ask that you test them first. 
