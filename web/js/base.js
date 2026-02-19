@@ -17,6 +17,26 @@ if (linkId) {
 }
 
 
+// Change favicon based on theme
+function updateFavicon() {
+    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const favicon = document.getElementById('favicon');
+
+    favicon.href = isDark
+        ? '/imgs/teaw_logo.svg'
+        : '/imgs/teaw_logo_light.svg';
+
+    // We don't use a media query in the SVG markup directly to change colors as the logo is used in other places 
+    // where we don't want it changing colors based on theme.
+
+    // We also don't edit the SVG markup here, as that is janky and its just easier to have two different versions.
+}
+updateFavicon();
+
+window.matchMedia('(prefers-color-scheme: dark)')
+    .addEventListener('change', updateFavicon);
+
+
 // Trolling
 function chooseAlternateImage() {
     const randomNumber = Math.floor(Math.random() * 100);

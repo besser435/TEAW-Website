@@ -2,8 +2,9 @@
 <html lang="en">
     <head>
         <title>{% block title %}TEAW{% endblock %}</title>
-        <link rel="shortcut icon" href="/imgs/teaw_logo.svg" media="(prefers-color-scheme: dark)">
-        <link rel="shortcut icon" href="/imgs/teaw_logo_light.svg" media="(prefers-color-scheme: light)">
+
+        <!-- Favicon handled in base.js -->
+        <link id="favicon" rel="icon" type="image/svg+xml" href="/imgs/teaw_logo.svg">
 
         <!-- Preload important stuff -->
         <link rel="preload" href="/css/base_template.css" as="style">
