@@ -49,6 +49,10 @@ def players():
 def chat():
     return render_template("chat.html")
 
+@template_routes.route("/kills")
+def kills():
+    return render_template("kills.html")
+
 @template_routes.route("/towns")
 def towns():
     return render_template("towns.html")

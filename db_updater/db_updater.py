@@ -80,14 +80,15 @@ def update_players_table() -> None:
                 nation = player_data.get("nation")
                 nation_name = player_data.get("nation_name")
                 last_online = int(time.time() * 1000)   # convert to ms, as that is what we do everywhere
+                first_joined_date = player_data.get("first_joined_date", 0) # ms epoch.
 
                 # NOTE: online_duration and afk_duration can still be non-zero even if the player is offline
                 cursor.execute("""
                     INSERT INTO players (
                         uuid, name, online_duration, afk_duration, balance, 
-                        title, town, town_name, nation, nation_name, last_online
+                        title, town, town_name, nation, nation_name, last_online, first_joined_date
                     ) VALUES (
-                        ?, ?, ?, ?, ?, ?, ?, ?, ?,?, ?
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
                     ) ON CONFLICT(uuid) DO UPDATE SET
                         name = excluded.name,
                         online_duration = excluded.online_duration,
@@ -98,8 +99,9 @@ def update_players_table() -> None:
                         town_name = excluded.town_name,
                         nation = excluded.nation,
                         nation_name = excluded.nation_name,
-                        last_online = excluded.last_online
-                """, (uuid, name, online_duration, afk_duration, balance, title, town, town_name, nation, nation_name, last_online))
+                        last_online = excluded.last_online,
+                        first_joined_date = excluded.first_joined_date
+                """, (uuid, name, online_duration, afk_duration, balance, title, town, town_name, nation, nation_name, last_online, first_joined_date))
             log.debug("Executed SQL commands")
 
             # Offline players should have their online_duration reset to 0
@@ -125,6 +127,60 @@ def update_players_table() -> None:
 
     end_time = time.time()
     log.debug(f"Players table updated in {round((end_time - start_time) * 1000, 3)}ms")   # Does not include network request time
+
+
+def update_kills_table() -> None:
+    log.debug("Updating kills table...")
+
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        response = requests.get(TAPI_URL + "/kill_history", timeout=20)
+        log.debug("Got response from TAPI")
+
+        start_time = time.time()
+        
+        cursor.execute("SELECT MAX(timestamp) FROM kills")
+        last_timestamp = cursor.fetchone()[0] or 0  # Default to 0 if no kills exist
+
+        if response.status_code == 200:
+            kills_data = response.json()
+
+            for kill_entry in kills_data:
+                killer_uuid = kill_entry.get("killer_uuid")
+                killer_name = kill_entry.get("killer_name")
+                victim_uuid = kill_entry.get("victim_uuid")
+                victim_name = kill_entry.get("victim_name")
+                death_message = kill_entry.get("death_message")
+                weapon = kill_entry.get("weapon")
+                timestamp = kill_entry.get("timestamp")
+
+                if timestamp > last_timestamp:
+                    cursor.execute("""
+                        INSERT INTO kills (
+                            killer_uuid, killer_name, victim_uuid, victim_name, death_message, weapon_json, timestamp
+                        ) VALUES (?, ?, ?, ?, ?, ?, ?)
+                    """, (
+                        killer_uuid,
+                        killer_name,
+                        victim_uuid,
+                        victim_name,
+                        death_message,
+                        json.dumps(weapon) if weapon else None,
+                        timestamp
+                    ))
+
+            log.debug("Executed SQL commands")
+            conn.commit()
+            log.debug("Committed SQL commands")
+            upsert_variable("last_kills_update", int(time.time() * 1000))
+
+        elif response.status_code == 502:
+            raise BadGatewayError("TAPI server returned 502 Bad Gateway. Is server offline or restarting?")
+        else:
+            log.warning(f"Failed to fetch kills data: {response.status_code}")
+
+    end_time = time.time()
+    log.debug(f"Kills table updated in {round((end_time - start_time) * 1000, 3)}ms")
 
 
 def update_chat_table() -> None:
@@ -437,6 +493,7 @@ if __name__ == "__main__":
             update_towns_table()
             update_nations_table()
             update_server_info_table()
+            update_kills_table()
 
             try:
                 update_skin_dir("body")

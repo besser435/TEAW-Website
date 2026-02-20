@@ -1,0 +1,180 @@
+@use "variables" as *;
+
+/* Styles for the Kills page */
+
+.kill-feed {
+    // Copy of chat page but without the 0 padding at the top, which is 8 pixels.
+    // For some reason 277px also prevents scrolling but idk.
+    height: calc(100vh - 278px);  
+    min-height: 200px;
+    overflow-y: scroll;
+    margin-bottom: 10px;
+    border: $border;
+    border-radius: $radius-xl;
+    padding: 8px;
+}
+
+.kill-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: auto;
+
+    background-color: $card-bg;
+    color: #fff;
+
+    border: $card-border;
+    border-radius: $radius-m;
+    overflow: hidden;
+
+    margin-bottom: 10px;
+    padding: 12px 12px;
+}
+
+.kill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2em;
+    flex: 0 0 auto;
+    margin: 0;
+}
+
+.weapon-img {
+    image-rendering: pixelated;
+    width: 62px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+.player-skin {
+    width: 74px;
+    height: 120px;
+    object-fit: cover;
+    object-position: top;
+
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 95%, rgba(0,0,0,0) 100%);
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+}
+
+.victim-skin {
+    filter: grayscale(0.9);
+}
+
+.kill-info {
+    flex: 1;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.timestamp {
+    color: rgba(255, 255, 255, 0.4);
+    font-weight: 700;
+    font-size: 1em;
+    margin-bottom: 0;
+}
+
+.kill-container h2 {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.death-message {
+    word-break: break-word;
+}
+
+#scroll-to-top {
+    color: white;
+    background-color: rgb(0, 76, 255);
+    text-align: center;
+
+    margin-inline: 0.25em;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+
+    border: none;
+    padding: 0.4em 0.8em;
+    border-radius: 10em;
+    cursor: pointer;
+
+    transition: background-color 0.3s, outline 0.3s;
+    transition-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+#scroll-to-bottom:hover {
+    background-color: #0056b3;
+}
+
+.add-info {
+    margin-left: auto;
+    font-size: 0.9em;
+}
+
+.weapon-tooltip { 
+    position: absolute;
+    background: rgba(16, 0, 16, 0.9);
+    color: white;
+    font-family: "Minecraftia"; 
+    font-size: 18px;
+    padding: 8px 10px;
+    border: 2px solid rgba(59, 0, 192, 0.8);
+    border-radius: 6px;
+    z-index: 9999;
+    pointer-events: none;
+    max-width: 240px;
+    line-height: 1.4;
+}
+
+.weapon-tooltip .custom-name {
+    font-weight: bold;
+    color: #55FFFF;
+    margin-bottom: 4px;
+    font-style: italic;
+}
+
+.weapon-tooltip .tooltip-enchant {
+    color: #AAA;
+}
+
+.weapon-tooltip .tooltip-item {
+    color: #6c6c6c;
+    margin-top: 4px;
+}
+
+
+@media (max-width: 950px) {
+    .kill-container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 10px;
+    }
+
+    .kill-info {
+        text-align: center;
+        margin-left: 0;
+        margin-top: 6px;
+    }
+
+    .kill-container h2 {
+        font-size: 1em;
+    }
+
+    .player-skin {
+        width: 45px;
+        height: 72px;
+    }
+
+    .weapon-img {
+        width: 44px;
+    }
+
+    .timestamp {
+        font-size: 0.8em;
+        color: rgba(255, 255, 255, 0.6);
+    }
+}

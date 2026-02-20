@@ -168,6 +168,7 @@ def colon_three_leaderboard():
         result = cursor.fetchall()
         return result
 
+
 def insert_player(
     uuid, name, online_duration=0, afk_duration=0, balance=0.0, 
     title=None, town=None, town_name=None, nation=None, 
@@ -193,6 +194,43 @@ def insert_player(
     print(f"Inserted or updated player: {name} ({uuid})")
 
 
+def add_first_date_joined_column(db_file=TEAW_DB_FILE):
+    with sqlite3.connect(db_file) as conn:
+        cursor = conn.cursor()
+
+        # Check if the column already exists
+        cursor.execute("PRAGMA table_info(players);")
+        columns = [col[1] for col in cursor.fetchall()]
+        if "first_joined_date" not in columns:
+            cursor.execute("ALTER TABLE players ADD COLUMN first_joined_date INTEGER;")
+            conn.commit()
+            print("Added 'first_joined_date' column to players table.")
+        else:
+            print("'first_joined_date' column already exists in players table.")
+
+
+def create_kills_table(db_file=TEAW_DB_FILE):
+    with sqlite3.connect(db_file) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS kills (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                killer_uuid TEXT,
+                killer_name TEXT,
+                victim_uuid TEXT,
+                victim_name TEXT,
+                death_message TEXT,
+                weapon_json TEXT,
+                timestamp INTEGER
+            )
+        """)
+
+        conn.commit()
+
+    print("Kills table initialized")
+
+
 # DB performance might get slow once we get in the hundreds of thousands range, as we often
 # do lookups on the chat table to prevent adding duplicates.
 # This will move the chat messages to an archive table, and delete the messages in the chat table.
@@ -204,9 +242,10 @@ def archive_chat_table(db_file=TEAW_DB_FILE):
 
 if __name__ == "__main__":
     #create_teaw_tables()
-
+    add_first_date_joined_column()
+    create_kills_table()
 
     # pretty print the colon three leaderboard
-    for i, (uuid, count) in enumerate(colon_three_leaderboard()):
-        print(f"{i + 1}. {uuid} - {count}")
+    # for i, (uuid, count) in enumerate(colon_three_leaderboard()):
+    #     print(f"{i + 1}. {uuid} - {count}")
 

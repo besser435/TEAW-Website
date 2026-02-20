@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Kills - TEAW{% endblock %}
+{% block content %}
+
+<div class="header">
+    <h1>Kills</h1>
+    <input class="search" type="text" id="kill-search" autocomplete="off" spellcheck="false" placeholder="&#x1F50D; Search">
+</div>
+
+<div class="kill-feed">
+    <div class="search-not-found-msg" id="no-kills-found" style="display: none;">Your search did not match any kills</div>
+</div>
+
+<div class="info-bubble-container">
+    <div class="info-bubble"><b><span id="kills-count" class="mono-font">00</span></b> Total kills</div>
+    <div class="separator"></div>
+    <div class="info-bubble"><b><span id="unique-killers" class="mono-font">00</span></b> Unique killers</div>
+    <div class="info-bubble"><b><span id="unique-victims" class="mono-font">00</span></b> Unique victims</div>
+    <button id="scroll-to-top" onclick="scrollToTop()" style="display: none;">Scroll to recent</button>
+
+    <div class="add-info"><p>Hover over the weapons to see more information.</div>
+</div>
+
+<link rel="stylesheet" type="text/css" href="/css/Minecraftia.css">
+<link rel="stylesheet" type="text/css" href="/css/kills.css">
+<script src="/js/kills.js"></script>
+
+{% endblock %}
