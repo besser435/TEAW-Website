@@ -544,12 +544,3 @@ def get_showcase_img(file_name):
         log.error(f"Internal error getting `showcase_img`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
 
-
-# Custom Recipes
-@api_routes.route("/api/custom_recipes")
-def get_custom_recipes():
-    try:
-        return get_recipes(), 200
-    except Exception:
-        log.error(f"Internal error getting `custom_recipes`")
-        return {"error": "internal error"}, 500
