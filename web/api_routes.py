@@ -10,6 +10,7 @@ import uuid
 
 from config import log, TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR
 from config import SHOWCASE_SUBMISSIONS_DIR, SHOWCASE_IMAGES_DIR
+from recipe_loader import get_recipes
 
 api_routes = Blueprint("api_blueprint", __name__)
 
@@ -541,4 +542,14 @@ def get_showcase_img(file_name):
         return {"error": "not found"}, 404
     except Exception:
         log.error(f"Internal error getting `showcase_img`: {traceback.format_exc()}")
+        return {"error": "internal error"}, 500
+
+
+# Custom Recipes
+@api_routes.route("/api/custom_recipes")
+def get_custom_recipes():
+    try:
+        return get_recipes(), 200
+    except Exception:
+        log.error(f"Internal error getting `custom_recipes`")
         return {"error": "internal error"}, 500
