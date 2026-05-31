@@ -10,7 +10,6 @@ import uuid
 
 from config import log, TEAW_DB_FILE, STATS_DB_FILE, PLAYER_BODY_SKIN_DIR, PLAYER_FACE_SKIN_DIR
 from config import SHOWCASE_SUBMISSIONS_DIR, SHOWCASE_IMAGES_DIR
-from recipe_loader import get_recipes
 
 api_routes = Blueprint("api_blueprint", __name__)
 
