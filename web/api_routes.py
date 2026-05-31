@@ -542,3 +542,4 @@ def get_showcase_img(file_name):
     except Exception:
         log.error(f"Internal error getting `showcase_img`: {traceback.format_exc()}")
         return {"error": "internal error"}, 500
+
