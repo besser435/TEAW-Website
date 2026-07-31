@@ -9,6 +9,9 @@
 
     margin-left: 4px;
     margin-right: 4px;
+
+    // New API doesn't have shading, so the skins look a bit too bright and colorful
+    filter: saturate(90%);
 }
 
 .card-container h2 {
