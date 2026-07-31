@@ -1,14 +1,14 @@
 /* Styles for the Players page */
 
 .card-container .player-skin {
-    width: 50px;
+    width: 68px;
 
     position: relative;
-    top: 10px;
+    top: 8px;
     align-self: flex-start;
 
-    margin-left: 10px;
-    margin-right: 15px;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 .card-container h2 {
@@ -17,8 +17,8 @@
 
 @media (max-width: 950px) {
     .card-container .player-skin {
-        width: 30px;
-        margin-right: 10px;
+        width: 42px;
+        margin-right: 4px;
         top: 20px;
 
         position: unset;
