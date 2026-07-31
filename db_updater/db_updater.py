@@ -23,8 +23,12 @@ TAPI_URL = "https://tapi.toendallwars.org/api"
 DB_FILE = "../db/teaw.db"
 
 SKIN_TTL_HOURS = 8
-BODY_SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full?capeEnabled=false"
 BODY_SKINS_DIR = "../db/player_body_skins"
+# URL made here: https://skins.mcstats.com/docs
+BODY_SKIN_API_URL = "https://skins.mcstats.com/body/front/{uuid}?scale=2&fov=50&shadow=false&disableCosmeticType=cloak&fallbackTexture=alex&overlay=true&fallbackBehavior=graceful&cropMeasurement=percent&expandMeasurement=pixels&cropLeft=3&cropRight=3&cropTop=0&cropBottom=0&expandLeft=0&expandRight=0&expandTop=0&expandBottom=0&alwaysSquare=false&grayscale=false"
+# Became unreliable, which is sad because it had a really nice render.
+#BODY_SKIN_API_URL = "https://starlightskins.lunareclipse.studio/render/ultimate/{uuid}/full?capeEnabled=false"
+
 
 FACE_SKIN_API_URL = "https://mc-heads.net/avatar/{uuid}/8"   # Should really just use the Mojang API
 FACE_SKINS_DIR = "../db/player_face_skins"
